@@ -1,0 +1,11 @@
+{
+  "name": "yandex-music-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^2.0.2"
+  }
+}
