@@ -16,3 +16,11 @@ function mediaShortcutToCommand(shortcut) {
             return 'togglePause'
     }
 }
+
+webview.addEventListener('dom-ready', () => {
+    webview.insertCSS(`
+        .d-overhead, .ads-block, .ads-block__no-ads, .bar-below {
+            display: none !important;
+        }
+    `)
+})
