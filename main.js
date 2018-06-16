@@ -1,34 +1,33 @@
 const {app, BrowserWindow, globalShortcut} = require('electron')
-  
-  let win
-  
-  function createWindow () {
-    win = new BrowserWindow({width: 800, height: 600})
-    win.loadFile('index.html')
-    // win.webContents.openDevTools()
-    win.on('closed', () => {
-      win = null
-    })
-  }
 
-  app.on('ready', () => {
-    createWindow()
+let win
+let willQuitApp = false
 
-    for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
-      globalShortcut.register(shortcut, () => {
-        win.webContents.send('mediaShortcut', shortcut);
-      });
-    }
-  })
-  
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  })
-  
-  app.on('activate', () => {
-    if (win === null) {
-      createWindow()
-    }
-  })
+function createWindow () {
+	win = new BrowserWindow({width: 1301, height: 768, title: 'Yandex Music'})
+	win.loadFile('index.html')
+	
+	win.on('close', e => {
+		if (willQuitApp) {
+			win = null
+		} else {
+			e.preventDefault();
+			win.hide()
+		}
+	})
+}
+
+app.on('before-quit', () => willQuitApp = true);
+app.on('activate', () => win.show())
+
+app.on('ready', () => {
+	createWindow()
+
+	for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
+		globalShortcut.register(shortcut, () => {
+			if (win !== null) {
+				win.webContents.send('mediaShortcut', shortcut);
+			}
+		});
+	}
+})
