@@ -23,4 +23,5 @@ webview.addEventListener('dom-ready', () => {
             display: none !important;
         }
     `)
+    webview.executeJavaScript(`document.body.classList.remove('body_bar-tall')`)
 })
