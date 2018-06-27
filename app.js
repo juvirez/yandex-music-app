@@ -34,4 +34,10 @@ webview.addEventListener('dom-ready', () => {
         })
         bodyAttributesObserver.observe(document.body, { attributes: true })
     `)
+    webview.executeJavaScript(`
+        let loginButton = document.querySelector('.log-in')
+        loginButton.addEventListener('click', () => {
+            window.location = loginButton.href
+        })
+    `)
 })
