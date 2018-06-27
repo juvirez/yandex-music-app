@@ -23,5 +23,15 @@ webview.addEventListener('dom-ready', () => {
             display: none !important;
         }
     `)
-    webview.executeJavaScript(`document.body.classList.remove('body_bar-tall')`)
+    webview.executeJavaScript(`
+        let bodyAttributesObserver = new MutationObserver((mutationsList) => {
+            for (var mutation of mutationsList) {
+                let bodyClasses = document.body.classList
+                if (mutation.attributeName == 'class' && bodyClasses.contains('body_bar-tall')) {
+                    bodyClasses.remove('body_bar-tall')
+                }
+            }
+        })
+        bodyAttributesObserver.observe(document.body, { attributes: true })
+    `)
 })
