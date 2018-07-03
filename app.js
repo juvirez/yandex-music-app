@@ -1,6 +1,7 @@
 const webview = document.querySelector('webview')
+const ipc = require('electron').ipcRenderer
 
-require('electron').ipcRenderer.on('mediaShortcut', (event, shortcut) => {
+ipc.on('mediaShortcut', (event, shortcut) => {
     webview.executeJavaScript('externalAPI.' + mediaShortcutToCommand(shortcut) + '()')
 })
 
@@ -16,6 +17,17 @@ function mediaShortcutToCommand(shortcut) {
             return 'togglePause'
     }
 }
+
+ipc.on('history', (event, action) => {
+    switch(action) {
+        case 'back':
+            webview.goBack()
+            break
+        case 'forward':
+            webview.goForward()
+            break
+    }
+})
 
 webview.addEventListener('dom-ready', () => {
     webview.insertCSS(`

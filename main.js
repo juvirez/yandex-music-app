@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut} = require('electron')
+const {app, BrowserWindow, globalShortcut, Menu} = require('electron')
 
 let win
 let willQuitApp = false
@@ -30,4 +30,41 @@ app.on('ready', () => {
 			}
 		});
 	}
+
+	const menu = Menu.buildFromTemplate([
+		{
+			label: app.getName(),
+			submenu: [
+				{
+					label: 'Quit Yandex Music',
+					role: 'quit'
+				}
+			]
+		}, {
+			label: 'View',
+			submenu: [
+				{
+					role: 'reload'
+				}
+			]
+		}, {
+			label: 'History',
+			submenu: [
+				{
+					label: 'Back',
+					accelerator: 'CommandOrControl+[',
+					click () {
+						win.webContents.send('history', 'back')
+					}
+				}, {
+					label: 'Forward',
+					accelerator: 'CommandOrControl+]',
+					click () {
+						win.webContents.send('history', 'forward')
+					}
+				}
+			]
+		}
+	])
+	Menu.setApplicationMenu(menu)
 })
