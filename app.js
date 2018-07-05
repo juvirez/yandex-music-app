@@ -31,7 +31,7 @@ ipc.on('history', (event, action) => {
 
 webview.addEventListener('dom-ready', () => {
     webview.insertCSS(`
-        .d-overhead, .ads-block, .ads-block__no-ads, .bar-below {
+        .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
             display: none !important;
         }
     `)
