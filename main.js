@@ -31,6 +31,10 @@ app.on('ready', () => {
 		});
 	}
 
+	initMenu()
+})
+
+function initMenu() {
 	const menu = Menu.buildFromTemplate([
 		{
 			label: app.getName(),
@@ -67,4 +71,4 @@ app.on('ready', () => {
 		}
 	])
 	Menu.setApplicationMenu(menu)
-})
+}

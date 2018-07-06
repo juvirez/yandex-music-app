@@ -1,17 +1,17 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <style>
-        html, body, webview {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-      </style>
+      <link rel="stylesheet" href="main.css">
     </head>
-    <body>
-        <webview src="https://music.yandex.ru/"></webview>
-        <script src="app.js"></script>
+    <body class="loading">
+      <div id="placeholder">
+        <img src="icon.svg">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+      </div>
+      <webview src="https://music.yandex.ru/"></webview>
+      <script src="app.js"></script>
     </body>
   </html>

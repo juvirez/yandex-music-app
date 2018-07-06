@@ -52,4 +52,5 @@ webview.addEventListener('dom-ready', () => {
             window.location = loginButton.href
         })
     `)
+    document.body.classList.remove('loading')
 })
