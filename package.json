@@ -1,13 +1,34 @@
 {
   "name": "yandex-music-app",
   "version": "1.0.0",
+  "author": "juvirez",
+  "description": "just webview for yandex music with native features",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juvirez/yandex-music-app.git"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . 'Yandex Music' --icon=./icon.icns"
+    "publish": "build -p always"
   },
   "devDependencies": {
-    "electron": "^2.0.2",
-    "electron-packager": "^12.1.0"
+    "electron": "^2.0.4",
+    "electron-builder": "^20.24.4"
+  },
+  "dependencies": {
+    "electron-updater": "^3.0.3"
+  },
+  "build": {
+    "productName": "Yandex Music (Unofficial)",
+    "appId": "com.github.juvirez.yandexmusicapp",
+    "mac": {
+      "category": "public.app-category.music",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    }
   }
 }
