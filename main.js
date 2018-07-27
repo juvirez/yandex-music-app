@@ -1,4 +1,5 @@
 const {app, BrowserWindow, globalShortcut, Menu} = require('electron')
+const {autoUpdater} = require("electron-updater");
 
 let win
 let willQuitApp = false
@@ -6,7 +7,7 @@ let willQuitApp = false
 function createWindow () {
 	win = new BrowserWindow({width: 1301, height: 768, title: 'Yandex Music'})
 	win.loadFile('index.html')
-	
+
 	win.on('close', e => {
 		if (willQuitApp) {
 			win = null
@@ -32,6 +33,7 @@ app.on('ready', () => {
 	}
 
 	initMenu()
+	autoUpdater.checkForUpdatesAndNotify();
 })
 
 function initMenu() {
