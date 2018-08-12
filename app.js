@@ -1,8 +1,17 @@
 const webview = document.querySelector('webview')
 const ipc = require('electron').ipcRenderer
 
+webview.addEventListener('dom-ready', () => {
+    document.body.classList.remove('loading')
+    webview.insertCSS(`
+        .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
+        display: none !important;
+        }
+    `)
+})
+
 ipc.on('mediaShortcut', (event, shortcut) => {
-    webview.executeJavaScript('externalAPI.' + mediaShortcutToCommand(shortcut) + '()')
+    webview.send('playerCmd', mediaShortcutToCommand(shortcut))
 })
 
 function mediaShortcutToCommand(shortcut) {
@@ -27,30 +36,4 @@ ipc.on('history', (event, action) => {
             webview.goForward()
             break
     }
-})
-
-webview.addEventListener('dom-ready', () => {
-    webview.insertCSS(`
-        .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
-            display: none !important;
-        }
-    `)
-    webview.executeJavaScript(`
-        let bodyAttributesObserver = new MutationObserver((mutationsList) => {
-            for (var mutation of mutationsList) {
-                let bodyClasses = document.body.classList
-                if (mutation.attributeName == 'class' && bodyClasses.contains('body_bar-tall')) {
-                    bodyClasses.remove('body_bar-tall')
-                }
-            }
-        })
-        bodyAttributesObserver.observe(document.body, { attributes: true })
-    `)
-    webview.executeJavaScript(`
-        let loginButton = document.querySelector('.log-in')
-        loginButton.addEventListener('click', () => {
-            window.location = loginButton.href
-        })
-    `)
-    document.body.classList.remove('loading')
 })
