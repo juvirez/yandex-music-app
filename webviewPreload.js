@@ -12,11 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     bodyAttributesObserver.observe(document.body, { attributes: true })
 
     let loginButton = document.querySelector('.log-in')
-        loginButton.addEventListener('click', () => {
-            window.location = loginButton.href
-        })
- });
+    loginButton && loginButton.addEventListener('click', () => {
+        window.location = loginButton.href
+    })
 
-ipc.on('playerCmd', (event, cmd) => {
+    window.externalAPI.on(window.externalAPI.EVENT_TRACK, () => {
+        const track = window.externalAPI.getCurrentTrack()
+        if (window.externalAPI.isPlaying()) {
+            new Notification(track.title, {
+                body: track.artists.map(a => a.title).join(', '),
+                icon: "https://" + track.cover.replace('%%', '100x100'),
+                silent: true
+            })
+        }
+    })
+ })
+
+ ipc.on('playerCmd', (event, cmd) => {
     window.externalAPI[cmd]()
 })
