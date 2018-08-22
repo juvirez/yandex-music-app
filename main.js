@@ -1,5 +1,6 @@
 const {app, BrowserWindow, globalShortcut, Menu} = require('electron')
 const {autoUpdater} = require("electron-updater");
+const settings = require('electron-settings');
 
 let win
 let willQuitApp = false
@@ -22,6 +23,10 @@ app.on('before-quit', () => willQuitApp = true);
 app.on('activate', () => win.show())
 
 app.on('ready', () => {
+	if (!settings.has('notifications')) {
+		settings.set('notifications', true)
+	}
+
 	createWindow()
 
 	for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
@@ -51,6 +56,13 @@ function initMenu() {
 			submenu: [
 				{
 					role: 'reload'
+				}, {
+					label: 'Enable notifications',
+					type: 'checkbox',
+					checked: settings.get('notifications'),
+					click (menuItem) {
+						settings.set('notifications', menuItem.checked)
+					}
 				}
 			]
 		}, {

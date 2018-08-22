@@ -18,6 +18,7 @@
     "electron-builder": "^20.24.4"
   },
   "dependencies": {
+    "electron-settings": "^3.2.0",
     "electron-updater": "^3.0.3"
   },
   "build": {

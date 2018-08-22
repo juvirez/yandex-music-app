@@ -1,4 +1,5 @@
 const ipc = require('electron').ipcRenderer
+const settings = require('electron-settings');
 
 document.addEventListener('DOMContentLoaded', () => {
     let bodyAttributesObserver = new MutationObserver((mutationsList) => {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.externalAPI.on(window.externalAPI.EVENT_TRACK, () => {
         const track = window.externalAPI.getCurrentTrack()
-        if (window.externalAPI.isPlaying()) {
+        if (settings.get('notifications') && window.externalAPI.isPlaying()) {
             new Notification(track.title, {
                 body: track.artists.map(a => a.title).join(', '),
                 icon: "https://" + track.cover.replace('%%', '100x100'),
