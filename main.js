@@ -52,17 +52,12 @@ function initMenu() {
 				}
 			]
 		}, {
+			role: 'editMenu'
+		}, {
 			label: 'View',
 			submenu: [
 				{
 					role: 'reload'
-				}, {
-					label: 'Enable notifications',
-					type: 'checkbox',
-					checked: settings.get('notifications'),
-					click (menuItem) {
-						settings.set('notifications', menuItem.checked)
-					}
 				}
 			]
 		}, {
@@ -82,6 +77,20 @@ function initMenu() {
 					}
 				}
 			]
+		}, {
+			label: 'Settings',
+			submenu: [
+				{
+					label: 'Enable notifications',
+					type: 'checkbox',
+					checked: settings.get('notifications'),
+					click (menuItem) {
+						settings.set('notifications', menuItem.checked)
+					}
+				}
+			]
+		}, {
+			role: 'windowMenu'
 		}
 	])
 	Menu.setApplicationMenu(menu)
