@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let loginButton = document.querySelector('.log-in')
     loginButton && loginButton.addEventListener('click', () => {
-        window.location = loginButton.href
+        window.location = "https://passport.yandex.ru/auth?origin=music&retpath=https%3A%2F%2Fmusic.yandex.ru"
     })
 
     window.externalAPI.on(window.externalAPI.EVENT_TRACK, () => {
