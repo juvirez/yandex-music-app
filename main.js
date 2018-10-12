@@ -68,11 +68,16 @@ function initMenu() {
 		{
 			label: app.getName(),
 			submenu: [
-				{
-					label: 'Quit Yandex Music',
-					role: 'quit'
-				}
-			]
+				{role: 'about', label: 'About Yandex Music (Unofficial)'},
+				{type: 'separator'},
+				{role: 'services', submenu: []},
+				{type: 'separator'},
+				{role: 'hide', label: 'Hide Yandex Music (Unofficial)'},
+				{role: 'hideothers'},
+				{role: 'unhide'},
+				{type: 'separator'},
+				{role: 'quit', label: 'Quit Yandex Music (Unofficial)'}
+			  ]
 		}, {
 			role: 'editMenu'
 		}, {
