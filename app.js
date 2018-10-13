@@ -1,5 +1,6 @@
 const webview = document.querySelector('webview')
 const ipc = require('electron').ipcRenderer
+const Analytics = require('electron-ga');
 
 webview.addEventListener('dom-ready', () => {
     document.body.classList.remove('loading')
@@ -37,3 +38,6 @@ ipc.on('history', (event, action) => {
             break
     }
 })
+
+const analytics = new Analytics.default('UA-127383106-1');
+analytics.send('screenview', { cd: 'main'})
