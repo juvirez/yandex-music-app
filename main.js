@@ -17,6 +17,10 @@ function createWindow () {
 			win.hide()
 		}
 	})
+
+	win.on('focus', () => {
+		win.webContents.send('windowFocus')
+	})
 }
 
 app.on('before-quit', () => willQuitApp = true);

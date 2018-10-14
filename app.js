@@ -40,4 +40,6 @@ ipc.on('history', (event, action) => {
 })
 
 const analytics = new Analytics.default('UA-127383106-1');
-analytics.send('screenview', { cd: 'main'})
+ipc.on("windowFocus", () => {
+    analytics.send('screenview', { cd: 'main' })
+})
