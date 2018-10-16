@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 silent: true
             })
         }
+        ipc.send('changeTrack', track)
     })
  })
 
