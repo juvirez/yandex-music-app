@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location = "https://passport.yandex.ru/auth?origin=music&retpath=https%3A%2F%2Fmusic.yandex.ru"
     })
 
-    window.externalAPI.on(window.externalAPI.EVENT_TRACK, () => {
-        const track = window.externalAPI.getCurrentTrack()
-        if (settings.get('notifications') && window.externalAPI.isPlaying()) {
+    externalAPI.on(externalAPI.EVENT_TRACK, () => {
+        const track = externalAPI.getCurrentTrack()
+        if (settings.get('notifications') && externalAPI.isPlaying()) {
             new Notification(track.title, {
                 body: track.artists.map(a => a.title).join(', '),
                 icon: "https://" + track.cover.replace('%%', '100x100'),
@@ -28,8 +28,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ipc.send('changeTrack', track)
     })
+
+    externalAPI.on(externalAPI.EVENT_PROGRESS, () => {
+        ipc.send('changeProgress', externalAPI.getProgress())
+    })
+
+    externalAPI.on(externalAPI.EVENT_STATE, () => {
+        ipc.send('changeState', {
+            isPlaying: externalAPI.isPlaying()
+        })
+    })
  })
 
- ipc.on('playerCmd', (event, cmd) => {
-    window.externalAPI[cmd]()
+ipc.on('playerCmd', (_event, cmd) => {
+    if (cmd == 'play') {
+        externalAPI.togglePause(false)
+    } else if (cmd == 'pause') {
+        externalAPI.togglePause(true)
+    } else {
+        externalAPI[cmd]()
+    }
+})
+
+ipc.on('playerSeek', (_event, to) => {
+    externalAPI.setPosition(to)
 })

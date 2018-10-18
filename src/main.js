@@ -4,6 +4,7 @@ require('./menu')
 require('./updater')
 require('./mediaService')
 require('./shortcuts')
+require('./mediaService')
 
 let win
 let willQuitApp = false
@@ -28,4 +29,8 @@ app.on('ready', () => {
 	win.on('focus', () => {
 		win.webContents.send('windowFocus')
 	})
+
+	if (!settings.has('notifications')) {
+		settings.set('notifications', true)
+    }
 })

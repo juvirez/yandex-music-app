@@ -1,6 +1,6 @@
 {
   "name": "yandex-music-app",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "juvirez",
   "description": "just webview for yandex music with native features",
   "license": "MIT",
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "electron-ga": "^1.0.6",
+    "electron-media-service": "^0.2.2",
     "electron-settings": "^3.2.0",
     "electron-updater": "^3.0.3"
   },

@@ -15,6 +15,10 @@ ipc.on('playerCmd', (_event, playerCmd) => {
     webview.send('playerCmd', playerCmd)
 })
 
+ipc.on('playerSeek', (_event, playerCmd) => {
+    webview.send('playerSeek', playerCmd)
+})
+
 ipc.on('history', (event, action) => {
     switch(action) {
         case 'back':
