@@ -11,22 +11,9 @@ webview.addEventListener('dom-ready', () => {
     `)
 })
 
-ipc.on('mediaShortcut', (event, shortcut) => {
-    webview.send('playerCmd', mediaShortcutToCommand(shortcut))
+ipc.on('playerCmd', (_event, playerCmd) => {
+    webview.send('playerCmd', playerCmd)
 })
-
-function mediaShortcutToCommand(shortcut) {
-    switch(shortcut) {
-        case 'MediaNextTrack':
-            return 'next'
-        case 'MediaPreviousTrack':
-            return 'prev'
-        case 'MediaStop':
-            return 'stop'
-        case 'MediaPlayPause':
-            return 'togglePause'
-    }
-}
 
 ipc.on('history', (event, action) => {
     switch(action) {

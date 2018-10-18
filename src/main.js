@@ -1,14 +1,20 @@
-const {app, BrowserWindow, globalShortcut} = require('electron')
+const {app, BrowserWindow} = require('electron')
 const settings = require('electron-settings');
 require('./menu')
 require('./updater')
+require('./mediaService')
+require('./shortcuts')
 
 let win
 let willQuitApp = false
 
-function createWindow () {
+app.on('before-quit', () => willQuitApp = true);
+app.on('activate', () => win.show())
+
+app.on('ready', () => {
 	win = new BrowserWindow({width: 1301, height: 768, title: 'Yandex Music'})
 	win.loadFile('src/renderer/index.html')
+	global.mainWindow = win
 
 	win.on('close', e => {
 		if (willQuitApp) {
@@ -22,24 +28,4 @@ function createWindow () {
 	win.on('focus', () => {
 		win.webContents.send('windowFocus')
 	})
-
-}
-
-app.on('before-quit', () => willQuitApp = true);
-app.on('activate', () => win.show())
-
-app.on('ready', () => {
-	if (!settings.has('notifications')) {
-		settings.set('notifications', true)
-	}
-
-	createWindow()
-
-	for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
-		globalShortcut.register(shortcut, () => {
-			if (win !== null) {
-				win.webContents.send('mediaShortcut', shortcut);
-			}
-		});
-	}
 })
