@@ -32,13 +32,13 @@ app.on('ready', () => {
 					label: 'Back',
 					accelerator: 'CommandOrControl+[',
 					click () {
-						win.webContents.send('history', 'back')
+						global.mainWindow.webContents.send('history', 'back')
 					}
 				}, {
 					label: 'Forward',
 					accelerator: 'CommandOrControl+]',
 					click () {
-						win.webContents.send('history', 'forward')
+						global.mainWindow.webContents.send('history', 'forward')
 					}
 				}
 			]

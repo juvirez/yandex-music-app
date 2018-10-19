@@ -1,6 +1,6 @@
 {
   "name": "yandex-music-app",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "juvirez",
   "description": "just webview for yandex music with native features",
   "license": "MIT",
