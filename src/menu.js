@@ -1,5 +1,6 @@
 const {app, Menu, BrowserWindow} = require('electron')
 const settings = require('electron-settings');
+const {showOpenURLDialog} = require('./openURLDialog')
 
 app.on('ready', () => {
     const menu = Menu.buildFromTemplate([
@@ -66,15 +67,3 @@ app.on('ready', () => {
 	])
 	Menu.setApplicationMenu(menu)
 })
-
-function showOpenURLDialog() {
-	let win = new BrowserWindow({
-		width: 440,
-		height: 117,
-		modal: true,
-		parent: global.mainWindow,
-		resizable: false
-	})
-	win.loadFile('src/renderer/openURL.html')
-	win.show()
-}
