@@ -1,4 +1,4 @@
-const {app, Menu} = require('electron')
+const {app, Menu, BrowserWindow} = require('electron')
 const settings = require('electron-settings');
 
 app.on('ready', () => {
@@ -26,7 +26,7 @@ app.on('ready', () => {
 				}
 			]
 		}, {
-			label: 'History',
+			label: 'Navigate',
 			submenu: [
 				{
 					label: 'Back',
@@ -40,6 +40,12 @@ app.on('ready', () => {
 					click () {
 						global.mainWindow.webContents.send('history', 'forward')
 					}
+				}, {
+					type: 'separator'
+				}, {
+					label: 'Open URL',
+					accelerator: 'CommandOrControl+O',
+					click: showOpenURLDialog
 				}
 			]
 		}, {
@@ -60,3 +66,15 @@ app.on('ready', () => {
 	])
 	Menu.setApplicationMenu(menu)
 })
+
+function showOpenURLDialog() {
+	let win = new BrowserWindow({
+		width: 440,
+		height: 117,
+		modal: true,
+		parent: global.mainWindow,
+		resizable: false
+	})
+	win.loadFile('src/renderer/openURL.html')
+	win.show()
+}
