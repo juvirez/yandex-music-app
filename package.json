@@ -11,11 +11,13 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "publish": "build -p always"
+    "publish": "build -p always",
+    "postinstall": "electron-rebuild"
   },
   "devDependencies": {
-    "electron": "^2.0.4",
-    "electron-builder": "^20.24.4"
+    "electron": "^4.0.0",
+    "electron-builder": "^20.38.4",
+    "electron-rebuild": "^1.8.2"
   },
   "dependencies": {
     "electron-ga": "^1.0.6",

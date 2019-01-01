@@ -3,8 +3,6 @@ const settings = require('electron-settings');
 require('./menu')
 require('./updater')
 require('./mediaService')
-require('./shortcuts')
-require('./mediaService')
 
 let win
 let willQuitApp = false
@@ -13,6 +11,7 @@ app.on('before-quit', () => willQuitApp = true);
 app.on('activate', () => win.show())
 
 app.on('ready', () => {
+	require('./shortcuts')
 	win = new BrowserWindow({width: 1301, height: 768, title: 'Yandex Music'})
 	win.loadFile('src/renderer/index.html')
 	global.mainWindow = win
