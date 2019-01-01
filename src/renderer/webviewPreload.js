@@ -53,3 +53,7 @@ ipc.on('playerCmd', (_event, cmd) => {
 ipc.on('playerSeek', (_event, to) => {
     externalAPI.setPosition(to)
 })
+
+ipc.on('navigate', (_event, url) => {
+    externalAPI.navigate(url)
+})

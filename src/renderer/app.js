@@ -1,6 +1,6 @@
 const webview = document.querySelector('webview')
 const ipc = require('electron').ipcRenderer
-const Analytics = require('electron-ga');
+const Analytics = require('electron-ga')
 
 webview.addEventListener('dom-ready', () => {
     document.body.classList.remove('loading')
@@ -19,7 +19,7 @@ ipc.on('playerSeek', (_event, playerCmd) => {
     webview.send('playerSeek', playerCmd)
 })
 
-ipc.on('history', (event, action) => {
+ipc.on('history', (_event, action) => {
     switch(action) {
         case 'back':
             webview.goBack()
@@ -30,7 +30,11 @@ ipc.on('history', (event, action) => {
     }
 })
 
-const analytics = new Analytics.default('UA-127383106-1');
+ipc.on('navigate', (_event, url) => {
+    webview.send('navigate', url)
+})
+
+const analytics = new Analytics.default('UA-127383106-1')
 ipc.on("windowFocus", () => {
     analytics.send('screenview', { cd: 'main' })
 })

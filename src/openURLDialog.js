@@ -1,5 +1,6 @@
-const {BrowserWindow} = require('electron')
+const {BrowserWindow, clipboard} = require('electron')
 
+const yandexMsuciUrl = "https://music.yandex.ru"
 let win
 
 exports.showOpenURLDialog = () => {
@@ -8,13 +9,23 @@ exports.showOpenURLDialog = () => {
         win = null
         return
     }
+
+    let clipboardString = clipboard.readText('selection')
+    if (clipboardString.startsWith(yandexMsuciUrl)) {
+        let relativeUrl = clipboardString.slice(yandexMsuciUrl.length)
+        global.mainWindow.webContents.send('navigate', relativeUrl)
+        return
+    }
+
     win = createWindow()
     win.once('ready-to-show', () => {
         win.show()
     })
     win.once('blur', () => {
-        win.hide()
-        win = null
+        if (win) {
+            win.hide()
+            win = null
+        }
     })
 }
 
