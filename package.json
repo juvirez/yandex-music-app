@@ -12,12 +12,11 @@
   "scripts": {
     "start": "electron .",
     "publish": "build -p always",
-    "postinstall": "electron-rebuild"
+    "postinstall": "$(yarn bin)/electron-builder install-app-deps"
   },
   "devDependencies": {
     "electron": "^4.0.0",
-    "electron-builder": "^20.38.4",
-    "electron-rebuild": "^1.8.2"
+    "electron-builder": "^20.38.4"
   },
   "dependencies": {
     "electron-ga": "^1.0.6",
