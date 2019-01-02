@@ -1,4 +1,8 @@
 require('./menu')
 require('./updater')
-require('./mediaService')
-require('./shortcuts')
+
+if (process.platform == 'darwin') {
+    require('./mediaService')
+} else {
+    require('./shortcuts')
+}
