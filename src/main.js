@@ -5,7 +5,11 @@ let win
 let willQuitApp = false
 
 app.on('before-quit', () => willQuitApp = true);
-app.on('activate', () => win.show())
+app.on('activate', () => {
+	if (win) {
+		win.show()
+	}
+})
 
 app.on('ready', () => {
 	win = new BrowserWindow({width: 1301, height: 768, title: 'Yandex Music'})
