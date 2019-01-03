@@ -7,7 +7,7 @@
     <div style="padding: 30px;" class="typo-main theme-white">
         <div class="d-input deco-input-wrapper d-input_size-M d-input_suggest deco-input-wrapper_suggest deco-input__suggest">
             <input id="input-url" type="text" class="d-input__field deco-input" placeholder="Yandex Music URL" autofocus tabindex="0">
-            <button class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered suggest-button" tabindex="1">
+            <button id="navigate-button" class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered suggest-button" tabindex="1">
                 <span class="d-button-inner deco-button-stylable">
                     <span class="d-button__inner">
                         <span class="d-icon deco-icon d-icon_arrow-right "></span>
@@ -23,6 +23,8 @@
 
     let inputURL = document.getElementById('input-url')
 
+    document.getElementById('navigate-button').addEventListener('click', navigateToURLFromInput)
+
     ipc.on('url', (_event, url) => {
         inputURL.value = url
         inputURL.select()
@@ -33,8 +35,12 @@
             window.close()
         }
         if (event.key === "Enter") {
-            let url = inputURL.value
-            ipc.send('navigate', url)
+            navigateToURLFromInput()
         }
     })
+
+    function navigateToURLFromInput() {
+        let url = inputURL.value
+        ipc.send('navigate', url)
+    }
 </script>
