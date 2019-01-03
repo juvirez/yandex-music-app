@@ -5,7 +5,7 @@
 </head>
 <body>
     <div style="padding: 30px;" class="typo-main theme-white">
-        <div class="d-input deco-input-wrapper d-input_size-M d-input_suggest deco-input-wrapper_suggest deco-input__suggest">
+        <div id="input-url-wrapper" class="d-input deco-input-wrapper d-input_size-M d-input_suggest deco-input-wrapper_suggest deco-input__suggest">
             <input id="input-url" type="text" class="d-input__field deco-input" placeholder="Yandex Music URL" autofocus tabindex="0">
             <button id="navigate-button" class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered suggest-button" tabindex="1">
                 <span class="d-button-inner deco-button-stylable">
@@ -21,7 +21,11 @@
 <script>
     const ipc = require('electron').ipcRenderer
 
+    const inputWrapperErrorClass = 'deco-input-wrapper_fail'
+    const yandexMusicUrl = "https://music.yandex.ru"
+
     let inputURL = document.getElementById('input-url')
+    let inputURLWrapper = document.getElementById('input-url-wrapper')
 
     document.getElementById('navigate-button').addEventListener('click', navigateToURLFromInput)
 
@@ -39,8 +43,23 @@
         }
     })
 
+    inputURL.addEventListener('keyup', () => {
+        if (inputURLWrapper.classList.contains(inputWrapperErrorClass) && isYandexMusicUrl(inputURL.value)) {
+            inputURLWrapper.classList.remove(inputWrapperErrorClass)
+        }
+    })
+
     function navigateToURLFromInput() {
         let url = inputURL.value
-        ipc.send('navigate', url)
+        if (isYandexMusicUrl(url)) {
+            let relativeUrl = url.slice(yandexMusicUrl.length)
+            ipc.send('navigate', relativeUrl)
+        } else {
+            inputURLWrapper.classList.add(inputWrapperErrorClass);
+        }
+    }
+
+    function isYandexMusicUrl(url) {
+        return url.startsWith(yandexMusicUrl)
     }
 </script>

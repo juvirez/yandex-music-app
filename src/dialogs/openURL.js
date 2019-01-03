@@ -1,6 +1,5 @@
 const {BrowserWindow, clipboard, ipcMain} = require('electron')
 
-const yandexMusicUrl = "https://music.yandex.ru"
 let win
 
 exports.showOpenURLDialog = () => {
@@ -13,7 +12,7 @@ exports.showOpenURLDialog = () => {
     win = createWindow()
     win.once('ready-to-show', () => {
         let clipboardString = clipboard.readText('selection')
-        if (clipboardString.startsWith(yandexMusicUrl)) {
+        if (clipboardString.startsWith("https://music.yandex.ru")) {
             win.webContents.send('url', clipboardString)
         }
         win.show()
@@ -30,19 +29,11 @@ exports.showOpenURLDialog = () => {
 }
 
 ipcMain.on('navigate', (_event, url) => {
-    if (navigate(url) && win) {
+    global.mainWindow.webContents.send('navigate', url)
+    if (win) {
         win.close()
     }
 })
-
-function navigate(url) {
-    if (url.startsWith(yandexMusicUrl)) {
-        let relativeUrl = url.slice(yandexMusicUrl.length)
-        global.mainWindow.webContents.send('navigate', relativeUrl)
-        return true
-    }
-    return false
-}
 
 function createWindow() {
 	let win = new BrowserWindow({
