@@ -10,13 +10,12 @@ exports.showOpenURLDialog = () => {
         return
     }
 
-    let clipboardString = clipboard.readText('selection')
-    if (navigate(clipboardString)) {
-        return
-    }
-
     win = createWindow()
     win.once('ready-to-show', () => {
+        let clipboardString = clipboard.readText('selection')
+        if (clipboardString.startsWith(yandexMusicUrl)) {
+            win.webContents.send('url', clipboardString)
+        }
         win.show()
     })
     win.once('blur', () => {

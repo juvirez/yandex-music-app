@@ -21,12 +21,19 @@
 <script>
     const ipc = require('electron').ipcRenderer
 
+    let inputURL = document.getElementById('input-url')
+
+    ipc.on('url', (_event, url) => {
+        inputURL.value = url
+        inputURL.select()
+    })
+
     document.addEventListener('keydown', (event) => {
         if (event.key === "Escape") {
             window.close()
         }
         if (event.key === "Enter") {
-            let url = document.getElementById('input-url').value
+            let url = inputURL.value
             ipc.send('navigate', url)
         }
     })
