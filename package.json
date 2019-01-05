@@ -15,7 +15,7 @@
     "postinstall": "$(yarn bin)/electron-builder install-app-deps"
   },
   "devDependencies": {
-    "electron": "^4.0.0",
+    "electron": "4.0.1",
     "electron-builder": "^20.38.4"
   },
   "dependencies": {

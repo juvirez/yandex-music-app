@@ -1,16 +1,23 @@
-const {app, globalShortcut} = require('electron')
+const {app, globalShortcut, systemPreferences} = require('electron')
 
-for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
-    globalShortcut.register(shortcut, () => {
-        if (global.mainWindow !== null) {
-            global.mainWindow.webContents.send('playerCmd', mediaShortcutToCommand(shortcut))
-        }
-    })
-}
 
 app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 })
+
+if (systemPreferences.isTrustedAccessibilityClient(false)) {
+    registerMediaShortcuts()
+}
+
+function registerMediaShortcuts() {
+    for (const shortcut of ['MediaNextTrack', 'MediaPreviousTrack', 'MediaStop', 'MediaPlayPause']) {
+        globalShortcut.register(shortcut, () => {
+            if (global.mainWindow !== null) {
+                global.mainWindow.webContents.send('playerCmd', mediaShortcutToCommand(shortcut))
+            }
+        })
+    }
+}
 
 function mediaShortcutToCommand(shortcut) {
     switch(shortcut) {
