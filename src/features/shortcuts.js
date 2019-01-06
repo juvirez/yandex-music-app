@@ -1,11 +1,9 @@
 const {app, globalShortcut, systemPreferences} = require('electron')
 
-
-app.on('will-quit', () => {
-    globalShortcut.unregisterAll()
-})
-
 if (systemPreferences.isTrustedAccessibilityClient(false)) {
+    app.on('will-quit', () => {
+        globalShortcut.unregisterAll()
+    })
     registerMediaShortcuts()
 }
 
