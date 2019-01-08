@@ -31,7 +31,3 @@ app.on('ready', () => {
 		win.webContents.send('windowFocus')
 	})
 })
-
-if (!settings.has('notifications')) {
-	settings.set('notifications', true)
-}

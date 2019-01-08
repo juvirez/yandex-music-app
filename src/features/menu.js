@@ -54,7 +54,7 @@ const menu = Menu.buildFromTemplate([
 			{
 				label: 'Enable notifications',
 				type: 'checkbox',
-				checked: settings.get('notifications'),
+				checked: settings.get('notifications', true),
 				click (menuItem) {
 					settings.set('notifications', menuItem.checked)
 				}
