@@ -34,6 +34,13 @@ ipcRenderer.on("navigate", (_event, url) => {
   webview.send("navigate", url);
 });
 
+webview.addEventListener("new-window", e => {
+  const protocol = require("url").parse(e.url).protocol;
+  if (protocol === "http:" || protocol === "https:") {
+    shell.openExternal(e.url);
+  }
+});
+
 const analytics = new Analytics.default("UA-127383106-1");
 ipcRenderer.on("windowFocus", () => {
   analytics.send("screenview", { cd: "main" });
