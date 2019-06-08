@@ -1,40 +1,40 @@
-const webview = document.querySelector('webview')
-const ipc = require('electron').ipcRenderer
-const Analytics = require('electron-ga')
+const webview = document.querySelector("webview");
+const { ipcRenderer, shell } = require("electron");
+const Analytics = require("electron-ga");
 
-webview.addEventListener('dom-ready', () => {
-    document.body.classList.remove('loading')
-    webview.insertCSS(`
+webview.addEventListener("dom-ready", () => {
+  document.body.classList.remove("loading");
+  webview.insertCSS(`
         .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
-        display: none !important;
+            display: none !important;
         }
-    `)
-})
+    `);
+});
 
-ipc.on('playerCmd', (_event, playerCmd) => {
-    webview.send('playerCmd', playerCmd)
-})
+ipcRenderer.on("playerCmd", (_event, playerCmd) => {
+  webview.send("playerCmd", playerCmd);
+});
 
-ipc.on('playerSeek', (_event, playerCmd) => {
-    webview.send('playerSeek', playerCmd)
-})
+ipcRenderer.on("playerSeek", (_event, playerCmd) => {
+  webview.send("playerSeek", playerCmd);
+});
 
-ipc.on('history', (_event, action) => {
-    switch(action) {
-        case 'back':
-            webview.goBack()
-            break
-        case 'forward':
-            webview.goForward()
-            break
-    }
-})
+ipcRenderer.on("history", (_event, action) => {
+  switch (action) {
+    case "back":
+      webview.goBack();
+      break;
+    case "forward":
+      webview.goForward();
+      break;
+  }
+});
 
-ipc.on('navigate', (_event, url) => {
-    webview.send('navigate', url)
-})
+ipcRenderer.on("navigate", (_event, url) => {
+  webview.send("navigate", url);
+});
 
-const analytics = new Analytics.default('UA-127383106-1')
-ipc.on("windowFocus", () => {
-    analytics.send('screenview', { cd: 'main' })
-})
+const analytics = new Analytics.default("UA-127383106-1");
+ipcRenderer.on("windowFocus", () => {
+  analytics.send("screenview", { cd: "main" });
+});

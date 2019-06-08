@@ -1,4 +1,4 @@
-require('./menu')
-require('./updater')
-require('./shortcuts')
-require('./mediaService')
+require("./menu");
+require("./updater");
+require("./shortcuts");
+require("./mediaService");
