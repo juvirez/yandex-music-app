@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  initBackNavigationButton();
+
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
     if (settings.get("notifications", true) && externalAPI.isPlaying()) {
@@ -59,3 +61,17 @@ ipc.on("playerSeek", (_event, to) => {
 ipc.on("navigate", (_event, url) => {
   externalAPI.navigate(url);
 });
+
+function initBackNavigationButton() {
+  let headSearch = document.querySelector(".head__search");
+  if (headSearch) {
+    let template = document.createElement("template");
+    template.innerHTML = `<button class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered"
+      style="margin-left: 22px; margin-right: -22px;">
+      <span class="d-button-inner deco-button-stylable">
+      <span class="d-button__inner"><span class="d-icon deco-icon d-icon_arrow-left"></span></span>
+      </span></button>`;
+    let nodeElement = template.content.firstElementChild;
+    headSearch.insertBefore(nodeElement, headSearch.firstChild);
+  }
+}

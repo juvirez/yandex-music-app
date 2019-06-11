@@ -3,12 +3,12 @@ const { ipcRenderer, shell } = require("electron");
 const Analytics = require("electron-ga");
 
 webview.addEventListener("dom-ready", () => {
-  document.body.classList.remove("loading");
   webview.insertCSS(`
         .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
             display: none !important;
         }
     `);
+  document.body.classList.remove("loading");
 });
 
 ipcRenderer.on("playerCmd", (_event, playerCmd) => {
