@@ -34,6 +34,11 @@ ipcRenderer.on("navigate", (_event, url) => {
   webview.send("navigate", url);
 });
 
+webview.addEventListener("did-navigate-in-page", () => {
+  let canGoBack = webview.canGoBack();
+  webview.send("navigated", { canGoBack });
+});
+
 webview.addEventListener("new-window", e => {
   const protocol = require("url").parse(e.url).protocol;
   if (protocol === "http:" || protocol === "https:") {
