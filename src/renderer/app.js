@@ -7,7 +7,13 @@ webview.addEventListener("dom-ready", () => {
         .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
             display: none !important;
         }
+        .
     `);
+  webview.insertCSS(`
+        .passp-social-block {
+          display: none !important;
+        }
+  `);
   document.body.classList.remove("loading");
 });
 
