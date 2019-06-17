@@ -14,8 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let loginButton = document.querySelector(".log-in");
   if (loginButton) {
-    loginButton.addEventListener("click", () => {
+    loginButton.addEventListener("click", e => {
       window.location = "https://passport.yandex.ru/auth?origin=music&retpath=https%3A%2F%2Fmusic.yandex.ru";
+      e.stopPropagation();
     });
   }
 
