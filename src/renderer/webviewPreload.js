@@ -40,8 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   externalAPI.on(externalAPI.EVENT_STATE, () => {
     ipc.send("changeState", {
-      isPlaying: externalAPI.isPlaying()
+      isPlaying: externalAPI.isPlaying(),
+      currentTrack: externalAPI.getCurrentTrack()
     });
+  });
+
+  externalAPI.on(externalAPI.EVENT_CONTROLS, () => {
+    ipc.send("changeControls", {
+      currentTrack: externalAPI.getCurrentTrack(),
+      controls: externalAPI.getControls()
+    });
+  });
+
+  ipc.send("initControls", {
+    currentTrack: externalAPI.getCurrentTrack(),
+    controls: externalAPI.getControls()
   });
 });
 
