@@ -32,6 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
     ipc.send("changeTrack", track);
+    ipc.send("changePlaylist", {
+      currentTrack: track,
+      playlist: externalAPI.getTracksList()
+    });
   });
 
   externalAPI.on(externalAPI.EVENT_PROGRESS, () => {

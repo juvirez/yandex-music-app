@@ -28,6 +28,7 @@ const previous = new MenuItem({
   enabled: false,
   click: () => playerCmd("prev")
 });
+let playlistMenu = createPlayListMenuItem([]);
 
 refreshMenu();
 
@@ -41,6 +42,8 @@ function refreshMenu() {
   menu.append(play);
   menu.append(next);
   menu.append(previous);
+  menu.append(new MenuItem({ type: "separator" }));
+  menu.append(playlistMenu);
   app.dock.setMenu(menu);
 }
 
@@ -65,6 +68,28 @@ ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
   refreshMenu();
 });
 
+ipcMain.on("changePlaylist", (_event, { currentTrack, playlist }) => {
+  handleTrackChange(currentTrack);
+
+  if (currentTrack && playlist.length > 0) {
+    const currentTrackIndex = playlist.findIndex(track => {
+      return track.link === currentTrack.link;
+    });
+
+    if (currentTrackIndex < 0) {
+      playlist = playlist.slice(0, 10);
+    } else {
+      const startIndex = Math.max(currentTrackIndex - 5, 0);
+      const endIndex = currentTrackIndex + 6;
+      playlist = playlist.slice(startIndex, currentTrackIndex).concat(playlist.slice(currentTrackIndex, endIndex));
+    }
+  } else {
+    playlist = [];
+  }
+  playlistMenu = createPlayListMenuItem(playlist, currentTrack);
+  refreshMenu();
+});
+
 function playerCmd(cmd) {
   global.mainWindow.webContents.send("playerCmd", cmd);
 }
@@ -77,7 +102,7 @@ function handleControlsChange(controls) {
 function handleTrackChange(currentTrack) {
   const hasCurrentTrack = !!currentTrack;
   if (hasCurrentTrack) {
-    trackInfo.label = "  " + currentTrack.title + " – " + currentTrack.artists.map(a => a.title).join(", ");
+    trackInfo.label = "  " + getLabelForTrack(currentTrack);
     like.checked = currentTrack.liked;
     like.label = currentTrack.liked ? "Loved" : "Love";
     dislike.checked = currentTrack.disliked;
@@ -92,4 +117,26 @@ function handleTrackChange(currentTrack) {
   if (!hasCurrentTrack) {
     trackInfo.label = "  –";
   }
+}
+
+function getLabelForTrack(track) {
+  return track.title + " – " + track.artists.map(a => a.title).join(", ");
+}
+
+function createPlayListMenuItem(tracks, currentTrack) {
+  const menu = new Menu();
+  tracks.forEach(track => {
+    menu.append(
+      new MenuItem({
+        label: getLabelForTrack(track),
+        enabled: track.link !== currentTrack.link
+      })
+    );
+  });
+  return new MenuItem({
+    label: "PlayList",
+    type: "submenu",
+    enabled: tracks.length > 0,
+    submenu: menu
+  });
 }
