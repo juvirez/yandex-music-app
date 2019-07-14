@@ -80,6 +80,10 @@ ipc.on("navigate", (_event, url) => {
   externalAPI.navigate(url);
 });
 
+ipc.on("playTrack", (_event, index) => {
+  externalAPI.play(index);
+});
+
 function initBackNavigationButton() {
   let headSearch = document.querySelector(".head__search");
   if (headSearch) {

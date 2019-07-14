@@ -72,6 +72,9 @@ ipcMain.on("changePlaylist", (_event, { currentTrack, playlist }) => {
   handleTrackChange(currentTrack);
 
   if (currentTrack && playlist.length > 0) {
+    playlist.forEach((track, index) => {
+      track.index = index;
+    });
     const currentTrackIndex = playlist.findIndex(track => {
       return track.link === currentTrack.link;
     });
@@ -129,7 +132,11 @@ function createPlayListMenuItem(tracks, currentTrack) {
     menu.append(
       new MenuItem({
         label: getLabelForTrack(track),
-        enabled: track.link !== currentTrack.link
+        enabled: track.link !== currentTrack.link,
+        click: () => {
+          global.mainWindow.webContents.send("playTrack", track.index);
+          console.log(track.index);
+        }
       })
     );
   });

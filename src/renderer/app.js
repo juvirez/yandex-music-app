@@ -21,8 +21,12 @@ ipcRenderer.on("playerCmd", (_event, playerCmd) => {
   webview.send("playerCmd", playerCmd);
 });
 
-ipcRenderer.on("playerSeek", (_event, playerCmd) => {
-  webview.send("playerSeek", playerCmd);
+ipcRenderer.on("playerSeek", (_event, to) => {
+  webview.send("playerSeek", to);
+});
+
+ipcRenderer.on("playTrack", (_event, index) => {
+  webview.send("playTrack", index);
 });
 
 ipcRenderer.on("history", (_event, action) => {
