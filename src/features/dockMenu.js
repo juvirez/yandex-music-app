@@ -82,8 +82,8 @@ ipcMain.on("changePlaylist", (_event, { currentTrack, playlist }) => {
     if (currentTrackIndex < 0) {
       playlist = playlist.slice(0, 10);
     } else {
-      const startIndex = Math.max(currentTrackIndex - 5, 0);
-      const endIndex = currentTrackIndex + 6;
+      const startIndex = Math.max(currentTrackIndex - 1, 0);
+      const endIndex = currentTrackIndex + 10;
       playlist = playlist.slice(startIndex, currentTrackIndex).concat(playlist.slice(currentTrackIndex, endIndex));
     }
   } else {
@@ -135,13 +135,12 @@ function createPlayListMenuItem(tracks, currentTrack) {
         enabled: track.link !== currentTrack.link,
         click: () => {
           global.mainWindow.webContents.send("playTrack", track.index);
-          console.log(track.index);
         }
       })
     );
   });
   return new MenuItem({
-    label: "PlayList",
+    label: "Playlist",
     type: "submenu",
     enabled: tracks.length > 0,
     submenu: menu
