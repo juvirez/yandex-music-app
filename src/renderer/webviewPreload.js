@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ipc.send("changeTrack", track);
     ipc.send("changePlaylist", {
       currentTrack: track,
-      playlist: externalAPI.getTracksList()
+      playlist: externalAPI.getTracksList().filter(t => !!t)
     });
   });
 
@@ -88,7 +88,8 @@ function initBackNavigationButton() {
   let headSearch = document.querySelector(".head__search");
   if (headSearch) {
     let template = document.createElement("template");
-    template.innerHTML = `<button class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered"
+    template.innerHTML = `<button
+      class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered"
       style="margin-left: 22px; margin-right: -22px;" disabled>
       <span class="d-button-inner deco-button-stylable">
       <span class="d-button__inner"><span class="d-icon deco-icon d-icon_arrow-left"></span></span>
