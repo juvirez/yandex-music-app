@@ -23,7 +23,7 @@
     "electron-ga": "^1.0.6",
     "electron-media-service": "^0.2.2",
     "electron-settings": "^3.2.0",
-    "github-api": "^3.0.0"
+    "github-api": "^3.2.2"
   },
   "build": {
     "productName": "Yandex Music (Unofficial)",
