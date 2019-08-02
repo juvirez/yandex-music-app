@@ -7,7 +7,7 @@ github
   .listReleases()
   .then(({ data }) => {
     let lastRelease = data.find(release => {
-      return !release.draft;
+      return !release.prerelease;
     });
     if (lastRelease.tag_name !== "v" + app.getVersion()) {
       let downloadUrl = getDownloadUrl(lastRelease);
