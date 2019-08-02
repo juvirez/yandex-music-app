@@ -36,8 +36,8 @@ github
 function getDownloadUrl(release) {
   if (process.platform === "darwin") {
     return release.assets.find(asset => {
-      return asset.name.endsWith(".dmg").browser_download_url;
-    });
+      return asset.name.endsWith(".dmg");
+    }).browser_download_url;
   } else {
     return release.html_url;
   }
