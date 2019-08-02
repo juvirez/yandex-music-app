@@ -1,8 +1,9 @@
 {
   "name": "yandex-music-app",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "juvirez",
   "description": "just webview for yandex music with native features",
+  "homepage": "https://yandex-music.juvs.dev",
   "license": "MIT",
   "repository": {
     "type": "git",
