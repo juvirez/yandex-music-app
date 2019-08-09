@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/juvirez/yandex-music-app.git"
   },
-  "main": "src/main.js",
+  "main": "src/main/index.js",
   "scripts": {
     "start": "electron .",
     "publish": "build -p always",
@@ -34,7 +34,7 @@
         "zip",
         "dmg"
       ],
-      "icon": "src/static/icon.icns"
+      "icon": "static/icon.icns"
     }
   }
 }
