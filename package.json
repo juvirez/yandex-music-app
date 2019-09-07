@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "electron-ga": "^1.0.6",
-    "electron-media-service": "^0.2.2",
+    "electron-media-service": "MarshallOfSound/electron-media-service#4/head",
     "electron-settings": "^3.2.0",
     "github-api": "^3.2.2"
   },
