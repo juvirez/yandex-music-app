@@ -11,7 +11,9 @@
   },
   "main": "src/main/index.js",
   "scripts": {
+    "prestart": "webpack",
     "start": "electron .",
+    "prebuild": "webpack",
     "publish": "build -p always",
     "postinstall": "$(yarn bin)/electron-builder install-app-deps"
   },
