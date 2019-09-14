@@ -17,13 +17,18 @@
   },
   "devDependencies": {
     "electron": "4.0.1",
-    "electron-builder": "^20.38.4"
+    "electron-builder": "^20.38.4",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8"
   },
   "dependencies": {
     "electron-ga": "^1.0.6",
     "electron-media-service": "MarshallOfSound/electron-media-service#4/head",
     "electron-settings": "^3.2.0",
-    "github-api": "^3.2.2"
+    "github-api": "^3.2.2",
+    "vue": "^2.6.10"
   },
   "build": {
     "productName": "Yandex Music (Unofficial)",
