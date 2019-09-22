@@ -1298,9 +1298,9 @@ electron-ga@^1.0.6:
     node-machine-id "^1.1.9"
     qs "^6.5.1"
 
-electron-media-service@MarshallOfSound/electron-media-service#4/head:
+electron-media-service@auryo/electron-media-service#7cb0e1ef:
   version "0.2.3"
-  resolved "https://codeload.github.com/MarshallOfSound/electron-media-service/tar.gz/8e5af9cfcd81b13bdfa92454657191bd11134a28"
+  resolved "https://codeload.github.com/auryo/electron-media-service/tar.gz/7cb0e1efd189a6b1f4d553168967afe81c33e361"
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^1.7.1"
@@ -2752,7 +2752,7 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-nan@^2.12.1:
+nan@^2.12.1, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==

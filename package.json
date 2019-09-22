@@ -27,9 +27,10 @@
   },
   "dependencies": {
     "electron-ga": "^1.0.6",
-    "electron-media-service": "MarshallOfSound/electron-media-service#4/head",
+    "electron-media-service": "auryo/electron-media-service#7cb0e1ef",
     "electron-settings": "^3.2.0",
     "github-api": "^3.2.2",
+    "node-addon-api": "^1.7.1",
     "vue": "^2.6.10"
   },
   "build": {
