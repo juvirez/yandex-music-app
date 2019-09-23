@@ -15,12 +15,15 @@
     "start": "electron .",
     "prebuild": "webpack",
     "publish": "build -p always",
-    "postinstall": "$(yarn bin)/electron-builder install-app-deps"
+    "postinstall": "$(yarn bin)/electron-builder install-app-deps",
+    "watch": "webpack --watch"
   },
   "devDependencies": {
+    "css-loader": "^3.2.0",
     "electron": "4.0.1",
     "electron-builder": "^20.38.4",
     "vue-loader": "^15.7.1",
+    "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"

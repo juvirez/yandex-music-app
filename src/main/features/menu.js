@@ -1,6 +1,7 @@
 const { app, Menu, BrowserWindow } = require("electron");
 const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
+const { showHotkeysDialog } = require("../dialogs/hotkeys");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -65,6 +66,10 @@ const menu = Menu.buildFromTemplate([
         click(menuItem) {
           settings.set("notifications", menuItem.checked);
         }
+      },
+      {
+        label: "Global Hotkeys",
+        click: showHotkeysDialog
       }
     ]
   },
