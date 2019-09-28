@@ -37,7 +37,7 @@ export default {
     keyup(event) {
       const index = this.pressingKeys.indexOf(event.key);
       if (index >= 0) {
-        this.pressingKeys = this.pressingKeys.slice(index, 1);
+        this.pressingKeys.splice(index, 1);
       }
     },
     keydown(event) {
@@ -51,7 +51,19 @@ export default {
   },
   computed: {
     hotkeyString() {
-      return this.hotkey.join(" + ");
+      return this.hotkey
+        .map(hotkey => {
+          const hotkeyUppercase = hotkey.toUpperCase();
+          switch (hotkeyUppercase) {
+            case "META":
+              return "CMD";
+            case "CONTROL":
+              return "CTRL";
+            default:
+              return hotkeyUppercase;
+          }
+        })
+        .join(" + ");
     }
   }
 };
