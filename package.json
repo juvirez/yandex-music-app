@@ -16,7 +16,7 @@
     "prebuild": "webpack",
     "publish": "build -p always",
     "postinstall": "$(yarn bin)/electron-builder install-app-deps",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch --mode=development"
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
