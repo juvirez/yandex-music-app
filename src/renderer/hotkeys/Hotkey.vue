@@ -11,8 +11,9 @@
           class="d-input__field deco-input"
         />
         <button
+          @click="clear"
+          v-if="hotkey.length > 0"
           class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered suggest-button"
-          type="submit"
         >
           <span class="d-button-inner deco-button-stylable">
             <span class="d-button__inner">
@@ -47,6 +48,10 @@ export default {
       if (arrayContainsAll(this.pressingKeys, this.hotkey)) {
         this.hotkey = this.pressingKeys.slice();
       }
+    },
+    clear() {
+      this.pressingKeys = [];
+      this.hotkey = [];
     }
   },
   computed: {
