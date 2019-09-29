@@ -28,6 +28,9 @@
 
 <script>
 export default {
+  props: {
+    onHotkeyChange: Function
+  },
   data() {
     return {
       pressingKeys: [],
@@ -47,11 +50,13 @@ export default {
       }
       if (arrayContainsAll(this.pressingKeys, this.hotkey)) {
         this.hotkey = this.pressingKeys.slice();
+        this.onHotkeyChange();
       }
     },
     clear() {
       this.pressingKeys = [];
       this.hotkey = [];
+      this.onHotkeyChange();
     }
   },
   computed: {
