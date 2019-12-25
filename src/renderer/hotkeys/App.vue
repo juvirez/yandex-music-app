@@ -1,36 +1,16 @@
 <template>
-  <div class="theme-white page-settings">
+  <div class="theme-white icon-theme-white page-settings">
     <div class="page-settings__block">
       <h2 class="page-settings__subtitle typo-h2_bold">Global Hotkeys</h2>
-      <div class="page-settings__line page-settings--social-control deco-border typo">
-        <div class="page-settings__line-label-container">
-          <div class="d-bubble deco-bubble">
-            <span class="d-icon deco-icon d-icon_heart"></span>
-          </div>
-          <div class="page-settings__line-label">Love</div>
-        </div>
-        <div class="page-settings__line-control">
-          <div class="page-settings--social-control__control">
-            <span class="page-settings--social-control__bind social-bind">
-              <Hotkey />
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="page-settings__line page-settings--social-control deco-border typo">
-        <div class="page-settings__line-label-container">
-          <div class="d-bubble deco-bubble">
-            <span class="d-icon deco-icon d-icon_circle-crossed"></span>
-          </div>
-          <div class="page-settings__line-label">Dislike</div>
-        </div>
-        <div class="page-settings__line-control">
-          <div class="page-settings--social-control__control">
-            <span class="page-settings--social-control__bind social-bind">
-              <Hotkey />
-            </span>
-          </div>
-        </div>
+      <div class="hotkeys">
+        <Hotkey title="Love" iconClass="d-icon_heart" />
+        <Hotkey title="Dislike" iconClass="d-icon_circle-crossed" />
+        <Hotkey title="Play" iconClass="d-icon_play" />
+        <Hotkey title="Pause" iconClass="d-icon_pause" />
+        <Hotkey title="Next Track" iconClass="d-icon_track-next" />
+        <Hotkey title="Previous Track" iconClass="d-icon_track-prev" />
+        <Hotkey title="Mute / Unmute" iconClass="d-icon_volume-mute" />
+        <Hotkey title="Play / Pause" iconClass="d-icon_play" />
       </div>
     </div>
     <div class="action-buttons">
@@ -96,6 +76,14 @@ export default {
 }
 .page-settings__block .page-settings__subtitle {
   margin: 10px 0 10px;
+}
+.page-settings__block .page-settings__line {
+  padding: 0 30px;
+  width: 400px;
+}
+.hotkeys {
+  display: flex;
+  flex-wrap: wrap;
 }
 .save {
   background-color: #ffdb4d !important;
