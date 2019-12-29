@@ -51,9 +51,7 @@ const specialCodeToAccelerators = {
   ArrowUp: "Up"
 };
 
-exports.keyboardEventToAccelerator = event => {
-  const code = event.code;
-
+exports.keyCodeToAccelerator = code => {
   const keyMatch = code.match(/^Key(\w)$/);
   if (keyMatch && keyMatch[1]) {
     return keyMatch[1];
@@ -97,4 +95,9 @@ exports.acceleratorToHumanReadable = accelerator => {
   }
 
   return accelerator;
+};
+
+exports.keyCodeToHumanReadable = keyCode => {
+  const accelerator = this.keyCodeToAccelerator(keyCode);
+  return this.acceleratorToHumanReadable(accelerator);
 };
