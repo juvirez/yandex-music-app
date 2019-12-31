@@ -48,7 +48,9 @@ const specialCodeToAccelerators = {
   ArrowLeft: "Left",
   ArrowRight: "Right",
   ArrowDown: "Down",
-  ArrowUp: "Up"
+  ArrowUp: "Up",
+  MetaLeft: "Command",
+  MetaRight: "Command"
 };
 
 exports.keyCodeToAccelerator = code => {
@@ -92,6 +94,8 @@ exports.acceleratorToHumanReadable = accelerator => {
       return "*";
     case "numdiv":
       return "÷";
+    case "Command":
+      return "Cmd";
   }
 
   return accelerator;
