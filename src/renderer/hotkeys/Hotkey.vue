@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { keyCodeToHumanReadable } from "./utils.js";
+import { keyCodeToHumanReadable } from "./utils";
 
 export default {
   props: {

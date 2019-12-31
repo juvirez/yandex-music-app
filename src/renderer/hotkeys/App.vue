@@ -3,14 +3,12 @@
     <div class="page-settings__block">
       <h2 class="page-settings__subtitle typo-h2_bold">Global Hotkeys</h2>
       <div class="hotkeys">
-        <Hotkey title="Love" iconClass="d-icon_heart" />
-        <Hotkey title="Dislike" iconClass="d-icon_circle-crossed" />
-        <Hotkey title="Play" iconClass="d-icon_play" />
-        <Hotkey title="Pause" iconClass="d-icon_pause" />
-        <Hotkey title="Next Track" iconClass="d-icon_track-next" />
-        <Hotkey title="Previous Track" iconClass="d-icon_track-prev" />
-        <Hotkey title="Mute / Unmute" iconClass="d-icon_volume-mute" />
-        <Hotkey title="Play / Pause" iconClass="d-icon_play" />
+        <Hotkey
+          v-for="hotkey in hotkeys"
+          :key="hotkey.id"
+          :title="hotkey.title"
+          :iconClass="hotkey.icon"
+        />
       </div>
     </div>
     <div class="action-buttons">
@@ -53,7 +51,24 @@ export default {
   components: { Hotkey },
   data() {
     return {
-      msg: "Vue"
+      hotkeys: [
+        { id: "love", title: "Love", icon: "d-icon_heart" },
+        { id: "dislike", title: "Dislike", icon: "d-icon_circle-crossed" },
+        { id: "play", title: "Play", icon: "d-icon_play" },
+        { id: "pause", title: "Pause", icon: "d-icon_pause" },
+        { id: "next_track", title: "Next Track", icon: "d-icon_track-next" },
+        {
+          id: "previous_track",
+          title: "Previous Track",
+          icon: "d-icon_track-prev"
+        },
+        {
+          id: "mute_unmute",
+          title: "Mute / Unmute",
+          icon: "d-icon_volume-mute"
+        },
+        { id: "play_pause", title: "Play / Pause", icon: "d-icon_play" }
+      ]
     };
   }
 };
