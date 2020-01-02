@@ -90,7 +90,7 @@ export default {
   margin-top: 0;
 }
 .page-settings__block .page-settings__subtitle {
-  margin: 10px 0 10px;
+  margin: 10px 40px 20px;
 }
 .page-settings__block .page-settings__line {
   padding: 0 30px;

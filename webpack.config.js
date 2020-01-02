@@ -19,5 +19,6 @@ module.exports = {
     ]
   },
   plugins: [new VueLoaderPlugin()],
-  mode: "production"
+  mode: "production",
+  target: "electron-renderer"
 };
