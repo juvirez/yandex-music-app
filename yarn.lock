@@ -1326,9 +1326,9 @@ electron-ga@^1.0.6:
     node-machine-id "^1.1.9"
     qs "^6.5.1"
 
-electron-media-service@auryo/electron-media-service#7cb0e1ef:
+electron-media-service@MarshallOfSound/electron-media-service#4/head:
   version "0.2.3"
-  resolved "https://codeload.github.com/auryo/electron-media-service/tar.gz/7cb0e1efd189a6b1f4d553168967afe81c33e361"
+  resolved "https://codeload.github.com/MarshallOfSound/electron-media-service/tar.gz/8e5af9cfcd81b13bdfa92454657191bd11134a28"
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^1.7.1"
