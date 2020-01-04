@@ -39,18 +39,19 @@
 </template>
 
 <script>
-import { acceleratorToHumanReadable } from "./utils";
+import settings from "electron-settings";
+import { acceleratorToHumanReadable, keyCodeToAccelerator } from "./utils";
 
 export default {
   props: {
+    id: String,
     title: String,
-    iconClass: String,
-    onHotkeyChange: Function
+    iconClass: String
   },
   data() {
     return {
       pressingKeys: [],
-      hotkey: []
+      hotkey: settings.get(`hotkeys.${this.id}`, [])
     };
   },
   methods: {
@@ -68,13 +69,13 @@ export default {
       }
       if (arrayContainsAll(this.pressingKeys, this.hotkey)) {
         this.hotkey = this.pressingKeys.slice();
-        this.onHotkeyChange();
+        this.$emit("hotkeyChanged");
       }
     },
     clear() {
       this.pressingKeys = [];
       this.hotkey = [];
-      this.onHotkeyChange();
+      this.$emit("hotkeyChanged");
     }
   },
   computed: {

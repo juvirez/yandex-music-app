@@ -3,11 +3,23 @@
     <div class="page-settings__block">
       <h2 class="page-settings__subtitle typo-h2_bold">Global Hotkeys</h2>
       <div class="hotkeys">
-        <Hotkey v-for="hotkey in hotkeys" :key="hotkey.id" :title="hotkey.title" :iconClass="hotkey.icon" />
+        <Hotkey
+          ref="hotkeys"
+          v-for="hotkey in hotkeys"
+          :key="hotkey.id"
+          :id="hotkey.id"
+          :title="hotkey.title"
+          :iconClass="hotkey.icon"
+          @hotkeyChanged="hasChangedHotkey = true"
+        />
       </div>
     </div>
     <div class="action-buttons">
-      <a class="d-button deco-button d-button_rounded d-button_size_M page-settings--account__edit-btn" type="button">
+      <a
+        @click="cancel"
+        class="d-button deco-button d-button_rounded d-button_size_M page-settings--account__edit-btn"
+        type="button"
+      >
         <span class="d-button-inner deco-button-stylable">
           <span class="d-button__inner">
             <span class="d-button__label">Cancel</span>
@@ -15,6 +27,8 @@
         </span>
       </a>
       <a
+        @click="save"
+        :class="{ disabled: !hasChangedHotkey }"
         class="d-button deco-button d-button_rounded d-button_size_M page-settings--account__edit-btn"
         type="button"
         style="margin-left:10px"
@@ -32,6 +46,7 @@
 <script>
 import Vue from "vue";
 import Hotkey from "./Hotkey.vue";
+import settings from "electron-settings";
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
@@ -60,8 +75,23 @@ export default {
           icon: "d-icon_volume-mute"
         },
         { id: "play_pause", title: "Play / Pause", icon: "d-icon_play" }
-      ]
+      ],
+      hasChangedHotkey: false
     };
+  },
+  methods: {
+    save() {
+      if (!this.hasChangedHotkey) {
+        return;
+      }
+      this.$refs.hotkeys.forEach(hotkey => {
+        settings.set(`hotkeys.${hotkey.id}`, hotkey.hotkey);
+      });
+      window.close();
+    },
+    cancel() {
+      window.close();
+    }
   }
 };
 </script>
