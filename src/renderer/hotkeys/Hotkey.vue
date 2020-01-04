@@ -2,7 +2,7 @@
   <div class="page-settings__line page-settings--social-control deco-border typo">
     <div class="page-settings__line-label-container">
       <div class="d-bubble deco-bubble">
-        <span class="d-icon deco-icon" v-bind:class="[ iconClass ]"></span>
+        <span class="d-icon deco-icon" v-bind:class="[iconClass]"></span>
       </div>
       <div class="page-settings__line-label">{{ title }}</div>
     </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { keyCodeToHumanReadable } from "./utils";
+import { acceleratorToHumanReadable } from "./utils";
 
 export default {
   props: {
@@ -55,14 +55,16 @@ export default {
   },
   methods: {
     keyup(event) {
-      const index = this.pressingKeys.indexOf(event.code);
+      const key = keyCodeToAccelerator(event.code);
+      const index = this.pressingKeys.indexOf(key);
       if (index >= 0) {
         this.pressingKeys.splice(index, 1);
       }
     },
     keydown(event) {
-      if (!this.pressingKeys.includes(event.code)) {
-        this.pressingKeys.push(event.code);
+      const key = keyCodeToAccelerator(event.code);
+      if (!this.pressingKeys.includes(key)) {
+        this.pressingKeys.push(key);
       }
       if (arrayContainsAll(this.pressingKeys, this.hotkey)) {
         this.hotkey = this.pressingKeys.slice();
@@ -77,7 +79,7 @@ export default {
   },
   computed: {
     hotkeyString() {
-      return this.hotkey.map(keyCodeToHumanReadable).join(" + ");
+      return this.hotkey.map(acceleratorToHumanReadable).join(" + ");
     }
   }
 };

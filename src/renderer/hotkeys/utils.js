@@ -100,8 +100,3 @@ exports.acceleratorToHumanReadable = accelerator => {
 
   return accelerator;
 };
-
-exports.keyCodeToHumanReadable = keyCode => {
-  const accelerator = this.keyCodeToAccelerator(keyCode);
-  return this.acceleratorToHumanReadable(accelerator);
-};

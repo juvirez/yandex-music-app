@@ -3,19 +3,11 @@
     <div class="page-settings__block">
       <h2 class="page-settings__subtitle typo-h2_bold">Global Hotkeys</h2>
       <div class="hotkeys">
-        <Hotkey
-          v-for="hotkey in hotkeys"
-          :key="hotkey.id"
-          :title="hotkey.title"
-          :iconClass="hotkey.icon"
-        />
+        <Hotkey v-for="hotkey in hotkeys" :key="hotkey.id" :title="hotkey.title" :iconClass="hotkey.icon" />
       </div>
     </div>
     <div class="action-buttons">
-      <a
-        class="d-button deco-button d-button_rounded d-button_size_M page-settings--account__edit-btn"
-        type="button"
-      >
+      <a class="d-button deco-button d-button_rounded d-button_size_M page-settings--account__edit-btn" type="button">
         <span class="d-button-inner deco-button-stylable">
           <span class="d-button__inner">
             <span class="d-button__label">Cancel</span>
