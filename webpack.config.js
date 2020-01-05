@@ -4,7 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 module.exports = {
   entry: { hotkeys: "./src/renderer/hotkeys/index.js" },
   output: {
-    path: path.join(__dirname, "build")
+    path: path.join(__dirname, "src/renderer/compiled")
   },
   module: {
     rules: [

@@ -1,5 +1,5 @@
 require("./menu");
 require("./updater");
-require("./shortcuts");
+require("./hotkeys");
 require("./mediaService");
 require("./dockMenu");
