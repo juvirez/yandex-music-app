@@ -5,7 +5,7 @@ const { showHotkeysDialog } = require("../dialogs/hotkeys");
 
 const menu = Menu.buildFromTemplate([
   {
-    label: app.getName(),
+    label: app.name,
     submenu: [
       { role: "about", label: "About Yandex Music (Unofficial)" },
       { type: "separator" },

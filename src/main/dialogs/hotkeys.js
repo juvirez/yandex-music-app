@@ -4,22 +4,20 @@ let win;
 
 exports.showHotkeysDialog = () => {
   if (!systemPreferences.isTrustedAccessibilityClient(false)) {
-    dialog.showMessageBox(
-      global.mainWindow,
-      {
+    dialog
+      .showMessageBox(global.mainWindow, {
         type: "warning",
         message: "Accessibility Access",
         detail: "To use global hotkeys, provide accessibility.",
         defaultId: 0,
         cancelId: 1,
         buttons: ["Grant Accessibility", "Not Now"]
-      },
-      response => {
-        if (response === 0) {
-          setTimeout(() => systemPreferences.isTrustedAccessibilityClient(true), 0);
+      })
+      .then(returnValue => {
+        if (returnValue.response === 0) {
+          systemPreferences.isTrustedAccessibilityClient(true);
         }
-      }
-    );
+      });
     return;
   }
 
@@ -35,7 +33,10 @@ exports.showHotkeysDialog = () => {
     modal: true,
     parent: global.mainWindow,
     resizable: false,
-    show: false
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   win.once("ready-to-show", () => {

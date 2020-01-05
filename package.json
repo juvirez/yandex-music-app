@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
-    "electron": "4.0.1",
+    "electron": "7.1.7",
     "electron-builder": "^21.2.0",
     "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",

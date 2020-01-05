@@ -42,7 +42,10 @@ function createWindow() {
     modal: true,
     parent: global.mainWindow,
     resizable: false,
-    show: false
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
   win.loadFile("src/renderer/openURL.html");
   return win;

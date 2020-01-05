@@ -11,7 +11,15 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
-  win = new BrowserWindow({ width: 1301, height: 768, title: "Yandex Music" });
+  win = new BrowserWindow({
+    width: 1301,
+    height: 768,
+    title: "Yandex Music",
+    webPreferences: {
+      nodeIntegration: true,
+      webviewTag: true
+    }
+  });
   win.loadFile("src/renderer/index.html");
   global.mainWindow = win;
 
