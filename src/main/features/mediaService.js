@@ -20,7 +20,7 @@ ipcMain.on("changeProgress", (_event, progress) => {
 });
 
 ipcMain.on("changeState", (_event, state) => {
-  if (state.currentTrack === null) return;
+  if (!state.currentTrack) return;
   const mediaServiceState = {
     state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED
   };

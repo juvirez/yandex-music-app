@@ -63,12 +63,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 ipc.on("playerCmd", (_event, cmd) => {
-  if (cmd == "play") {
-    externalAPI.togglePause(false);
-  } else if (cmd == "pause") {
-    externalAPI.togglePause(true);
-  } else {
-    externalAPI[cmd]();
+  alert(cmd);
+  switch (cmd) {
+    case "play":
+      externalAPI.togglePause(false);
+      break;
+    case "pause":
+      externalAPI.togglePause(true);
+      break;
+    case "love":
+      const currentTrack = externalAPI.getCurrentTrack();
+      currentTrack && !currentTrack.liked && externalAPI.toggleLike();
+      break;
+    case "dislike":
+      const currentTrack = externalAPI.getCurrentTrack();
+      currentTrack && !currentTrack.disliked && externalAPI.toggleDislike();
+      break;
+    default:
+      externalAPI[cmd]();
   }
 });
 
