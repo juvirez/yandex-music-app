@@ -115,3 +115,5 @@ function initBackNavigationButton() {
     });
   }
 }
+
+window.RTCPeerConnection = undefined;
