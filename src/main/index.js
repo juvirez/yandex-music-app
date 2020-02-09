@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
 let win;
 let willQuitApp = false;
@@ -14,13 +15,12 @@ app.on("ready", () => {
   win = new BrowserWindow({
     width: 1301,
     height: 768,
-    title: "Yandex Music",
+    title: "Яндекс.Музыка",
     webPreferences: {
-      nodeIntegration: true,
-      webviewTag: true
+      preload: path.join(__dirname, "../renderer/preload.js")
     }
   });
-  win.loadFile("src/renderer/index.html");
+  win.loadURL("https://music.yandex.ru");
   global.mainWindow = win;
 
   require("./features");

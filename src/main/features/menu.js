@@ -1,7 +1,8 @@
-const { app, Menu, BrowserWindow } = require("electron");
+const { app, Menu } = require("electron");
 const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
+const navigation = require("./navigation");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -35,16 +36,12 @@ const menu = Menu.buildFromTemplate([
       {
         label: "Back",
         accelerator: "CommandOrControl+[",
-        click() {
-          global.mainWindow.webContents.send("history", "back");
-        }
+        click: navigation.goBack
       },
       {
         label: "Forward",
         accelerator: "CommandOrControl+]",
-        click() {
-          global.mainWindow.webContents.send("history", "forward");
-        }
+        click: navigation.goForward
       },
       {
         type: "separator"

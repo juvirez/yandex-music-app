@@ -1,5 +1,6 @@
 const ipc = require("electron").ipcRenderer;
 const settings = require("electron-settings");
+const Analytics = require("electron-ga");
 
 document.addEventListener("DOMContentLoaded", () => {
   let bodyAttributesObserver = new MutationObserver(mutationsList => {
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 ipc.on("playerCmd", (_event, cmd) => {
-  alert(cmd);
+  let currentTrack;
   switch (cmd) {
     case "play":
       externalAPI.togglePause(false);
@@ -72,11 +73,11 @@ ipc.on("playerCmd", (_event, cmd) => {
       externalAPI.togglePause(true);
       break;
     case "love":
-      const currentTrack = externalAPI.getCurrentTrack();
+      currentTrack = externalAPI.getCurrentTrack();
       currentTrack && !currentTrack.liked && externalAPI.toggleLike();
       break;
     case "dislike":
-      const currentTrack = externalAPI.getCurrentTrack();
+      currentTrack = externalAPI.getCurrentTrack();
       currentTrack && !currentTrack.disliked && externalAPI.toggleDislike();
       break;
     default:
@@ -116,4 +117,15 @@ function initBackNavigationButton() {
   }
 }
 
-window.RTCPeerConnection = undefined;
+function disableWebRTC() {
+  window.RTCPeerConnection = undefined;
+  window.webkitRTCPeerConnection = undefined;
+}
+
+disableWebRTC();
+document.addEventListener("readystatechange", disableWebRTC);
+
+const analytics = new Analytics.default("UA-127383106-1");
+ipc.on("windowFocus", () => {
+  analytics.send("screenview", { cd: "main" });
+});
