@@ -3,6 +3,7 @@ const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
+const { showLoader } = require("../index");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -26,7 +27,12 @@ const menu = Menu.buildFromTemplate([
     label: "View",
     submenu: [
       {
-        role: "reload"
+        label: "Reload",
+        accelerator: "CommandOrControl+R",
+        click() {
+          showLoader();
+          global.mainWindow.reload();
+        }
       }
     ]
   },
