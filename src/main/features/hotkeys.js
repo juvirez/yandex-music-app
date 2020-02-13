@@ -9,6 +9,12 @@ if (systemPreferences.isTrustedAccessibilityClient(false)) {
   registerCustomShortcuts();
 }
 
+exports.reloadShortcuts = () => {
+  globalShortcut.unregisterAll();
+  registerMediaShortcuts();
+  registerCustomShortcuts();
+};
+
 function registerMediaShortcuts() {
   for (const shortcut of ["MediaNextTrack", "MediaPreviousTrack", "MediaStop", "MediaPlayPause"]) {
     registerShortcut(shortcut, mediaShortcutToCommand(shortcut));

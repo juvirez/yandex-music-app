@@ -1,4 +1,5 @@
 const { BrowserWindow, systemPreferences, dialog } = require("electron");
+const { reloadShortcuts } = require("../features/hotkeys");
 
 let win;
 
@@ -51,6 +52,7 @@ exports.showHotkeysDialog = () => {
   });
   win.on("closed", () => {
     win = null;
+    reloadShortcuts();
   });
 
   win.loadFile("src/renderer/hotkeys/index.html");
