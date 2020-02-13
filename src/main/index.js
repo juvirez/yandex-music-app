@@ -37,10 +37,6 @@ app.on("ready", () => {
       win.hide();
     }
   });
-
-  win.on("focus", () => {
-    win.webContents.send("windowFocus");
-  });
 });
 
 exports.showLoader = () => {

@@ -1,6 +1,5 @@
 const ipc = require("electron").ipcRenderer;
 const settings = require("electron-settings");
-const Analytics = require("electron-ga");
 
 document.addEventListener("DOMContentLoaded", () => {
   let bodyAttributesObserver = new MutationObserver(mutationsList => {
@@ -124,8 +123,3 @@ function disableWebRTC() {
 
 disableWebRTC();
 document.addEventListener("readystatechange", disableWebRTC);
-
-const analytics = new Analytics.default("UA-127383106-1");
-ipc.on("windowFocus", () => {
-  analytics.send("screenview", { cd: "main" });
-});
