@@ -1,5 +1,6 @@
-const { app, globalShortcut, systemPreferences } = require("electron");
+const { app, globalShortcut, systemPreferences, Notification } = require("electron");
 const settings = require("electron-settings");
+const { getTrackMetaData } = require("./mediaService");
 
 if (systemPreferences.isTrustedAccessibilityClient(false)) {
   app.on("will-quit", () => {
@@ -44,21 +45,32 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["next_track"], "next");
   registerGlobalHotkeys(hotkeys["previous_track"], "prev");
 
-  registerGlobalHotkeys(hotkeys["love"], "love");
+  registerGlobalHotkeys(hotkeys["love"], "love", () => {
+    const metaData = getTrackMetaData();
+    if (!metaData.title) return;
+
+    new Notification({
+      title: "❤️ " + metaData.title,
+      subtitle: metaData.artist,
+      icon: metaData.albumArt,
+      silent: true
+    }).show();
+  });
   registerGlobalHotkeys(hotkeys["dislike"], "dislike");
 
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
 }
 
-function registerGlobalHotkeys(acceleratorArray, playerCmd) {
+function registerGlobalHotkeys(acceleratorArray, playerCmd, additionalCmd) {
   if (!acceleratorArray) return;
   const accelerator = acceleratorArray.join("+");
   if (!accelerator) return;
-  registerShortcut(accelerator, playerCmd);
+  registerShortcut(accelerator, playerCmd, additionalCmd);
 }
 
-function registerShortcut(accelerator, playerCmd) {
+function registerShortcut(accelerator, playerCmd, additionalCmd) {
   globalShortcut.register(accelerator, () => {
     global.mainWindow && global.mainWindow.webContents.send("playerCmd", playerCmd);
+    additionalCmd && additionalCmd();
   });
 }

@@ -5,6 +5,10 @@ const mediaService = new MediaService();
 mediaService.startService();
 const metaData = {};
 
+exports.getTrackMetaData = () => {
+  return metaData;
+};
+
 ipcMain.on("changeTrack", (_event, track) => {
   Object.assign(metaData, trackToMetaData(track));
   mediaService.setMetaData(metaData);
@@ -61,7 +65,7 @@ function trackToMetaData(track) {
     title: track.title,
     artist: track.artists.map(a => a.title).join(", "),
     album: track.album.title,
-    albumArt: track.album.cover,
+    albumArt: "https://" + track.album.cover.replace("%%", "200x200"),
     state: "playing",
     id: hashCode(track.link),
     currentTime: 0,
