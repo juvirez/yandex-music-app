@@ -52,7 +52,6 @@ function registerCustomShortcuts() {
     new Notification({
       title: "❤️ " + metaData.title,
       subtitle: metaData.artist,
-      icon: metaData.albumArt,
       silent: true
     }).show();
   });
