@@ -1,3 +1,5 @@
+const { shell } = require("electron");
+
 const webContents = global.mainWindow.webContents;
 
 exports.goBack = () => {
@@ -17,9 +19,10 @@ webContents.on("did-navigate-in-page", () => {
   webContents.send("navigated", { canGoBack });
 });
 
-webContents.on("new-window", e => {
-  const protocol = require("url").parse(e.url).protocol;
+webContents.on("new-window", (event, url) => {
+  event.preventDefault();
+  const protocol = require("url").parse(url).protocol;
   if (protocol === "http:" || protocol === "https:") {
-    shell.openExternal(e.url);
+    shell.openExternal(url);
   }
 });
