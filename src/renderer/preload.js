@@ -115,11 +115,3 @@ function initBackNavigationButton() {
     });
   }
 }
-
-function disableWebRTC() {
-  window.RTCPeerConnection = undefined;
-  window.webkitRTCPeerConnection = undefined;
-}
-
-disableWebRTC();
-document.addEventListener("readystatechange", disableWebRTC);

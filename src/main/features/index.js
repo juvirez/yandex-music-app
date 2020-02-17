@@ -6,3 +6,4 @@ require("./dockMenu");
 require("./cssInjector");
 require("./navigation");
 require("./ga");
+require("./webrtcBlocker");
