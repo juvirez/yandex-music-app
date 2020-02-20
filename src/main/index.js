@@ -42,7 +42,9 @@ app.on("ready", () => {
 exports.showLoader = () => {
   let view = new BrowserView();
   win.setBrowserView(view);
-  view.setBounds({ x: 0, y: 0, width: defaultWindowWidth, height: defaultWindowHeight });
+  let [width, height] = win.getSize();
+  view.setBounds({ x: 0, y: 0, width: width, height: height });
+  view.setAutoResize({ width: true, height: true, horizontal: true, vertical: true });
   view.webContents.loadFile("src/renderer/loader.html");
 
   win.webContents.once("dom-ready", () => {
