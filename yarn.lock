@@ -1292,9 +1292,9 @@ electron-google-analytics@^0.1.0:
     request "^2.85.0"
     uuid "^3.2.1"
 
-electron-media-service@MarshallOfSound/electron-media-service#4/head:
+electron-media-service@auryo/electron-media-service#8e5af9c:
   version "0.2.3"
-  resolved "https://codeload.github.com/MarshallOfSound/electron-media-service/tar.gz/8e5af9cfcd81b13bdfa92454657191bd11134a28"
+  resolved "https://codeload.github.com/auryo/electron-media-service/tar.gz/8e5af9cfcd81b13bdfa92454657191bd11134a28"
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^1.7.1"

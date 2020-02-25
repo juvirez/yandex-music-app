@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "electron-google-analytics": "^0.1.0",
-    "electron-media-service": "MarshallOfSound/electron-media-service#4/head",
+    "electron-media-service": "auryo/electron-media-service#8e5af9c",
     "electron-settings": "^3.2.0",
     "github-api": "^3.2.2",
     "node-addon-api": "^1.7.1",
