@@ -25,6 +25,7 @@ ipcMain.on("changeProgress", (_event, progress) => {
 
 ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
+  if (!MediaService.STATES) return; // for macos < 10.13
   const mediaServiceState = {
     state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED
   };
