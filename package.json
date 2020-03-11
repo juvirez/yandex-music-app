@@ -46,7 +46,8 @@
         "zip",
         "dmg"
       ],
-      "icon": "static/icon.icns"
+      "icon": "static/icon.icns",
+      "darkModeSupport": true
     }
   }
 }
