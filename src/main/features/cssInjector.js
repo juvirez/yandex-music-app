@@ -3,7 +3,7 @@ let webContents = global.mainWindow.webContents;
 webContents.on("dom-ready", () => {
   // ads
   webContents.insertCSS(`
-    .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau {
+    .d-overhead, .ads-block, .ads-block__no-ads, .bar-below, .tableau, .branding.branding_brick {
         display: none !important;
     }
   `);
