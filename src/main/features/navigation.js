@@ -21,8 +21,19 @@ webContents.on("did-navigate-in-page", () => {
 
 webContents.on("new-window", (event, url) => {
   event.preventDefault();
-  const protocol = require("url").parse(url).protocol;
-  if (protocol === "http:" || protocol === "https:") {
+
+  if (url.includes("passport.yandex.ru/auth?")) {
+    global.mainWindow.loadURL(url);
+    return;
+  }
+
+  const parsedUrl = require("url").parse(url);
+  if (parsedUrl.hostname === "music.yandex.ru") {
+    global.mainWindow.loadURL(url);
+    return;
+  }
+
+  if (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:") {
     shell.openExternal(url);
   }
 });

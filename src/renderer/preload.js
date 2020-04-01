@@ -12,14 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   bodyAttributesObserver.observe(document.body, { attributes: true });
 
-  let loginButton = document.querySelector(".log-in");
-  if (loginButton) {
-    loginButton.addEventListener("click", e => {
-      window.location = "https://passport.yandex.ru/auth?origin=music&retpath=https%3A%2F%2Fmusic.yandex.ru";
-      e.stopPropagation();
-    });
-  }
-
   initBackNavigationButton();
 
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
@@ -115,3 +107,5 @@ function initBackNavigationButton() {
     });
   }
 }
+
+window.close = undefined;
