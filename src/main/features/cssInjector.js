@@ -10,7 +10,7 @@ webContents.on("dom-ready", () => {
 
   // social login
   webContents.insertCSS(`
-    .passp-social-block {
+    .passp-social-block, .passp-social-button {
       display: none !important;
     }
   `);
