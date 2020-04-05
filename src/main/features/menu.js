@@ -1,4 +1,4 @@
-const { app, Menu } = require("electron");
+const { app, Menu, shell } = require("electron");
 const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
@@ -10,6 +10,18 @@ const menu = Menu.buildFromTemplate([
     label: app.name,
     submenu: [
       { role: "about", label: "About Yandex Music (Unofficial)" },
+      {
+        label: "Website",
+        click() {
+          shell.openExternal("https://yandex-music.juvs.dev");
+        },
+      },
+      {
+        label: "GitHub",
+        click() {
+          shell.openExternal("https://github.com/juvirez/yandex-music-app");
+        },
+      },
       { type: "separator" },
       { role: "services", submenu: [] },
       { type: "separator" },
@@ -17,11 +29,11 @@ const menu = Menu.buildFromTemplate([
       { role: "hideothers" },
       { role: "unhide" },
       { type: "separator" },
-      { role: "quit", label: "Quit Yandex Music (Unofficial)" }
-    ]
+      { role: "quit", label: "Quit Yandex Music (Unofficial)" },
+    ],
   },
   {
-    role: "editMenu"
+    role: "editMenu",
   },
   {
     label: "View",
@@ -32,9 +44,9 @@ const menu = Menu.buildFromTemplate([
         click() {
           showLoader();
           global.mainWindow.reload();
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
     label: "Navigate",
@@ -42,22 +54,22 @@ const menu = Menu.buildFromTemplate([
       {
         label: "Back",
         accelerator: "CommandOrControl+[",
-        click: navigation.goBack
+        click: navigation.goBack,
       },
       {
         label: "Forward",
         accelerator: "CommandOrControl+]",
-        click: navigation.goForward
+        click: navigation.goForward,
       },
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Open URL",
         accelerator: "CommandOrControl+O",
-        click: showOpenURLDialog
-      }
-    ]
+        click: showOpenURLDialog,
+      },
+    ],
   },
   {
     label: "Settings",
@@ -68,16 +80,16 @@ const menu = Menu.buildFromTemplate([
         checked: settings.get("notifications", true),
         click(menuItem) {
           settings.set("notifications", menuItem.checked);
-        }
+        },
       },
       {
         label: "Global Hotkeys",
-        click: showHotkeysDialog
-      }
-    ]
+        click: showHotkeysDialog,
+      },
+    ],
   },
   {
-    role: "windowMenu"
-  }
+    role: "windowMenu",
+  },
 ]);
 Menu.setApplicationMenu(menu);
