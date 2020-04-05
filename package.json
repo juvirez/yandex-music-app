@@ -15,7 +15,7 @@
     "start": "electron .",
     "prebuild": "webpack",
     "build": "electron-builder",
-    "publish": "build -p always",
+    "publish": "electron-builder -p always",
     "postinstall": "$(yarn bin)/electron-builder install-app-deps",
     "watch": "webpack --watch --mode=development"
   },
