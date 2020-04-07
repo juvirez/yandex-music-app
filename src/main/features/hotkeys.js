@@ -6,13 +6,11 @@ if (systemPreferences.isTrustedAccessibilityClient(false)) {
   app.on("will-quit", () => {
     globalShortcut.unregisterAll();
   });
-  registerMediaShortcuts();
   registerCustomShortcuts();
 }
 
 exports.reloadShortcuts = () => {
   globalShortcut.unregisterAll();
-  registerMediaShortcuts();
   registerCustomShortcuts();
 };
 
@@ -52,7 +50,7 @@ function registerCustomShortcuts() {
     new Notification({
       title: "❤️ " + metaData.title,
       subtitle: metaData.artist,
-      silent: true
+      silent: true,
     }).show();
   });
   registerGlobalHotkeys(hotkeys["dislike"], "dislike");
