@@ -7,4 +7,4 @@
 - **Глобальные горячие клавиши** - лайкай треки находясь в другом приложении
 - **Dock меню** – просматривай треклист и управляй плеером не заходя в приложение
 
-[Скачать последнюю версию](https://github.com/juvirez/yandex-music-app/releases/latest)
+[Скачать последнюю версию](https://github.com/juvirez/yandex-music-app/releases/download/v1.5.0/yandex-music-app-1.5.0.dmg)
