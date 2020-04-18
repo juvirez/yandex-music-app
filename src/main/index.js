@@ -7,6 +7,8 @@ const defaultWindowHeight = 768;
 let win;
 let willQuitApp = false;
 
+app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
+
 app.on("before-quit", () => (willQuitApp = true));
 app.on("activate", () => {
   if (win) {
@@ -20,8 +22,8 @@ app.on("ready", () => {
     height: defaultWindowHeight,
     title: "Яндекс.Музыка",
     webPreferences: {
-      preload: path.join(__dirname, "../renderer/preload.js")
-    }
+      preload: path.join(__dirname, "../renderer/preload.js"),
+    },
   });
   exports.showLoader();
   win.loadURL("https://music.yandex.ru");
@@ -29,7 +31,7 @@ app.on("ready", () => {
 
   require("./features");
 
-  win.on("close", e => {
+  win.on("close", (e) => {
     if (willQuitApp) {
       win = null;
     } else {
