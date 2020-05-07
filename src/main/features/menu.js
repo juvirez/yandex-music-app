@@ -75,6 +75,14 @@ const menu = Menu.buildFromTemplate([
     label: "Settings",
     submenu: [
       {
+        label: "Show Icon in Menu Bar",
+        type: "checkbox",
+        checked: settings.get("tray", true),
+        click(menuItem) {
+          settings.set("tray", menuItem.checked);
+        },
+      },
+      {
         label: "Enable notifications",
         type: "checkbox",
         checked: settings.get("notifications", true),

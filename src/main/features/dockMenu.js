@@ -1,5 +1,7 @@
-const { app, Menu, MenuItem, ipcMain } = require("electron");
+const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
+const settings = require("electron-settings");
 
+let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
 const like = new MenuItem({
   label: "Love",
@@ -44,14 +46,28 @@ function refreshMenu() {
   menu.append(previous);
   menu.append(new MenuItem({ type: "separator" }));
   menu.append(playlistMenu);
+
+  // Update Dock
   app.dock.setMenu(menu);
+
+  // Update Tray
+  if (tray) {
+    menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({role: 'quit'}));
+    tray.setContextMenu(menu);
+  }
+
 }
 
 ipcMain.on("initControls", (_event, { currentTrack, controls }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 
+  settings.watch('tray', initTray);
+  initTray(settings.get('tray'), true);
+
   refreshMenu();
+
 });
 
 ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
@@ -145,4 +161,19 @@ function createPlayListMenuItem(tracks, currentTrack) {
     enabled: tracks.length > 0,
     submenu: menu
   });
+}
+
+
+function initTray(trayEnabled, skipRefresh) {
+    if (!tray) {
+        let logo = 'static/tray.png';
+        if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
+        tray = new Tray(logo);
+
+      if (!skipRefresh) refreshMenu();
+
+  } else if (tray) {
+      tray.destroy();
+      tray = null;
+  }
 }
