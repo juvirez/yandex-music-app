@@ -165,10 +165,13 @@ function createPlayListMenuItem(tracks, currentTrack) {
 
 
 function initTray(trayEnabled, skipRefresh) {
-    if (!tray) {
-        let logo = 'static/tray.png';
-        if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
-        tray = new Tray(logo);
+    if (trayEnabled) {
+
+      if (!tray) {
+          let logo = 'static/tray.png';
+          if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
+          tray = new Tray(logo);
+      }
 
       if (!skipRefresh) refreshMenu();
 
