@@ -180,7 +180,7 @@ function initTray(trayEnabled, skipRefresh) {
     if (trayEnabled) {
 
       if (!tray) {
-          let logo = 'static/tray.png';
+          let logo = 'static/trayTemplate.png';
           if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
           tray = new Tray(logo);
       }
