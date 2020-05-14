@@ -53,8 +53,19 @@ function refreshMenu() {
   // Update Tray
   if (tray) {
     menu.append(new MenuItem({type: 'separator'}));
-    menu.append(new MenuItem({role: 'quit'}));
+    menu.append(new MenuItem({
+      type: 'checkbox', label: 'Show song in Menu Bar',
+      checked: settings.get('tray-song'), click(menuItem) {
+        tray.showTitle = menuItem.checked;
+        settings.set('tray-song', tray.showTitle);
+        refreshMenu();
+      }
+    }));
+    menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({role: 'quit', label: 'Quit'}));
     tray.setContextMenu(menu);
+
+    tray.setTitle(tray.showTitle && play.playing && trackInfo.label || '')
   }
 
 }
@@ -79,6 +90,7 @@ ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
 
 ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
   play.label = isPlaying ? "Pause" : "Play";
+  play.playing = isPlaying;
   handleTrackChange(currentTrack);
 
   refreshMenu();
@@ -172,6 +184,8 @@ function initTray(trayEnabled, skipRefresh) {
           if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
           tray = new Tray(logo);
       }
+
+      tray.showTitle = settings.get('tray-song');
 
       if (!skipRefresh) refreshMenu();
 
