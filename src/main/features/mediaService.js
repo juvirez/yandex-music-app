@@ -15,6 +15,9 @@ ipcMain.on("changeTrack", (_event, track) => {
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
+  if (typeof(progress.position) != "number" || typeof(progress.duration) != "number")
+     return;
+     
   const mediaServiceProgress = {
     currentTime: progress.position * 1000,
     duration: progress.duration * 1000

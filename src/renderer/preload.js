@@ -13,13 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
   bodyAttributesObserver.observe(document.body, { attributes: true });
 
   initBackNavigationButton();
-
+  
+  let lastNotification;
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
     if (settings.get("notifications", true) && externalAPI.isPlaying()) {
-      new Notification(track.title, {
+      if (lastNotification)
+        lastNotification.close();
+
+      let coverUrl = track.cover && typeof(track.cover) == 'string' ? "https://" + track.cover.replace("%%", "100x100") : null;
+      lastNotification = new Notification(track.title, {
         body: track.artists.map(a => a.title).join(", "),
-        icon: "https://" + track.cover.replace("%%", "100x100"),
+        icon: coverUrl,
         silent: true
       });
     }
