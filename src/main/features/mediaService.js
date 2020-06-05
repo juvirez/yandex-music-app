@@ -15,9 +15,11 @@ ipcMain.on("changeTrack", (_event, track) => {
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
+  if (typeof progress.position != "number" || typeof progress.duration != "number") return;
+
   const mediaServiceProgress = {
     currentTime: progress.position * 1000,
-    duration: progress.duration * 1000
+    duration: progress.duration * 1000,
   };
   Object.assign(metaData, mediaServiceProgress);
   mediaService.setMetaData(metaData);
@@ -27,7 +29,7 @@ ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
   if (!MediaService.STATES) return; // for macos < 10.13
   const mediaServiceState = {
-    state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED
+    state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED,
   };
   Object.assign(metaData, mediaServiceState);
   mediaService.setMetaData(metaData);
@@ -53,7 +55,7 @@ mediaService.on("previous", () => {
   playerCmd("prev");
 });
 
-mediaService.on("seek", to => {
+mediaService.on("seek", (to) => {
   global.mainWindow.webContents.send("playerSeek", to / 1000);
 });
 
@@ -64,13 +66,13 @@ function playerCmd(cmd) {
 function trackToMetaData(track) {
   return {
     title: track.title,
-    artist: track.artists.map(a => a.title).join(", "),
+    artist: track.artists.map((a) => a.title).join(", "),
     album: track.album.title,
     albumArt: "https://" + track.album.cover.replace("%%", "200x200"),
     state: "playing",
     id: hashCode(track.link),
     currentTime: 0,
-    duration: track.duration
+    duration: track.duration,
   };
 }
 

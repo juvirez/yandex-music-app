@@ -2,7 +2,7 @@ const ipc = require("electron").ipcRenderer;
 const settings = require("electron-settings");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let bodyAttributesObserver = new MutationObserver(mutationsList => {
+  let bodyAttributesObserver = new MutationObserver((mutationsList) => {
     for (var mutation of mutationsList) {
       let bodyClasses = document.body.classList;
       if (mutation.attributeName == "class" && bodyClasses.contains("body_bar-tall")) {
@@ -14,19 +14,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBackNavigationButton();
 
+  let lastNotification;
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
     if (settings.get("notifications", true) && externalAPI.isPlaying()) {
-      new Notification(track.title, {
-        body: track.artists.map(a => a.title).join(", "),
-        icon: "https://" + track.cover.replace("%%", "100x100"),
-        silent: true
+      if (lastNotification) lastNotification.close();
+
+      let coverUrl =
+        track.cover && typeof track.cover == "string" ? "https://" + track.cover.replace("%%", "100x100") : null;
+      lastNotification = new Notification(track.title, {
+        body: track.artists.map((a) => a.title).join(", "),
+        icon: coverUrl,
+        silent: true,
       });
     }
     ipc.send("changeTrack", track);
     ipc.send("changePlaylist", {
       currentTrack: track,
-      playlist: externalAPI.getTracksList().filter(t => !!t)
+      playlist: externalAPI.getTracksList().filter((t) => !!t),
     });
   });
 
@@ -37,20 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
   externalAPI.on(externalAPI.EVENT_STATE, () => {
     ipc.send("changeState", {
       isPlaying: externalAPI.isPlaying(),
-      currentTrack: externalAPI.getCurrentTrack()
+      currentTrack: externalAPI.getCurrentTrack(),
     });
   });
 
   externalAPI.on(externalAPI.EVENT_CONTROLS, () => {
     ipc.send("changeControls", {
       currentTrack: externalAPI.getCurrentTrack(),
-      controls: externalAPI.getControls()
+      controls: externalAPI.getControls(),
     });
   });
 
   ipc.send("initControls", {
     currentTrack: externalAPI.getCurrentTrack(),
-    controls: externalAPI.getControls()
+    controls: externalAPI.getControls(),
   });
 });
 
