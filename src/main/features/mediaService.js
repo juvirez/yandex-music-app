@@ -10,8 +10,7 @@ exports.getTrackMetaData = () => {
 };
 
 ipcMain.on("changeTrack", (_event, track) => {
-  Object.assign(metaData, trackToMetaData(track));
-  mediaService.setMetaData(metaData);
+  updateMetadata(trackToMetaData(track));
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
@@ -21,18 +20,17 @@ ipcMain.on("changeProgress", (_event, progress) => {
     currentTime: progress.position * 1000,
     duration: progress.duration * 1000,
   };
-  Object.assign(metaData, mediaServiceProgress);
-  mediaService.setMetaData(metaData);
+  updateMetadata(mediaServiceProgress);
 });
 
 ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
   if (!MediaService.STATES) return; // for macos < 10.13
+
   const mediaServiceState = {
     state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED,
   };
-  Object.assign(metaData, mediaServiceState);
-  mediaService.setMetaData(metaData);
+  updateMetadata(mediaServiceState);
 });
 
 mediaService.on("play", () => {
@@ -79,4 +77,11 @@ function trackToMetaData(track) {
 function hashCode(s) {
   for (var i = 0, h = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
   return h;
+}
+
+function updateMetadata(newMetadata) {
+  Object.assign(metaData, newMetadata);
+  if (typeof metaData.id != "number") return;
+
+  mediaService.setMetaData(metaData);
 }
