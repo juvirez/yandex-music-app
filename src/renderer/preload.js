@@ -14,20 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBackNavigationButton();
   
-  let lastNotification;
+  
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
-    if (settings.get("notifications", true) && externalAPI.isPlaying()) {
-      if (lastNotification)
-        lastNotification.close();
-
-      let coverUrl = track.cover && typeof(track.cover) == 'string' ? "https://" + track.cover.replace("%%", "100x100") : null;
-      lastNotification = new Notification(track.title, {
-        body: track.artists.map(a => a.title).join(", "),
-        icon: coverUrl,
-        silent: true
-      });
-    }
+    showNotification(track);
+    
     ipc.send("changeTrack", track);
     ipc.send("changePlaylist", {
       currentTrack: track,
@@ -40,9 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   externalAPI.on(externalAPI.EVENT_STATE, () => {
+    const track = externalAPI.getCurrentTrack();
+    if (!notificationWasShown())
+      showNotification(track);
+
     ipc.send("changeState", {
       isPlaying: externalAPI.isPlaying(),
-      currentTrack: externalAPI.getCurrentTrack()
+      currentTrack: track
     });
   });
 
@@ -92,6 +87,26 @@ ipc.on("navigate", (_event, url) => {
 ipc.on("playTrack", (_event, index) => {
   externalAPI.play(index);
 });
+
+let lastNotification;
+
+function notificationWasShown() {
+  return !!lastNotification;
+}
+
+function showNotification(track) {
+  if (settings.get("notifications", true) && externalAPI.isPlaying()) {
+    if (lastNotification)
+      lastNotification.close();
+
+    let coverUrl = track.cover && typeof(track.cover) == 'string' ? "https://" + track.cover.replace("%%", "100x100") : null;
+    lastNotification = new Notification(track.title, {
+      body: track.artists.map(a => a.title).join(", "),
+      icon: coverUrl,
+      silent: true
+    });
+  }
+}
 
 function initBackNavigationButton() {
   let headSearch = document.querySelector(".head__search");
