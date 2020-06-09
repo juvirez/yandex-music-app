@@ -177,20 +177,20 @@ function createPlayListMenuItem(tracks, currentTrack) {
 
 
 function initTray(trayEnabled, skipRefresh) {
-    if (trayEnabled) {
+  if (trayEnabled) {
 
-      if (!tray) {
-          let logo = 'static/trayTemplate.png';
-          if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
-          tray = new Tray(logo);
-      }
+    if (!tray) {
+      let logo = 'static/trayTemplate.png';
+      if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
+      tray = new Tray(logo);
+    }
 
-      tray.showTitle = settings.get('tray-song');
+    tray.showTitle = settings.get('tray-song');
 
-      if (!skipRefresh) refreshMenu();
+    if (!skipRefresh) refreshMenu();
 
   } else if (tray) {
-      tray.destroy();
-      tray = null;
+    tray.destroy();
+    tray = null;
   }
 }
