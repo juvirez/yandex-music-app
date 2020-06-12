@@ -10,7 +10,8 @@ exports.getTrackMetaData = () => {
 };
 
 ipcMain.on("changeTrack", (_event, track) => {
-  updateMetadata(trackToMetaData(track));
+  let metaData = trackToMetaData(track);
+  updateMetadata(metaData);
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
@@ -62,11 +63,16 @@ function playerCmd(cmd) {
 }
 
 function trackToMetaData(track) {
+  let coverUrl = undefined;
+  if (track.album.cover) {
+    coverUrl = "https://" + track.album.cover.replace("%%", "200x200");
+  }
+
   return {
     title: track.title,
     artist: track.artists.map((a) => a.title).join(", "),
     album: track.album.title,
-    albumArt: "https://" + track.album.cover.replace("%%", "200x200"),
+    albumArt: coverUrl,
     state: "playing",
     id: hashCode(track.link),
     currentTime: 0,
