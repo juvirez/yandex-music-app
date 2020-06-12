@@ -14,10 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBackNavigationButton();
 
+  let lastNotification = null;
+  
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
     if (settings.get("notifications", true) && externalAPI.isPlaying()) {
-      new Notification(track.title, {
+      if(lastNotification) lastNotification.close();
+      lastNotification = new Notification(track.title, {
         body: track.artists.map(a => a.title).join(", "),
         icon: "https://" + track.cover.replace("%%", "100x100"),
         silent: true
