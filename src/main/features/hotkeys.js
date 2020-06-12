@@ -29,6 +29,8 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", createLoveNotification);
 
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
+
+  registerGlobalHotkeys(hotkeys["track_info"], undefined, createTrackNotification);
 }
 
 function registerGlobalHotkeys(acceleratorArray, playerCmd, additionalCmd) {
@@ -40,15 +42,13 @@ function registerGlobalHotkeys(acceleratorArray, playerCmd, additionalCmd) {
 
 function registerShortcut(accelerator, playerCmd, additionalCmd) {
   globalShortcut.register(accelerator, () => {
-    global.mainWindow && global.mainWindow.webContents.send("playerCmd", playerCmd);
+    playerCmd && global.mainWindow && global.mainWindow.webContents.send("playerCmd", playerCmd);
     additionalCmd && additionalCmd();
   });
 }
 
 function createLoveNotification() {
   const metaData = getTrackMetaData();
-  if (!metaData.title) return;
-
   let emoji;
   if (metaData.liked) {
     emoji = "♡";
@@ -56,8 +56,20 @@ function createLoveNotification() {
     emoji = "❤️";
   }
 
+  createTrackNotification(emoji + " ");
+}
+
+function createTrackNotification(titlePrefix) {
+  const metaData = getTrackMetaData();
+  if (!metaData.title) return;
+
+  let title = metaData.title;
+  if (titlePrefix) {
+    title = titlePrefix + title;
+  }
+
   new Notification({
-    title: emoji + " " + metaData.title,
+    title: title,
     subtitle: metaData.artist,
     silent: true,
   }).show();
