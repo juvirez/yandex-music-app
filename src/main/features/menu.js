@@ -83,7 +83,7 @@ const menu = Menu.buildFromTemplate([
         },
       },
       {
-        label: "Show Icon in Menu Bar",
+        label: "Show Menu Bar Icon",
         type: "checkbox",
         checked: settings.get("tray"),
         click(menuItem) {
