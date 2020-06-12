@@ -34,6 +34,14 @@ ipcMain.on("changeState", (_event, state) => {
   updateMetadata(mediaServiceState);
 });
 
+ipcMain.on("changeControls", (_event, controls) => {
+  if (!controls.currentTrack) return;
+  let mediaServiceLiked = {
+    liked: controls.currentTrack.liked,
+  };
+  updateMetadata(mediaServiceLiked);
+});
+
 mediaService.on("play", () => {
   playerCmd("play");
 });
@@ -77,6 +85,7 @@ function trackToMetaData(track) {
     id: hashCode(track.link),
     currentTime: 0,
     duration: track.duration,
+    liked: track.liked,
   };
 }
 

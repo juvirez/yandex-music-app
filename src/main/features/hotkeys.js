@@ -24,17 +24,9 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["next_track"], "next");
   registerGlobalHotkeys(hotkeys["previous_track"], "prev");
 
-  registerGlobalHotkeys(hotkeys["love"], "love", () => {
-    const metaData = getTrackMetaData();
-    if (!metaData.title) return;
-
-    new Notification({
-      title: "❤️ " + metaData.title,
-      subtitle: metaData.artist,
-      silent: true,
-    }).show();
-  });
+  registerGlobalHotkeys(hotkeys["love"], "love", createLoveNotification);
   registerGlobalHotkeys(hotkeys["dislike"], "dislike");
+  registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", createLoveNotification);
 
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
 }
@@ -51,4 +43,22 @@ function registerShortcut(accelerator, playerCmd, additionalCmd) {
     global.mainWindow && global.mainWindow.webContents.send("playerCmd", playerCmd);
     additionalCmd && additionalCmd();
   });
+}
+
+function createLoveNotification() {
+  const metaData = getTrackMetaData();
+  if (!metaData.title) return;
+
+  let emoji;
+  if (metaData.liked) {
+    emoji = "♡";
+  } else {
+    emoji = "❤️";
+  }
+
+  new Notification({
+    title: emoji + " " + metaData.title,
+    subtitle: metaData.artist,
+    silent: true,
+  }).show();
 }

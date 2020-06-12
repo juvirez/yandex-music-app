@@ -12,9 +12,9 @@ exports.showHotkeysDialog = () => {
         detail: "To use global hotkeys, provide accessibility.",
         defaultId: 0,
         cancelId: 1,
-        buttons: ["Grant Accessibility", "Not Now"]
+        buttons: ["Grant Accessibility", "Not Now"],
       })
-      .then(returnValue => {
+      .then((returnValue) => {
         if (returnValue.response === 0) {
           systemPreferences.isTrustedAccessibilityClient(true);
         }
@@ -30,14 +30,14 @@ exports.showHotkeysDialog = () => {
 
   win = new BrowserWindow({
     width: 960,
-    height: 370,
+    height: 421,
     modal: true,
     parent: global.mainWindow,
     resizable: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   win.once("ready-to-show", () => {
