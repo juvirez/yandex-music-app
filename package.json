@@ -48,6 +48,9 @@
         "dmg"
       ],
       "icon": "static/icon.icns"
-    }
+    },
+    "extraResources": [
+      "static/tray*.png"
+    ]
   }
 }

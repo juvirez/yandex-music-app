@@ -1,5 +1,7 @@
-const { app, Menu, MenuItem, ipcMain } = require("electron");
+const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
+const settings = require("electron-settings");
 
+let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
 const like = new MenuItem({
   label: "Love",
@@ -44,14 +46,39 @@ function refreshMenu() {
   menu.append(previous);
   menu.append(new MenuItem({ type: "separator" }));
   menu.append(playlistMenu);
+
+  // Update Dock
   app.dock.setMenu(menu);
+
+  // Update Tray
+  if (tray) {
+    menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({
+      type: 'checkbox', label: 'Show song in Menu Bar',
+      checked: settings.get('tray-song'), click(menuItem) {
+        tray.showTitle = menuItem.checked;
+        settings.set('tray-song', tray.showTitle);
+        refreshMenu();
+      }
+    }));
+    menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({role: 'quit', label: 'Quit'}));
+    tray.setContextMenu(menu);
+
+    tray.setTitle(tray.showTitle && play.playing && trackInfo.label || '')
+  }
+
 }
 
 ipcMain.on("initControls", (_event, { currentTrack, controls }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 
+  settings.watch('tray', initTray);
+  initTray(settings.get('tray'), true);
+
   refreshMenu();
+
 });
 
 ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
@@ -63,6 +90,7 @@ ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
 
 ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
   play.label = isPlaying ? "Pause" : "Play";
+  play.playing = isPlaying;
   handleTrackChange(currentTrack);
 
   refreshMenu();
@@ -145,4 +173,24 @@ function createPlayListMenuItem(tracks, currentTrack) {
     enabled: tracks.length > 0,
     submenu: menu
   });
+}
+
+
+function initTray(trayEnabled, skipRefresh) {
+  if (trayEnabled) {
+
+    if (!tray) {
+      let logo = 'static/trayTemplate.png';
+      if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
+      tray = new Tray(logo);
+    }
+
+    tray.showTitle = settings.get('tray-song');
+
+    if (!skipRefresh) refreshMenu();
+
+  } else if (tray) {
+    tray.destroy();
+    tray = null;
+  }
 }

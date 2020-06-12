@@ -83,6 +83,14 @@ const menu = Menu.buildFromTemplate([
         },
       },
       {
+        label: "Show Icon in Menu Bar",
+        type: "checkbox",
+        checked: settings.get("tray"),
+        click(menuItem) {
+          settings.set("tray", menuItem.checked);
+        },
+      },
+      {
         label: "Global Hotkeys",
         click: showHotkeysDialog,
       },

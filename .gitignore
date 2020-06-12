@@ -2,3 +2,5 @@ node_modules
 dist
 build
 src/renderer/compiled
+/Makefile
+/package-lock.json
