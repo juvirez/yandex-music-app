@@ -46,6 +46,9 @@ const menu = Menu.buildFromTemplate([
           global.mainWindow.reload();
         },
       },
+      {
+        role: "close",
+      },
     ],
   },
   {
