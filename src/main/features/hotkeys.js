@@ -59,6 +59,8 @@ function createLoveNotification() {
   createTrackNotification(emoji + " ");
 }
 
+let lastNotification;
+
 function createTrackNotification(titlePrefix) {
   const metaData = getTrackMetaData();
   if (!metaData.title) return;
@@ -68,9 +70,12 @@ function createTrackNotification(titlePrefix) {
     title = titlePrefix + title;
   }
 
-  new Notification({
+  lastNotification && lastNotification.close();
+
+  lastNotification = new Notification({
     title: title,
     subtitle: metaData.artist,
     silent: true,
-  }).show();
+  });
+  lastNotification.show();
 }
