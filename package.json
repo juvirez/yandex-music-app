@@ -20,23 +20,23 @@
     "watch": "webpack --watch --mode=development"
   },
   "devDependencies": {
-    "css-loader": "^3.2.0",
-    "electron": "^7.1.7",
-    "electron-builder": "^21.2.0",
-    "vue-loader": "^15.7.1",
+    "css-loader": "^3.6.0",
+    "electron": "^8.3.1",
+    "electron-builder": "^22.7.0",
+    "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.10",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "electron-google-analytics": "^0.1.0",
+    "electron-google-analytics": "^1.0.0",
     "electron-media-service": "auryo/electron-media-service#8e5af9c",
     "electron-settings": "^3.2.0",
-    "github-api": "^3.2.2",
-    "node-addon-api": "^1.7.1",
-    "semver": "^7.2.1",
-    "vue": "^2.6.10"
+    "github-api": "^3.3.0",
+    "node-addon-api": "^3.0.0",
+    "semver": "^7.3.2",
+    "vue": "^2.6.11"
   },
   "build": {
     "productName": "Yandex Music (Unofficial)",
