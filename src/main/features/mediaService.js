@@ -72,14 +72,18 @@ function playerCmd(cmd) {
 
 function trackToMetaData(track) {
   let coverUrl = undefined;
-  if (track.album.cover) {
+  if (track.album && track.album.cover) {
     coverUrl = "https://" + track.album.cover.replace("%%", "200x200");
+  }
+  let album = "";
+  if (track.album) {
+    album = track.album.title;
   }
 
   return {
     title: track.title,
     artist: track.artists.map((a) => a.title).join(", "),
-    album: track.album.title,
+    album: album,
     albumArt: coverUrl,
     state: "playing",
     id: hashCode(track.link),
