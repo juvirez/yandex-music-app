@@ -31,6 +31,9 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
 
   registerGlobalHotkeys(hotkeys["track_info"], undefined, createTrackNotification);
+
+  registerGlobalHotkeys(hotkeys["volume_down"], "volumeDown");
+  registerGlobalHotkeys(hotkeys["volume_up"], "volumeUp");
 }
 
 function registerGlobalHotkeys(acceleratorArray, playerCmd, additionalCmd) {

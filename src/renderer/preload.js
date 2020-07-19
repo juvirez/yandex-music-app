@@ -69,6 +69,12 @@ ipc.on("playerCmd", (_event, cmd) => {
       currentTrack = externalAPI.getCurrentTrack();
       currentTrack && !currentTrack.disliked && externalAPI.toggleDislike();
       break;
+    case "volumeDown":
+      externalAPI.setVolume(externalAPI.getVolume() - 0.1);
+      break;
+    case "volumeUp":
+      externalAPI.setVolume(externalAPI.getVolume() + 0.1);
+      break;
     default:
       externalAPI[cmd]();
   }

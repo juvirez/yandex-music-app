@@ -48,7 +48,7 @@ import Vue from "vue";
 import Hotkey from "./Hotkey.vue";
 import settings from "electron-settings";
 
-document.addEventListener("keydown", event => {
+document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     window.close();
   }
@@ -67,18 +67,20 @@ export default {
         {
           id: "previous_track",
           title: "Previous Track",
-          icon: "d-icon_track-prev"
+          icon: "d-icon_track-prev",
         },
         {
           id: "mute_unmute",
           title: "Mute / Unmute",
-          icon: "d-icon_volume-mute"
+          icon: "d-icon_volume-mute",
         },
         { id: "play_pause", title: "Play / Pause", icon: "d-icon_play" },
         { id: "like_unlike", title: "Like / Unlike", icon: "d-icon_heart" },
-        { id: "track_info", title: "Track Info", icon: "d-icon_notes" }
+        { id: "track_info", title: "Track Info", icon: "d-icon_notes" },
+        { id: "volume_down", title: "Volume Down", icon: "d-icon_volume-quiet" },
+        { id: "volume_up", title: "Volume Up", icon: "d-icon_volume-sprite" },
       ],
-      hasChangedHotkey: false
+      hasChangedHotkey: false,
     };
   },
   methods: {
@@ -86,15 +88,15 @@ export default {
       if (!this.hasChangedHotkey) {
         return;
       }
-      this.$refs.hotkeys.forEach(hotkey => {
+      this.$refs.hotkeys.forEach((hotkey) => {
         settings.set(`hotkeys.${hotkey.id}`, hotkey.hotkey);
       });
       window.close();
     },
     cancel() {
       window.close();
-    }
-  }
+    },
+  },
 };
 </script>
 
