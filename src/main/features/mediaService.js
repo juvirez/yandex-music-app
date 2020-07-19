@@ -81,7 +81,7 @@ function trackToMetaData(track) {
   }
 
   return {
-    title: track.title,
+    title: track.title || "",
     artist: track.artists.map((a) => a.title).join(", "),
     album: album,
     albumArt: coverUrl,
