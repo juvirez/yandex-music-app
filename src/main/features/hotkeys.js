@@ -1,6 +1,6 @@
-const { app, globalShortcut, systemPreferences, Notification } = require("electron");
+const { app, globalShortcut, systemPreferences } = require("electron");
 const settings = require("electron-settings");
-const { getTrackMetaData } = require("./mediaService");
+const { showLoveNotification, showTrackNotification } = require("./notifications");
 
 if (systemPreferences.isTrustedAccessibilityClient(false)) {
   app.on("will-quit", () => {
@@ -24,13 +24,13 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["next_track"], "next");
   registerGlobalHotkeys(hotkeys["previous_track"], "prev");
 
-  registerGlobalHotkeys(hotkeys["love"], "love", createLoveNotification);
+  registerGlobalHotkeys(hotkeys["love"], "love", showLoveNotification);
   registerGlobalHotkeys(hotkeys["dislike"], "dislike");
-  registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", createLoveNotification);
+  registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", showLoveNotification);
 
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
 
-  registerGlobalHotkeys(hotkeys["track_info"], undefined, createTrackNotification);
+  registerGlobalHotkeys(hotkeys["track_info"], undefined, showTrackNotification);
 
   registerGlobalHotkeys(hotkeys["volume_down"], "volumeDown");
   registerGlobalHotkeys(hotkeys["volume_up"], "volumeUp");
@@ -48,37 +48,4 @@ function registerShortcut(accelerator, playerCmd, additionalCmd) {
     playerCmd && global.mainWindow && global.mainWindow.webContents.send("playerCmd", playerCmd);
     additionalCmd && additionalCmd();
   });
-}
-
-function createLoveNotification() {
-  const metaData = getTrackMetaData();
-  let emoji;
-  if (metaData.liked) {
-    emoji = "♡";
-  } else {
-    emoji = "❤️";
-  }
-
-  createTrackNotification(emoji + " ");
-}
-
-let lastNotification;
-
-function createTrackNotification(titlePrefix) {
-  const metaData = getTrackMetaData();
-  if (!metaData.title) return;
-
-  let title = metaData.title;
-  if (titlePrefix) {
-    title = titlePrefix + title;
-  }
-
-  lastNotification && lastNotification.close();
-
-  lastNotification = new Notification({
-    title: title,
-    subtitle: metaData.artist,
-    silent: true,
-  });
-  lastNotification.show();
 }

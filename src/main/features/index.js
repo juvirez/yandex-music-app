@@ -8,3 +8,4 @@ require("./navigation");
 require("./ga");
 require("./sessionModifier");
 require("./preventSleepWhilePlaying");
+require("./notifications");
