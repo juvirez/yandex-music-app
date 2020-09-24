@@ -1,5 +1,6 @@
 const { app, globalShortcut, systemPreferences } = require("electron");
 const settings = require("electron-settings");
+const { getTrackMetaData } = require("./mediaService");
 const { showLoveNotification, showTrackNotification } = require("./notifications");
 
 if (systemPreferences.isTrustedAccessibilityClient(false)) {
@@ -24,9 +25,14 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["next_track"], "next");
   registerGlobalHotkeys(hotkeys["previous_track"], "prev");
 
-  registerGlobalHotkeys(hotkeys["love"], "love", showLoveNotification);
+  registerGlobalHotkeys(hotkeys["love"], "love", () => {
+    showLoveNotification(true);
+  });
   registerGlobalHotkeys(hotkeys["dislike"], "dislike");
-  registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", showLoveNotification);
+  registerGlobalHotkeys(hotkeys["like_unlike"], "toggleLike", () => {
+    let loved = !getTrackMetaData().liked;
+    showLoveNotification(loved);
+  });
 
   registerGlobalHotkeys(hotkeys["mute_unmute"], "toggleMute");
 

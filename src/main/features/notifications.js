@@ -3,13 +3,8 @@ const { getTrackMetaData } = require("./mediaService");
 
 let lastNotification;
 
-exports.showTrackNotification = () => {
-  createTrackNotification();
-};
-
-exports.showLoveNotification = () => {
-  createLoveNotification();
-};
+exports.showTrackNotification = createTrackNotification;
+exports.showLoveNotification = createLoveNotification;
 
 function createTrackNotification(titlePrefix) {
   const metaData = getTrackMetaData();
@@ -30,13 +25,12 @@ function createTrackNotification(titlePrefix) {
   lastNotification.show();
 }
 
-function createLoveNotification() {
-  const metaData = getTrackMetaData();
+function createLoveNotification(loved) {
   let emoji;
-  if (metaData.liked) {
-    emoji = "♡";
-  } else {
+  if (loved) {
     emoji = "❤️";
+  } else {
+    emoji = "♡";
   }
 
   createTrackNotification(emoji + " ");
