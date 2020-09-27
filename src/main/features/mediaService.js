@@ -1,12 +1,20 @@
-const { ipcMain } = require("electron");
+const { app, ipcMain } = require("electron");
 const MediaService = require("electron-media-service");
+var https = require("https");
+var fs = require("fs");
+
+const coverFilePath = app.getPath("temp") + "cover.jpg";
+const metaData = {};
 
 const mediaService = new MediaService();
 mediaService.startService();
-const metaData = {};
 
 exports.getTrackMetaData = () => {
   return metaData;
+};
+
+exports.getCoverFilePath = () => {
+  return coverFilePath;
 };
 
 ipcMain.on("changeTrack", (_event, track) => {
@@ -78,6 +86,13 @@ function trackToMetaData(track) {
   let album = "";
   if (track.album) {
     album = track.album.title;
+  }
+
+  if (coverUrl) {
+    var file = fs.createWriteStream(coverFilePath);
+    https.get(coverUrl, (response) => {
+      response.pipe(file);
+    });
   }
 
   return {

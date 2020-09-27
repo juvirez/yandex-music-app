@@ -1,5 +1,5 @@
-const { ipcMain, Notification } = require("electron");
-const { getTrackMetaData } = require("./mediaService");
+const { Notification } = require("electron");
+const { getTrackMetaData, getCoverFilePath } = require("./mediaService");
 
 let lastNotification;
 
@@ -20,6 +20,7 @@ function createTrackNotification(titlePrefix) {
   lastNotification = new Notification({
     title: title,
     subtitle: metaData.artist,
+    icon: getCoverFilePath(),
     silent: true,
   });
   lastNotification.show();
