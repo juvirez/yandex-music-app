@@ -100,7 +100,7 @@ function trackToMetaData(track) {
     artist: track.artists.map((a) => a.title).join(", "),
     album: album,
     albumArt: coverUrl,
-    state: "playing",
+    state: MediaService.STATES.PLAYING,
     id: hashCode(track.link),
     currentTime: 0,
     duration: track.duration,

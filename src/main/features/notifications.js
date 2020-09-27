@@ -3,8 +3,29 @@ const { getTrackMetaData, getCoverFilePath } = require("./mediaService");
 
 let lastNotification;
 
-exports.showTrackNotification = createTrackNotification;
-exports.showLoveNotification = createLoveNotification;
+exports.showTrackNotification = showTrackNotification;
+exports.showLoveNotification = showLoveNotification;
+
+function showTrackNotification() {
+  const metaData = getTrackMetaData();
+  let emoji;
+  if (metaData.liked) {
+    emoji = "❤️ ";
+  }
+
+  createTrackNotification(emoji).show();
+}
+
+function showLoveNotification(loved) {
+  let emoji;
+  if (loved) {
+    emoji = "❤️";
+  } else {
+    emoji = "♡";
+  }
+
+  createTrackNotification(emoji + " ").show();
+}
 
 function createTrackNotification(titlePrefix) {
   const metaData = getTrackMetaData();
@@ -23,16 +44,5 @@ function createTrackNotification(titlePrefix) {
     icon: getCoverFilePath(),
     silent: true,
   });
-  lastNotification.show();
-}
-
-function createLoveNotification(loved) {
-  let emoji;
-  if (loved) {
-    emoji = "❤️";
-  } else {
-    emoji = "♡";
-  }
-
-  createTrackNotification(emoji + " ");
+  return lastNotification;
 }
