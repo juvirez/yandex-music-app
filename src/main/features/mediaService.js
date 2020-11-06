@@ -71,16 +71,17 @@ function playerCmd(cmd) {
 }
 
 function trackToMetaData(track) {
-  let coverUrl = undefined;
-  if (track.album.cover) {
-    coverUrl = "https://" + track.album.cover.replace("%%", "200x200");
-  }
-
   return {
     title: track.title,
     artist: track.artists.map((a) => a.title).join(", "),
-    album: track.album.title,
-    albumArt: coverUrl,
+      album: (Object.prototype.hasOwnProperty.call(track, 'album') &&
+        Object.prototype.hasOwnProperty.call(track.album, 'title'))
+        ? track.album.title
+        : '',
+      albumArt: (Object.prototype.hasOwnProperty.call(track, 'album') &&
+        Object.prototype.hasOwnProperty.call(track.album, 'cover') &&
+        track.album.cover) ? 'https://' +
+        track.album.cover.replace('%%', '200x200') : null,
     state: "playing",
     id: hashCode(track.link),
     currentTime: 0,
