@@ -1,6 +1,6 @@
 const { app, globalShortcut, systemPreferences } = require("electron");
 const settings = require("electron-settings");
-const { getTrackMetaData } = require("./mediaService");
+const { getTrackMetaData } = require("./playerMetaData");
 const { showLoveNotification, showTrackNotification } = require("./notifications");
 
 if (systemPreferences.isTrustedAccessibilityClient(false)) {

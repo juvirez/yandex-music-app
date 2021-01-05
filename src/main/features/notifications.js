@@ -1,5 +1,5 @@
 const { Notification } = require("electron");
-const { getTrackMetaData, getCoverFilePath } = require("./mediaService");
+const { getTrackMetaData, getCoverFilePath } = require("./playerMetaData");
 
 let lastNotification;
 

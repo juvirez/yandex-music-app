@@ -1,25 +1,19 @@
-const { app, ipcMain } = require("electron");
+const { ipcMain } = require("electron");
+const settings = require("electron-settings");
 const MediaService = require("electron-media-service");
-var https = require("https");
-var fs = require("fs");
-
-const coverFilePath = app.getPath("temp") + "cover.jpg";
-const metaData = {};
+const { showTrackNotification } = require("./notifications");
+const { trackToMetaData, assignMetadata, getTrackMetaData } = require("./playerMetaData");
 
 const mediaService = new MediaService();
 mediaService.startService();
 
-exports.getTrackMetaData = () => {
-  return metaData;
-};
-
-exports.getCoverFilePath = () => {
-  return coverFilePath;
-};
-
 ipcMain.on("changeTrack", (_event, track) => {
-  let metaData = trackToMetaData(track);
-  updateMetadata(metaData);
+  trackToMetaData(track, (metaData) => {
+    updateMetadata(metaData);
+    if (settings.get("notifications", true) && metaData.state == MediaService.STATES.PLAYING) {
+      showTrackNotification();
+    }
+  });
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
@@ -78,44 +72,6 @@ function playerCmd(cmd) {
   global.mainWindow.webContents.send("playerCmd", cmd);
 }
 
-function trackToMetaData(track) {
-  let coverUrl = undefined;
-  if (track.album && track.album.cover) {
-    coverUrl = "https://" + track.album.cover.replace("%%", "200x200");
-  }
-  let album = "";
-  if (track.album) {
-    album = track.album.title;
-  }
-
-  if (coverUrl) {
-    var file = fs.createWriteStream(coverFilePath);
-    https.get(coverUrl, (response) => {
-      response.pipe(file);
-    });
-  }
-
-  return {
-    title: track.title || "",
-    artist: track.artists.map((a) => a.title).join(", "),
-    album: album,
-    albumArt: coverUrl,
-    state: MediaService.STATES.PLAYING,
-    id: hashCode(track.link),
-    currentTime: 0,
-    duration: track.duration,
-    liked: track.liked,
-  };
-}
-
-function hashCode(s) {
-  for (var i = 0, h = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-  return h;
-}
-
 function updateMetadata(newMetadata) {
-  Object.assign(metaData, newMetadata);
-  if (typeof metaData.id != "number") return;
-
-  mediaService.setMetaData(metaData);
+  assignMetadata(newMetadata) && mediaService.setMetaData(getTrackMetaData());
 }
