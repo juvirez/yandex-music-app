@@ -94,4 +94,3 @@ function getLabelForTrack(track) {
   return newTitle;
 }
 global.mainWindow.setTouchBar(touchBar)
-global.mainWindow.webContents.openDevTools()
