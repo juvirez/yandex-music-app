@@ -51,6 +51,5 @@ exports.showLoader = () => {
 
   win.webContents.once("dom-ready", () => {
     win.removeBrowserView(view);
-    view.destroy();
   });
 };
