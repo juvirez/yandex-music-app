@@ -1,4 +1,4 @@
-const { app, BrowserWindow, BrowserView } = require("electron");
+const { app, BrowserWindow, BrowserView, powerSaveBlocker } = require("electron");
 const path = require("path");
 
 const defaultWindowWidth = 1301;
@@ -29,11 +29,14 @@ app.on("ready", () => {
   win.loadURL("https://music.yandex.ru");
   global.mainWindow = win;
 
+  const powerBlockerId = powerSaveBlocker.start("prevent-app-suspension");
+
   require("./features");
 
   win.on("close", (e) => {
     if (willQuitApp) {
       win = null;
+      powerSaveBlocker.stop(powerBlockerId)
     } else {
       e.preventDefault();
       win.hide();
