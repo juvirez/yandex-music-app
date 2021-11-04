@@ -21,19 +21,19 @@
   },
   "devDependencies": {
     "css-loader": "^3.6.0",
-    "electron": "^12.0.6",
-    "electron-builder": "^22.7.0",
+    "electron": "^15.2.0",
+    "electron-builder": "^22.13.1",
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.41.6",
+    "webpack": "^4.46.0",
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
     "electron-google-analytics": "^1.0.0",
     "electron-media-service": "juvirez/electron-media-service",
     "electron-settings": "^3.2.0",
-    "github-api": "^3.3.0",
+    "github-api": "^3.4.0",
     "node-addon-api": "^3.0.0",
     "semver": "^7.3.2",
     "vue": "^2.6.11"
