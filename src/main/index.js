@@ -22,6 +22,7 @@ app.on("ready", () => {
     height: defaultWindowHeight,
     title: "Яндекс.Музыка",
     webPreferences: {
+      contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
