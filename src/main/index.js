@@ -8,6 +8,7 @@ let win;
 let willQuitApp = false;
 
 app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
+process.on('uncaughtException', console.error);
 
 app.on("before-quit", () => (willQuitApp = true));
 app.on("activate", () => {
