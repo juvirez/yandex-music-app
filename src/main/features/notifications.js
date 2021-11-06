@@ -14,22 +14,26 @@ function showTrackNotification() {
     if (metaData.liked) {
       emoji = "❤️ ";
     }
-    createTrackNotification(emoji).show();
+    const notification = createTrackNotification(emoji);
+    notification && notification.show();
   }, 100);
 }
 
 function showLoveNotification(loved) {
   let emoji;
   if (loved) {
-    emoji = "❤️";
+    emoji = "❤️ ";
   } else {
-    emoji = "♡";
+    emoji = "♡ ";
   }
 
-  createTrackNotification(emoji + " ").show();
+  const notification = createTrackNotification(emoji);
+  notification && notification.show();
 }
 
 function createTrackNotification(titlePrefix) {
+  if (global.mainWindow.isFocused()) return;
+
   const metaData = getTrackMetaData();
   if (!metaData.title) return;
 
