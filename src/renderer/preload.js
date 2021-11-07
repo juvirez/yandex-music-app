@@ -88,21 +88,21 @@ ipc.on("playTrack", (_event, index) => {
 });
 
 function initBackNavigationButton() {
-  let headSearch = document.querySelector(".head__search");
+  let headSearch = document.querySelector(".head-kids__controlls");
   if (headSearch) {
     let template = document.createElement("template");
-    template.innerHTML = `<button
+    template.innerHTML = `<div class="head-kids__search"><div class="d-search"><button
       class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered"
       style="margin-left: 22px; margin-right: -22px;" disabled>
       <span class="d-button-inner deco-button-stylable">
       <span class="d-button__inner"><span class="d-icon deco-icon d-icon_arrow-left"></span></span>
-      </span></button>`;
+      </span></button></div></div>`;
     let nodeElement = template.content.firstElementChild;
     nodeElement.onclick = () => window.history.back();
     headSearch.insertBefore(nodeElement, headSearch.firstChild);
 
     ipc.on("navigated", (_event, { canGoBack }) => {
-      nodeElement.disabled = !canGoBack;
+      nodeElement.querySelector('button').disabled = !canGoBack;
     });
   }
 }
