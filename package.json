@@ -26,8 +26,8 @@
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.8"
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
     "electron-google-analytics": "^1.0.0",
