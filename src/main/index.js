@@ -1,5 +1,6 @@
 const { app, BrowserWindow, BrowserView } = require("electron");
 const path = require("path");
+const settings = require("electron-settings");
 
 const defaultWindowWidth = 1301;
 const defaultWindowHeight = 768;
@@ -19,14 +20,15 @@ app.on("activate", () => {
 
 app.on("ready", () => {
   win = new BrowserWindow({
-    width: defaultWindowWidth,
-    height: defaultWindowHeight,
     title: "Яндекс.Музыка",
     webPreferences: {
       contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
+  const windowBounds = settings.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
+  win.setBounds(windowBounds);
+
   exports.showLoader();
   win.loadURL("https://music.yandex.ru");
   global.mainWindow = win;
@@ -35,6 +37,7 @@ app.on("ready", () => {
 
   win.on("close", (e) => {
     if (willQuitApp) {
+      settings.set("window.bounds", win.getBounds());
       win = null;
     } else {
       e.preventDefault();
