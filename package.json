@@ -23,6 +23,7 @@
     "css-loader": "^3.6.0",
     "electron": "^15.2.0",
     "electron-builder": "^22.13.1",
+    "electron-notarize": "^1.1.1",
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
@@ -40,7 +41,8 @@
   },
   "build": {
     "productName": "Yandex Music (Unofficial)",
-    "appId": "com.github.juvirez.yandexmusicapp",
+    "appId": "dev.juvs.yandex-music",
+    "afterSign": "./notarize.js",
     "mac": {
       "category": "public.app-category.music",
       "target": [
