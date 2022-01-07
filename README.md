@@ -1,5 +1,7 @@
 # Яндекс Музыка для Mac OS
 
+[![GitHub all releases](https://img.shields.io/github/downloads/juvirez/yandex-music-app/total)](https://github.com/juvirez/yandex-music-app/releases)
+
 Неофициальное приложение с нативными фичами
 
 - **Поддержка медиа клавиш** – управляй медиа кнопками, тачбаром или AirPods
