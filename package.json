@@ -34,9 +34,8 @@
     "electron-google-analytics": "^1.0.0",
     "electron-media-service": "juvirez/electron-media-service",
     "electron-settings": "^3.2.0",
-    "github-api": "^3.4.0",
+    "electron-updater": "^4.6.1",
     "node-addon-api": "^3.0.0",
-    "semver": "^7.3.2",
     "vue": "^2.6.11"
   },
   "build": {
@@ -49,7 +48,8 @@
         "zip",
         "dmg"
       ],
-      "icon": "static/icon.icns"
+      "icon": "static/icon.icns",
+      "publish": "github"
     },
     "extraResources": [
       "static/tray*.png"
