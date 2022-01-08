@@ -7,6 +7,7 @@ module.exports = async (params) => {
     const appleASP = process.env.appleASP;
 
     if (!appleId || !appleASP) {
+      console.log('skipped notarizing');
       return;
     }
 
