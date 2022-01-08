@@ -3,6 +3,13 @@ const path = require('path');
 
 module.exports = async (params) => {
   try {
+    const appleId = process.env.appleId;
+    const appleASP = process.env.appleASP;
+
+    if (!appleId || !appleASP) {
+      return;
+    }
+
     const appPath = path.join(params.appOutDir, `${params.packager.appInfo.productFilename}.app`);
     await notarize({
       appBundleId: 'dev.juvs.yandex-music',
