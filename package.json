@@ -15,7 +15,7 @@
     "start": "electron .",
     "prebuild": "webpack",
     "build": "electron-builder --mac --arm64 --x64",
-    "publish": "electron-builder -p always",
+    "publish": "electron-builder --mac --arm64 --x64 -p always",
     "postinstall": "$(yarn bin)/electron-builder install-app-deps",
     "watch": "webpack --watch --mode=development"
   },
