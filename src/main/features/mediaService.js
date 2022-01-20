@@ -1,4 +1,5 @@
 const { ipcMain } = require("electron");
+const { debounce } = require("../utils");
 const settings = require("electron-settings");
 const MediaService = require("electron-media-service");
 const { showTrackNotification } = require("./notifications");
@@ -26,6 +27,7 @@ ipcMain.on("changeProgress", (_event, progress) => {
   updateMetadata(mediaServiceProgress);
 });
 
+let debounceTimeout;
 ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
   if (!MediaService.STATES) return; // for macos < 10.13
@@ -35,11 +37,12 @@ ipcMain.on("changeState", (_event, state) => {
   const mediaServiceState = {
     state: newState,
   };
-  updateMetadata(mediaServiceState);
-
-  if (newState === MediaService.STATES.PLAYING && oldState !== newState && isNotificationsEnabled()) {
-    showTrackNotification();
-  }
+  debounceTimeout = debounce(() => {
+    updateMetadata(mediaServiceState);
+    if (newState === MediaService.STATES.PLAYING && oldState !== newState && isNotificationsEnabled()) {
+      showTrackNotification();
+    }
+  }, 200, debounceTimeout);
 });
 
 ipcMain.on("changeControls", (_event, controls) => {

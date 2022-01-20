@@ -1,13 +1,10 @@
-let timeout;
-
-exports.debounce = function(func, wait) {
+exports.debounce = function(func, wait, timeout) {
 	let context = this;
 	let later = function() {
-		timeout = null;
 		func.apply(context, arguments);
 	};
 	clearTimeout(timeout);
-	timeout = setTimeout(later, wait);
+	return setTimeout(later, wait);
 };
 
 exports.truncate = function(str, n) {
