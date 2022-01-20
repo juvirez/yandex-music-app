@@ -16,7 +16,7 @@ function showTrackNotification() {
     }
     const notification = createTrackNotification(emoji);
     notification && notification.show();
-  }, 100);
+  }, 300);
 }
 
 function showLoveNotification(loved) {
