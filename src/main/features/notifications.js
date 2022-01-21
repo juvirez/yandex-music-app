@@ -3,13 +3,12 @@ const { debounce } = require("../utils");
 const { getTrackMetaData, getCoverFilePath } = require("./playerMetaData");
 
 let lastNotification;
-let debounceTimeout;
 
 exports.showTrackNotification = showTrackNotification;
 exports.showLoveNotification = showLoveNotification;
 
 function showTrackNotification() {
-  debounceTimeout = debounce(() => {
+  debounce(() => {
     const metaData = getTrackMetaData();
     let emoji;
     if (metaData.liked) {
@@ -17,7 +16,7 @@ function showTrackNotification() {
     }
     const notification = createTrackNotification(emoji);
     notification && notification.show();
-  }, 300, debounceTimeout);
+  }, 300);
 }
 
 function showLoveNotification(loved) {
