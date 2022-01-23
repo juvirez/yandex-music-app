@@ -9,4 +9,6 @@
 - **Глобальные горячие клавиши** - лайкай треки находясь в другом приложении
 - **Dock и Tray меню** – просматривай треклист и управляй плеером не заходя в приложение
 
-[Скачать последнюю версию](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.0-alpha.1/yandex-music-app-1.6.0-alpha.1.dmg)
+Скачать последнюю версию:
+- [для Mac Intel](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.0/Yandex-Music-Unofficial-1.6.0.dmg)
+- [для Mac M1 (ARM)](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.0/Yandex-Music-Unofficial-1.6.0-arm64.dmg)
