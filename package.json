@@ -39,7 +39,7 @@
     "vue": "^2.6.11"
   },
   "build": {
-    "productName": "Yandex Music (Unofficial)",
+    "productName": "Yandex Music Unofficial",
     "appId": "dev.juvs.yandex-music",
     "afterSign": "./notarize.js",
     "mac": {
