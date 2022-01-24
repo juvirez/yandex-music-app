@@ -4,6 +4,7 @@ const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
+const { traySettingsChanged } = require("./dockMenu");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -80,17 +81,18 @@ const menu = Menu.buildFromTemplate([
       {
         label: "Enable notifications",
         type: "checkbox",
-        checked: settings.get("notifications", true),
+        checked: settings.getSync("notifications", true),
         click(menuItem) {
-          settings.set("notifications", menuItem.checked);
+          settings.setSync("notifications", menuItem.checked);
         },
       },
       {
         label: "Show Menu Bar Icon",
         type: "checkbox",
-        checked: settings.get("tray"),
+        checked: settings.getSync("tray"),
         click(menuItem) {
-          settings.set("tray", menuItem.checked);
+          settings.setSync("tray", menuItem.checked);
+          traySettingsChanged(menuItem.checked);
         },
       },
       {

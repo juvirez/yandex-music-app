@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       pressingKeys: [],
-      hotkey: settings.get(`hotkeys.${this.id}`, [])
+      hotkey: settings.getSync(`hotkeys.${this.id}`, [])
     };
   },
   methods: {

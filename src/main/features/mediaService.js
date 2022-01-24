@@ -102,5 +102,5 @@ function updateMetadata(newMetadata) {
 }
 
 function isNotificationsEnabled() {
-  return settings.get("notifications", true);
+  return settings.getSync("notifications", true);
 }

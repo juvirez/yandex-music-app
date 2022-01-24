@@ -3,7 +3,7 @@ const settings = require("electron-settings");
 const Analytics = require("electron-google-analytics");
 const analytics = new Analytics.default("UA-127383106-1");
 
-let clientId = settings.get("gaClientId");
+let clientId = settings.getSync("gaClientId");
 
 global.mainWindow.on("focus", () => {
   analytics
@@ -18,7 +18,7 @@ global.mainWindow.on("focus", () => {
     .then(response => {
       if (!clientId) {
         clientId = response.clientID;
-        settings.set("gaClientId", clientId);
+        settings.setSync("gaClientId", clientId);
       }
     });
 });

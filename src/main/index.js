@@ -26,7 +26,7 @@ app.on("ready", () => {
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
-  const windowBounds = settings.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
+  const windowBounds = settings.getSync("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
   win.setBounds(windowBounds);
 
   exports.showLoader();
@@ -37,7 +37,7 @@ app.on("ready", () => {
 
   win.on("close", (e) => {
     if (willQuitApp) {
-      settings.set("window.bounds", win.getBounds());
+      settings.setSync("window.bounds", win.getBounds());
       win = null;
     } else {
       e.preventDefault();

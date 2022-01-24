@@ -16,7 +16,7 @@ exports.reloadShortcuts = () => {
 };
 
 function registerCustomShortcuts() {
-  const hotkeys = settings.get("hotkeys", {});
+  const hotkeys = settings.getSync("hotkeys", {});
 
   registerGlobalHotkeys(hotkeys["play"], "play");
   registerGlobalHotkeys(hotkeys["pause"], "pause");

@@ -58,10 +58,10 @@ function refreshMenu() {
       new MenuItem({
         type: "checkbox",
         label: "Show song in Menu Bar",
-        checked: settings.get("tray-song"),
+        checked: settings.getSync("tray-song"),
         click(menuItem) {
           tray.showTitle = menuItem.checked;
-          settings.set("tray-song", tray.showTitle);
+          settings.setSync("tray-song", tray.showTitle);
           refreshMenu();
         },
       })
@@ -79,7 +79,7 @@ ipcMain.on("initControls", (_event, { currentTrack, controls }) => {
   handleTrackChange(currentTrack);
 
   settings.watch("tray", initTray);
-  initTray(settings.get("tray"), true);
+  initTray(settings.getSync("tray"), true);
 
   refreshMenu();
 });
@@ -155,7 +155,7 @@ function handleTrackChange(currentTrack) {
 
 function getLabelForTrack(track) {
   const label = track.title + " – " + track.artists.map((a) => a.title).join(", ");
-  return truncate(label, settings.get("tray-song-label-length", 35));
+  return truncate(label, settings.getSync("tray-song-label-length", 35));
 }
 
 function createPlayListMenuItem(tracks, currentTrack) {
@@ -187,11 +187,16 @@ function initTray(trayEnabled, skipRefresh) {
       tray = new Tray(logo);
     }
 
-    tray.showTitle = settings.get("tray-song");
+    tray.showTitle = settings.getSync("tray-song");
 
     if (!skipRefresh) refreshMenu();
   } else if (tray) {
     tray.destroy();
     tray = null;
   }
+}
+
+
+exports.traySettingsChanged = function(trayEnabled) {
+  initTray(trayEnabled);
 }

@@ -89,7 +89,7 @@ export default {
         return;
       }
       this.$refs.hotkeys.forEach((hotkey) => {
-        settings.set(`hotkeys.${hotkey.id}`, hotkey.hotkey);
+        settings.setSync(`hotkeys.${hotkey.id}`, hotkey.hotkey);
       });
       window.close();
     },
