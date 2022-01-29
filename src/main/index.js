@@ -1,6 +1,6 @@
-const { app, BrowserWindow, BrowserView } = require("electron");
+const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
 const path = require("path");
-const settings = require("electron-settings");
+const Store = require("electron-store");
 
 const defaultWindowWidth = 1301;
 const defaultWindowHeight = 768;
@@ -26,18 +26,28 @@ app.on("ready", () => {
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
-  const windowBounds = settings.getSync("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
+
+  const store = new Store();
+  ipcMain.handle('getStoreValue', (_event, key, defaultValue) => {
+    return store.get(key, defaultValue);
+  });
+  ipcMain.handle('setStoreValue', (_event, key, value) => {
+    return store.set(key, value);
+  });
+  const windowBounds = store.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
   win.setBounds(windowBounds);
 
   exports.showLoader();
   win.loadURL("https://music.yandex.ru");
+  
   global.mainWindow = win;
+  global.store = store;
 
   require("./features");
 
   win.on("close", (e) => {
     if (willQuitApp) {
-      settings.setSync("window.bounds", win.getBounds());
+      store.set("window.bounds", win.getBounds());
       win = null;
     } else {
       e.preventDefault();

@@ -10,6 +10,7 @@
           :id="hotkey.id"
           :title="hotkey.title"
           :iconClass="hotkey.icon"
+          :hotkey="savedHotkeys[hotkey.id] || []"
           @hotkeyChanged="hasChangedHotkey = true"
         />
       </div>
@@ -44,9 +45,8 @@
 </template>
 
 <script>
-import Vue from "vue";
 import Hotkey from "./Hotkey.vue";
-import settings from "electron-settings";
+import { ipcRenderer } from "electron";
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
@@ -81,15 +81,19 @@ export default {
         { id: "volume_up", title: "Volume Up", icon: "d-icon_volume-sprite" },
       ],
       hasChangedHotkey: false,
+      savedHotkeys: {},
     };
   },
+  async beforeCreate() {
+    this.savedHotkeys = await ipcRenderer.invoke('getStoreValue', `hotkeys`, {});
+  },
   methods: {
-    save() {
+    async save() {
       if (!this.hasChangedHotkey) {
         return;
       }
-      this.$refs.hotkeys.forEach((hotkey) => {
-        settings.setSync(`hotkeys.${hotkey.id}`, hotkey.hotkey);
+      this.$refs.hotkeys.forEach(async (hotkey) => {
+        await ipcRenderer.invoke('setStoreValue', `hotkeys.${hotkey.id}`, hotkey.hotkey);
       });
       window.close();
     },

@@ -39,19 +39,18 @@
 </template>
 
 <script>
-import settings from "electron-settings";
 import { acceleratorToHumanReadable, keyCodeToAccelerator } from "./utils";
 
 export default {
   props: {
     id: String,
     title: String,
-    iconClass: String
+    iconClass: String,
+    hotkey: String,
   },
   data() {
     return {
       pressingKeys: [],
-      hotkey: settings.getSync(`hotkeys.${this.id}`, [])
     };
   },
   methods: {

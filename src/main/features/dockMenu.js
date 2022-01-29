@@ -1,5 +1,4 @@
 const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
-const settings = require("electron-settings");
 const { truncate } = require("../utils");
 
 let tray = null;
@@ -58,10 +57,10 @@ function refreshMenu() {
       new MenuItem({
         type: "checkbox",
         label: "Show song in Menu Bar",
-        checked: settings.getSync("tray-song"),
+        checked: global.store.get("tray-song", false),
         click(menuItem) {
           tray.showTitle = menuItem.checked;
-          settings.setSync("tray-song", tray.showTitle);
+          global.store.set("tray-song", tray.showTitle);
           refreshMenu();
         },
       })
@@ -78,8 +77,8 @@ ipcMain.on("initControls", (_event, { currentTrack, controls }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 
-  settings.watch("tray", initTray);
-  initTray(settings.getSync("tray"), true);
+  global.store.onDidChange("tray", initTray);
+  initTray(global.store.get("tray"), true);
 
   refreshMenu();
 });
@@ -155,7 +154,7 @@ function handleTrackChange(currentTrack) {
 
 function getLabelForTrack(track) {
   const label = track.title + " – " + track.artists.map((a) => a.title).join(", ");
-  return truncate(label, settings.getSync("tray-song-label-length", 35));
+  return truncate(label, global.store.get("tray-song-label-length", 35));
 }
 
 function createPlayListMenuItem(tracks, currentTrack) {
@@ -187,16 +186,11 @@ function initTray(trayEnabled, skipRefresh) {
       tray = new Tray(logo);
     }
 
-    tray.showTitle = settings.getSync("tray-song");
+    tray.showTitle = global.store.get("tray-song", false);
 
     if (!skipRefresh) refreshMenu();
   } else if (tray) {
     tray.destroy();
     tray = null;
   }
-}
-
-
-exports.traySettingsChanged = function(trayEnabled) {
-  initTray(trayEnabled);
 }

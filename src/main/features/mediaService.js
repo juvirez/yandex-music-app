@@ -1,5 +1,4 @@
 const { ipcMain } = require("electron");
-const settings = require("electron-settings");
 const MediaService = require("electron-media-service");
 const { showTrackNotification } = require("./notifications");
 const { trackToMetaData, assignMetadata, getTrackMetaData } = require("./playerMetaData");
@@ -102,5 +101,5 @@ function updateMetadata(newMetadata) {
 }
 
 function isNotificationsEnabled() {
-  return settings.getSync("notifications", true);
+  return global.store.get("notifications", true);
 }

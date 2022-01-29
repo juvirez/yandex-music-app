@@ -33,7 +33,7 @@
   "dependencies": {
     "electron-google-analytics": "^1.0.0",
     "electron-media-service": "juvirez/electron-media-service",
-    "electron-settings": "^4.0.2",
+    "electron-store": "^8.0.1",
     "electron-updater": "^4.6.1",
     "node-addon-api": "^3.0.0",
     "vue": "^2.6.11"

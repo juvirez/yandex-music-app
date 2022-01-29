@@ -1,5 +1,4 @@
 const { app, globalShortcut, systemPreferences } = require("electron");
-const settings = require("electron-settings");
 const { getTrackMetaData } = require("./playerMetaData");
 const { showLoveNotification, showTrackNotification } = require("./notifications");
 
@@ -16,7 +15,7 @@ exports.reloadShortcuts = () => {
 };
 
 function registerCustomShortcuts() {
-  const hotkeys = settings.getSync("hotkeys", {});
+  const hotkeys = global.store.get("hotkeys", {});
 
   registerGlobalHotkeys(hotkeys["play"], "play");
   registerGlobalHotkeys(hotkeys["pause"], "pause");

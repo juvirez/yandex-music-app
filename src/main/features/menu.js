@@ -1,5 +1,4 @@
 const { app, Menu, shell } = require("electron");
-const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
@@ -81,18 +80,17 @@ const menu = Menu.buildFromTemplate([
       {
         label: "Enable notifications",
         type: "checkbox",
-        checked: settings.getSync("notifications", true),
+        checked: global.store.get("notifications", true),
         click(menuItem) {
-          settings.setSync("notifications", menuItem.checked);
+          global.store.set("notifications", menuItem.checked);
         },
       },
       {
         label: "Show Menu Bar Icon",
         type: "checkbox",
-        checked: settings.getSync("tray"),
+        checked: global.store.get("tray"),
         click(menuItem) {
-          settings.setSync("tray", menuItem.checked);
-          traySettingsChanged(menuItem.checked);
+          global.store.set("tray", menuItem.checked);
         },
       },
       {
