@@ -7,7 +7,8 @@ ipcMain.on("changeState", (_event, state) => {
     if (!powerSaveBlockerId) {
       powerSaveBlockerId = powerSaveBlocker.start('prevent-app-suspension')
     }
-  } else if (powerSaveBlockerId) {
+  } else if (powerSaveBlockerId !== null) {
     powerSaveBlocker.stop(powerSaveBlockerId)
+    powerSaveBlockerId = null;
   }
 });
