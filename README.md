@@ -10,5 +10,5 @@
 - **Dock и Tray меню** – просматривай треклист и управляй плеером не заходя в приложение
 
 Скачать последнюю версию:
-- [для Mac Intel](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.0/Yandex-Music-Unofficial-1.6.0.dmg)
-- [для Mac M1 (ARM)](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.0/Yandex-Music-Unofficial-1.6.0-arm64.dmg)
+- [для Mac Intel](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.1/Yandex-Music-Unofficial-1.6.1.dmg)
+- [для Mac M1 (ARM)](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.1/Yandex-Music-Unofficial-1.6.1-arm64.dmg)
