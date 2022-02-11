@@ -6,6 +6,11 @@ const { trackToMetaData, assignMetadata, getTrackMetaData } = require("./playerM
 const mediaService = new MediaService();
 mediaService.startService();
 
+// preventing background throttling
+setInterval(() => {
+  playerCmd("isPlaying");
+}, 10000);
+
 ipcMain.on("changeTrack", (_event, track) => {
   trackToMetaData(track, (metaData) => {
     updateMetadata(metaData);
@@ -72,10 +77,11 @@ mediaService.on("pause", () => {
 });
 
 mediaService.on("playPause", () => {
-  playerCmd("togglePause");
   if (getTrackMetaData().state === MediaService.STATES.PLAYING) {
+    playerCmd("pause");
     onPaused();
   } else {
+    playerCmd("play");
     onPlayed();
   }
 });
