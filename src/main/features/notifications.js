@@ -50,5 +50,8 @@ function createTrackNotification(titlePrefix) {
     icon: getCoverFilePath(),
     silent: true,
   });
+  lastNotification.on("click", () => {
+    global.mainWindow.show();
+  });
   return lastNotification;
 }
