@@ -9,7 +9,7 @@ mediaService.startService();
 // preventing background throttling
 setInterval(() => {
   playerCmd("isPlaying");
-}, 10000);
+}, 5000);
 
 ipcMain.on("changeTrack", (_event, track) => {
   trackToMetaData(track, (metaData) => {
