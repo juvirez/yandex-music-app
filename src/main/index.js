@@ -24,6 +24,7 @@ app.on("ready", () => {
     webPreferences: {
       contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
+      backgroundThrottling: false,
     },
   });
 
