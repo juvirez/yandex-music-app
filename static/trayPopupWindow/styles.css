@@ -1,0 +1,74 @@
+html, body {
+    width: 168px;
+    height: 200px;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    font-family: "Open Sans", sans-serif;
+    background-color: #000;
+    color: #fff;
+    font-size: 1em;
+}
+
+.info {
+    color: #fff;
+    margin-top: 9px;
+}
+
+.track {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.title {
+    color: #F8E24E;
+}
+
+.artist {
+    margin-top: 3px;
+    color: #818181;
+    white-space: nowrap;
+}
+
+.controls {
+    position: absolute;
+    top: 106px;
+}
+
+.play-pause {
+    position: absolute;
+    left: 50px;
+    top: -9px;
+    cursor: pointer;
+}
+
+.next {
+    position: absolute;
+    top: 7px;
+    left: 126px;
+    cursor: pointer;
+}
+
+.previous {
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    cursor: pointer;
+}
+
+.like {
+    position: absolute;
+    top: 60px;
+    left: 100px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.dislike {
+    position: absolute;
+    top: 60px;
+    left: 31px;
+    cursor: pointer;
+}

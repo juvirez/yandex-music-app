@@ -3,7 +3,7 @@ const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
-const { traySettingsChanged } = require("./dockMenu");
+const { refreshTrayMenu} = require("./dockMenu");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -92,6 +92,15 @@ const menu = Menu.buildFromTemplate([
         click(menuItem) {
           global.store.set("tray", menuItem.checked);
         },
+      },
+      {
+        type: "checkbox",
+        label: "Show song in Menu Bar",
+        checked: global.store.get("tray-song", false),
+        click(menuItem) {
+          global.store.set("tray-song", menuItem.checked);
+          refreshTrayMenu()
+        }
       },
       {
         label: "Global Hotkeys",

@@ -42,6 +42,7 @@ app.on("ready", () => {
   win.loadURL("https://music.yandex.ru");
   
   global.mainWindow = win;
+  global.trayPopUpWindow = initializeTrayPopUpWindow();
   global.store = store;
 
   require("./features");
@@ -56,6 +57,47 @@ app.on("ready", () => {
     }
   });
 });
+
+function initializeTrayPopUpWindow() {
+    let trayPopUpWindow = new BrowserWindow({
+        title: "Яндекс.Музыка",
+        width: 168,
+        height: 200,
+        show: false,
+        frame: false,
+        fullscreenable: false,
+        resizable: false,
+        webPreferences: {
+            contextIsolation: true,
+            preload: path.join(__dirname, "../renderer/trayPopUpPreload.js"),
+            backgroundThrottling: false,
+            nodeIntegration: false,
+            enableRemoteModule: false,
+        }
+    });
+    trayPopUpWindow.on("blur", trayPopUpWindow.hide);
+    trayPopUpWindow.loadFile('src/renderer/trayPopUp.html');
+    ipcMain.on("playerCmd", (_event, data) => {
+        win.webContents.send("playerCmd", data);
+    });
+    ipcMain.on("changeTrack", (_event, data) => {
+        trayPopUpWindow.webContents.send("changeTrack", data);
+    });
+    ipcMain.on("changeTrack", (_event, data) => {
+      trayPopUpWindow.webContents.send("changeTrack", data);
+    });
+    ipcMain.on("initControls", (_event, {currentTrack, controls}) => {
+        trayPopUpWindow.webContents.send("initControls", {currentTrack, controls});
+    });
+    ipcMain.on("changeControls", (_event, {currentTrack, controls}) => {
+        trayPopUpWindow.webContents.send("changeControls", {currentTrack, controls});
+    });
+    ipcMain.on("changeState", (_event, {isPlaying, currentTrack}) => {
+        trayPopUpWindow.webContents.send("changeState", {isPlaying, currentTrack});
+    });
+
+    return trayPopUpWindow;
+}
 
 app.setAsDefaultProtocolClient("yandex-music-app");
 

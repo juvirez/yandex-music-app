@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Я.Музыка</title>
+    <link rel="stylesheet" href="../../static/trayPopupWindow/styles.css">
+</head>
+<body>
+<div class="title">Я.Музыка</div>
+<div class="info">
+    <div id="track" class="track"></div>
+    <div id="artist" class="artist"></div>
+</div>
+<div class="controls">
+    <div class="play-pause">
+        <img src="../../static/trayPopupWindow/play.svg" alt="" width="55px" id="play">
+    </div>
+    <div class="next">
+        <img src="../../static/trayPopupWindow/next.svg" alt="" width="20px" id="next">
+    </div>
+    <div class="previous">
+        <img src="../../static/trayPopupWindow/prev.svg" alt="" width="20px" id="previous">
+    </div>
+    <div class="like-dislike">
+        <div class="like">
+            <img src="../../static/trayPopupWindow/like.svg" alt="" width="25px" id="like">
+        </div>
+        <div class="dislike">
+            <img src="../../static/trayPopupWindow/dislike.svg" alt="" width="25px" id="dislike">
+        </div>
+    </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    let track = document.getElementById('track');
+    let artist = document.getElementById('artist');
+    let play = document.getElementById('play');
+    let next = document.getElementById('next');
+    let previous = document.getElementById('previous');
+    let like = document.getElementById('like');
+    let dislike = document.getElementById('dislike');
+
+    let likeDefaultImage = "../../static/trayPopupWindow/like.svg";
+    let currentTrack = {
+      title: "",
+      artists: [],
+      liked: false
+    };
+    let controls = {
+      dislike: false,
+      index: false,
+      like: false,
+      next: false,
+      prev: false,
+      repeat: false,
+      shuffle: false
+    };
+
+    window.api.receive("changeTrack", (data) => {
+      updateTrack(data);
+    });
+
+    window.api.receive("initControls", (data) => {
+      updateControls(data.controls);
+      updateTrack(data.currentTrack);
+    });
+
+    window.api.receive("changeState", (data) => {
+      play.src = data.isPlaying === true
+        ? "../../static/trayPopupWindow/pause.svg"
+        : "../../static/trayPopupWindow/play.svg";
+    });
+
+    window.api.receive("changeControls", (data) => {
+      updateControls(data.controls);
+      updateTrack(data.currentTrack);
+    });
+
+    let updateControls = (newControls) => {
+      controls = newControls;
+
+      next.src = controls.next === true
+        ? "../../static/trayPopupWindow/next.svg"
+        : "../../static/trayPopupWindow/next-disabled.svg";
+
+      previous.src = controls.prev
+        ? "../../static/trayPopupWindow/prev.svg"
+        : "../../static/trayPopupWindow/prev-disabled.svg";
+
+      like.src = controls.like === true
+        ? "../../static/trayPopupWindow/like.svg"
+        : "../../static/trayPopupWindow/like-disabled.svg";
+
+      dislike.src = controls.dislike === true
+        ? "../../static/trayPopupWindow/dislike.svg"
+        : "../../static/trayPopupWindow/dislike-disabled.svg";
+    };
+
+    let updateTrack = (newTrack) => {
+      if (!newTrack) {
+        return;
+      }
+      currentTrack = newTrack;
+      track.innerText = newTrack.title;
+      artist.innerText = newTrack.artists.map(i => i.title).join(', ');
+
+      likeDefaultImage = controls.like === true && newTrack.liked
+        ? "../../static/trayPopupWindow/like-hover.svg"
+        : "../../static/trayPopupWindow/like.svg";
+    };
+
+    play.onclick = (e) => {
+      e.target.src.search("play.svg") !== -1
+        ? e.target.src = "../../static/trayPopupWindow/pause.svg"
+        : e.target.src = "../../static/trayPopupWindow/play.svg";
+
+      window.api.send("playerCmd", "togglePause");
+    };
+
+    next.onclick = (e) => {
+      if (controls.next !== true) {
+        return;
+      }
+
+      window.api.send("playerCmd", "next");
+    };
+
+    previous.onclick = (e) => {
+      if (controls.prev !== true) {
+        return;
+      }
+
+      window.api.send("playerCmd", "prev");
+    };
+
+    like.onclick = (e) => {
+      if (controls.like !== true) {
+        return;
+      }
+
+      e.target.src = currentTrack.liked
+        ? "../../static/trayPopupWindow/like.svg"
+        : "../../static/trayPopupWindow/like-hover.svg";
+
+      window.api.send("playerCmd", "toggleLike");
+    };
+
+    dislike.onclick = (e) => {
+      if (controls.dislike !== true) {
+        return;
+      }
+
+      window.api.send("playerCmd", "toggleDislike");
+    };
+
+    like.onmouseenter = (e) => {
+      e.target.src = "../../static/trayPopupWindow/like-hover.svg";
+    };
+
+    like.onmouseleave = (e) => {
+      e.target.src = currentTrack.liked
+        ? "../../static/trayPopupWindow/like-hover.svg"
+        : "../../static/trayPopupWindow/like.svg";
+    };
+
+    dislike.onmouseenter = (e) => {
+      e.target.src = "../../static/trayPopupWindow/dislike-hover.svg";
+    };
+
+    dislike.onmouseleave = (e) => {
+      e.target.src = "../../static/trayPopupWindow/dislike.svg";
+    };
+
+  });
+
+</script>
+</body>
+</html>

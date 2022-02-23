@@ -34,7 +34,7 @@ let playlistMenu = createPlayListMenuItem([]);
 
 refreshMenu();
 
-function refreshMenu() {
+function buildMenu() {
   const menu = new Menu();
   menu.append(new MenuItem({ label: "Now Playing", enabled: false }));
   menu.append(trackInfo);
@@ -46,29 +46,21 @@ function refreshMenu() {
   menu.append(previous);
   menu.append(new MenuItem({ type: "separator" }));
   menu.append(playlistMenu);
+  return menu;
+}
+
+exports.refreshTrayMenu = () => {
+  refreshMenu()
+}
+
+function refreshMenu() {
+  const menu = buildMenu();
 
   // Update Dock
   app.dock.setMenu(menu);
 
-  // Update Tray
   if (tray) {
-    menu.append(new MenuItem({ type: "separator" }));
-    menu.append(
-      new MenuItem({
-        type: "checkbox",
-        label: "Show song in Menu Bar",
-        checked: global.store.get("tray-song", false),
-        click(menuItem) {
-          tray.showTitle = menuItem.checked;
-          global.store.set("tray-song", tray.showTitle);
-          refreshMenu();
-        },
-      })
-    );
-    menu.append(new MenuItem({ type: "separator" }));
-    menu.append(new MenuItem({ role: "quit", label: "Quit" }));
-    tray.setContextMenu(menu);
-
+    tray.showTitle = global.store.get("tray-song", false);
     tray.setTitle((tray.showTitle && play.playing && trackInfo.label) || "");
   }
 }
@@ -178,12 +170,37 @@ function createPlayListMenuItem(tracks, currentTrack) {
   });
 }
 
+function togglePopUp() {
+  global.trayPopUpWindow.isVisible()
+    ? global.trayPopUpWindow.hide()
+    : showPopUp();
+}
+
+function getPopUpPosition() {
+  const windowBounds = global.trayPopUpWindow.getBounds();
+  const trayBounds = tray.getBounds();
+  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
+  const y = Math.round(trayBounds.y + trayBounds.height);
+  return {x, y};
+}
+
+function showPopUp() {
+  const position = getPopUpPosition();
+  global.trayPopUpWindow.setPosition(position.x, position.y, false);
+  global.trayPopUpWindow.show();
+  global.trayPopUpWindow.setVisibleOnAllWorkspaces(true);
+  global.trayPopUpWindow.focus();
+  global.trayPopUpWindow.setVisibleOnAllWorkspaces(false);
+}
+
 function initTray(trayEnabled, skipRefresh) {
   if (trayEnabled) {
     if (!tray) {
       let logo = "static/trayTemplate.png";
       if (app.isPackaged) logo = `${process.resourcesPath}/${logo}`;
       tray = new Tray(logo);
+      tray.setIgnoreDoubleClickEvents(true);
+      tray.on('click', togglePopUp);
     }
 
     tray.showTitle = global.store.get("tray-song", false);
