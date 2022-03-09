@@ -24,7 +24,6 @@ app.on("ready", () => {
     webPreferences: {
       contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
-      backgroundThrottling: false,
     },
   });
 
@@ -43,6 +42,8 @@ app.on("ready", () => {
   
   global.mainWindow = win;
   global.store = store;
+
+  win.webContents.openDevTools();
 
   require("./features");
 
