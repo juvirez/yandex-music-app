@@ -43,8 +43,6 @@ app.on("ready", () => {
   global.mainWindow = win;
   global.store = store;
 
-  win.webContents.openDevTools();
-
   require("./features");
 
   win.on("close", (e) => {
