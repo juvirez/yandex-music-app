@@ -14,4 +14,11 @@ webContents.on("dom-ready", () => {
       display: none !important;
     }
   `);
+
+  // music visualizer animation
+  webContents.insertCSS(`
+    .rup__animation .audio-animation__fallback {
+      display: none !important;
+    }
+  `);
 });
