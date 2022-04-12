@@ -15,10 +15,14 @@ webContents.on("dom-ready", () => {
     }
   `);
 
+
+  const animationsDisabled = global.store.get('animations_disabled', true);
   // music visualizer animation
-  webContents.insertCSS(`
-    .rup__animation .audio-animation__fallback {
-      display: none !important;
-    }
-  `);
+  if (animationsDisabled) {
+    webContents.insertCSS(`
+      .rup__animation .audio-animation__fallback {
+        display: none !important;
+      }
+    `);
+  }
 });
