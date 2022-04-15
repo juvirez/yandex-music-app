@@ -94,6 +94,14 @@ const menu = Menu.buildFromTemplate([
         },
       },
       {
+        label: "Enable Discord rich presence",
+        type: "checkbox",
+        checked: global.store.get("discord"),
+        click(menuItem) {
+          global.store.set("discord", menuItem.checked);
+        },
+      },
+      {
         label: "Global Hotkeys",
         click: showHotkeysDialog,
       },
