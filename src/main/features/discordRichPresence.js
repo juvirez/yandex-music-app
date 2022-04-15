@@ -1,26 +1,27 @@
 const { ipcMain } = require("electron");
 const DiscordRPC = require("discord-rpc");
+const { debounce } = require("../utils");
 
 const clientId = '964280130639921202';
 let client = null;
 
-if (isDiscordEnabled()) ensureLogged();
+exports.onFeatureSwitch = onFeatureSwitch;
 
-ipcMain.on("changeState", (_event, state) => {
-  handleTrackChange(state);
-});
+function onFeatureSwitch() {
+  if (!isDiscordEnabled()) freeClient();
+}
 
-ipcMain.on("changeTrack", (_event, state) => {
-  handleTrackChange(state);
-});
+ipcMain.on("changeState", (_event, state) => handleTrackChange(state));
 
-function handleTrackChange(state) {
+ipcMain.on("changeTrack", (_event, state) => handleTrackChange(state));
+
+const handleTrackChange = debounce((state) => {
   if (!isDiscordEnabled()) return;
 
   ensureLogged().then(isLogged => {
     if (isLogged) setActivity(state);
   });
-}
+}, 1000);
 
 function isDiscordEnabled() {
   return global.store.get("discord", false);
@@ -29,19 +30,28 @@ function isDiscordEnabled() {
 async function ensureLogged() {
   if (!!client && !!client.user) return true;
 
+  await freeClient();
   return newLogin();
 }
 
 function newLogin() {
   return new Promise(resolve => {
     client = new DiscordRPC.Client({ transport: 'ipc' });
-    client.on('disconnected', () => client = null);
+    client.on('disconnected', () => freeClient());
 
-    client.login({ clientId }).catch((_err) => resolve(false));
-    client.on('ready', () => {
-      resolve(true);
-    });
+    client
+      .login({ clientId })
+      .catch((_err) => resolve(false));
+
+    client.on('ready', () => resolve(true));
   })
+}
+
+async function freeClient() {
+  if (!client) return;
+
+  await client.destroy();
+  client = null;
 }
 
 function setActivity({ isPlaying, currentTrack }) {
