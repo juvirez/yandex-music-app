@@ -21,6 +21,8 @@ app.on("activate", () => {
 app.on("ready", () => {
   win = new BrowserWindow({
     title: "Яндекс.Музыка",
+    minHeight: 200,
+    minWidth: 400,
     webPreferences: {
       contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
