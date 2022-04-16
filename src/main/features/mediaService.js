@@ -29,7 +29,6 @@ ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
   if (!MediaService.STATES) return; // for macos < 10.13
 
-  const oldState = getTrackMetaData().state;
   const newState = state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED;
   const mediaServiceState = {
     state: newState,
@@ -98,7 +97,14 @@ function playerCmd(cmd) {
 }
 
 function updateMetadata(newMetadata) {
-  assignMetadata(newMetadata) && mediaService.setMetaData(getTrackMetaData());
+  const successAssigned = assignMetadata(newMetadata);
+  if (successAssigned) {
+    const trackMetaData = getTrackMetaData();
+    if (global.store.get("disable_cover_in_media_service", false)) {
+      trackMetaData.albumArt = undefined;
+    }
+    mediaService.setMetaData(trackMetaData);
+  }
 }
 
 function isNotificationsEnabled() {
