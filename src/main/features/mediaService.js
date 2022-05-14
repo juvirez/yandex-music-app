@@ -6,8 +6,8 @@ const { trackToMetaData, assignMetadata, getTrackMetaData } = require("./playerM
 const mediaService = new MediaService();
 mediaService.startService();
 
-ipcMain.on("changeTrack", (_event, track) => {
-  trackToMetaData(track, (metaData) => {
+ipcMain.on("changeTrack", (_event, { currentTrack }) => {
+  trackToMetaData(currentTrack, (metaData) => {
     updateMetadata(metaData);
     if (isNotificationsEnabled() && metaData.state == MediaService.STATES.PLAYING) {
       showTrackNotification();

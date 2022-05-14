@@ -31,6 +31,7 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "electron-google-analytics": "^1.0.0",
     "electron-media-service": "juvirez/electron-media-service",
     "electron-store": "^8.0.1",

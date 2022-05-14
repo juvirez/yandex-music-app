@@ -15,7 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
-    ipc.send("changeTrack", track);
+    ipc.send("changeTrack", {
+      isPlaying: externalAPI.isPlaying(),
+      currentTrack: track,
+    });
     ipc.send("changePlaylist", {
       currentTrack: track,
       playlist: externalAPI.getTracksList().filter((t) => !!t),

@@ -9,3 +9,4 @@ require("./ga");
 require("./sessionModifier");
 require("./preventSleepWhilePlaying");
 require("./notifications");
+require("./discordRichPresence")

@@ -4,20 +4,17 @@ const { getTrackMetaData, getCoverFilePath } = require("./playerMetaData");
 
 let lastNotification;
 
-exports.showTrackNotification = showTrackNotification;
 exports.showLoveNotification = showLoveNotification;
+exports.showTrackNotification = debounce(() => {
+  const metaData = getTrackMetaData();
+  let emoji;
+  if (metaData.liked) {
+    emoji = "❤️ ";
+  }
+  const notification = createTrackNotification(emoji);
+  notification && notification.show();
+}, 300);
 
-function showTrackNotification() {
-  debounce(() => {
-    const metaData = getTrackMetaData();
-    let emoji;
-    if (metaData.liked) {
-      emoji = "❤️ ";
-    }
-    const notification = createTrackNotification(emoji);
-    notification && notification.show();
-  }, 300);
-}
 
 function showLoveNotification(loved) {
   let emoji;
