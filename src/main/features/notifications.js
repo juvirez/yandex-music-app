@@ -38,6 +38,11 @@ function createTrackNotification(titlePrefix) {
   if (!metaData.title) return;
 
   let title = metaData.title;
+  let subtitle = metaData.artist;
+  
+  if (metaData.album)
+    subtitle += ' — ' + metaData.album;
+
   if (titlePrefix) {
     title = titlePrefix + title;
   }
@@ -46,7 +51,7 @@ function createTrackNotification(titlePrefix) {
 
   lastNotification = new Notification({
     title: title,
-    subtitle: metaData.artist,
+    subtitle: subtitle,
     icon: getCoverFilePath(),
     silent: true,
   });
