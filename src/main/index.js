@@ -62,7 +62,7 @@ app.setAsDefaultProtocolClient("yandex-music-app");
 
 app.on("open-url", (event, url) => {
   event.preventDefault();
-  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace('yandex-music-app:/', ''));
+  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace('yandex-music-app:', ''));
 });
 
 exports.showLoader = () => {
