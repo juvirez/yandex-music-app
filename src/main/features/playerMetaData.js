@@ -4,6 +4,9 @@ var https = require("https");
 var fs = require("fs");
 
 const coverFilePath = app.getPath("temp") + "cover.jpg";
+const defaultCoverFilePath = "static/default_cover.png"
+let coverExists = false;
+
 let metaData = {
   state: MediaService.STATES.STOPPED,
 };
@@ -13,7 +16,7 @@ exports.getTrackMetaData = () => {
 };
 
 exports.getCoverFilePath = () => {
-  return coverFilePath;
+  return coverExists ? coverFilePath : defaultCoverFilePath;
 };
 
 exports.assignMetadata = (newMetadata) => {
@@ -50,7 +53,13 @@ exports.trackToMetaData = (track, callback) => {
     https.get(coverUrl, (response) => {
       response.pipe(file);
     });
-    file.on('finish', () => callback(metaData));
+    file.on('finish', () => {
+      coverExists = true;
+      callback(metaData);
+    });
+  } else {
+    coverExists = false;
+    callback(metaData);
   }
 };
 
