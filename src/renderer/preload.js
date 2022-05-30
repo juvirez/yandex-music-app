@@ -1,5 +1,4 @@
 const ipc = require("electron").ipcRenderer;
-const settings = require("electron-settings");
 
 document.addEventListener("DOMContentLoaded", () => {
   let bodyAttributesObserver = new MutationObserver((mutationsList) => {
@@ -16,9 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
-    showNotification(track);
-
-    ipc.send("changeTrack", track);
+    ipc.send("changeTrack", {
+      isPlaying: externalAPI.isPlaying(),
+      currentTrack: track,
+    });
     ipc.send("changePlaylist", {
       currentTrack: track,
       playlist: externalAPI.getTracksList().filter((t) => !!t),
@@ -31,8 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   externalAPI.on(externalAPI.EVENT_STATE, () => {
     const track = externalAPI.getCurrentTrack();
-    if (!lastNotification) showNotification(track);
-
     ipc.send("changeState", {
       isPlaying: externalAPI.isPlaying(),
       currentTrack: track,
@@ -92,38 +90,22 @@ ipc.on("playTrack", (_event, index) => {
   externalAPI.play(index);
 });
 
-let lastNotification;
-
-function showNotification(track) {
-  if (!settings.get("notifications", true) || !externalAPI.isPlaying()) return;
-  if (lastNotification) lastNotification.close();
-
-  let coverUrl =
-    track.cover && typeof track.cover == "string" ? "https://" + track.cover.replace("%%", "100x100") : null;
-
-  lastNotification = new Notification(track.title, {
-    body: track.artists.map((a) => a.title).join(", "),
-    icon: coverUrl,
-    silent: true,
-  });
-}
-
 function initBackNavigationButton() {
-  let headSearch = document.querySelector(".head__search");
+  let headSearch = document.querySelector(".head-kids__controlls");
   if (headSearch) {
     let template = document.createElement("template");
-    template.innerHTML = `<button
+    template.innerHTML = `<div class="head-kids__search"><div class="d-search"><button
       class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered"
       style="margin-left: 22px; margin-right: -22px;" disabled>
       <span class="d-button-inner deco-button-stylable">
       <span class="d-button__inner"><span class="d-icon deco-icon d-icon_arrow-left"></span></span>
-      </span></button>`;
+      </span></button></div></div>`;
     let nodeElement = template.content.firstElementChild;
     nodeElement.onclick = () => window.history.back();
     headSearch.insertBefore(nodeElement, headSearch.firstChild);
 
     ipc.on("navigated", (_event, { canGoBack }) => {
-      nodeElement.disabled = !canGoBack;
+      nodeElement.querySelector('button').disabled = !canGoBack;
     });
   }
 }

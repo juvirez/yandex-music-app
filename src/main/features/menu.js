@@ -1,9 +1,10 @@
 const { app, Menu, shell } = require("electron");
-const settings = require("electron-settings");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
+const { traySettingsChanged } = require("./dockMenu");
+const discordRichPresence = require("./discordRichPresence");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -80,17 +81,26 @@ const menu = Menu.buildFromTemplate([
       {
         label: "Enable notifications",
         type: "checkbox",
-        checked: settings.get("notifications", true),
+        checked: global.store.get("notifications", true),
         click(menuItem) {
-          settings.set("notifications", menuItem.checked);
+          global.store.set("notifications", menuItem.checked);
         },
       },
       {
         label: "Show Menu Bar Icon",
         type: "checkbox",
-        checked: settings.get("tray"),
+        checked: global.store.get("tray"),
         click(menuItem) {
-          settings.set("tray", menuItem.checked);
+          global.store.set("tray", menuItem.checked);
+        },
+      },
+      {
+        label: "Enable Discord rich presence",
+        type: "checkbox",
+        checked: global.store.get("discord"),
+        click(menuItem) {
+          global.store.set("discord", menuItem.checked);
+          discordRichPresence.onFeatureSwitch();
         },
       },
       {

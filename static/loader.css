@@ -73,3 +73,9 @@ body {
 #placeholder {
   display: none;
 }
+
+#placeholder img {
+  width: 238px;
+  height: 52px;
+  margin: 0 auto;
+}

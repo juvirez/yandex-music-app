@@ -1,17 +1,18 @@
 const { ipcMain } = require("electron");
 const MediaService = require("electron-media-service");
+const { showTrackNotification } = require("./notifications");
+const { trackToMetaData, assignMetadata, getTrackMetaData } = require("./playerMetaData");
 
 const mediaService = new MediaService();
 mediaService.startService();
-const metaData = {};
 
-exports.getTrackMetaData = () => {
-  return metaData;
-};
-
-ipcMain.on("changeTrack", (_event, track) => {
-  let metaData = trackToMetaData(track);
-  updateMetadata(metaData);
+ipcMain.on("changeTrack", (_event, { currentTrack }) => {
+  trackToMetaData(currentTrack, (metaData) => {
+    updateMetadata(metaData);
+    if (isNotificationsEnabled() && metaData.state == MediaService.STATES.PLAYING) {
+      showTrackNotification();
+    }
+  });
 });
 
 ipcMain.on("changeProgress", (_event, progress) => {
@@ -28,8 +29,9 @@ ipcMain.on("changeState", (_event, state) => {
   if (!state.currentTrack) return;
   if (!MediaService.STATES) return; // for macos < 10.13
 
+  const newState = state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED;
   const mediaServiceState = {
-    state: state.isPlaying ? MediaService.STATES.PLAYING : MediaService.STATES.PAUSED,
+    state: newState,
   };
   updateMetadata(mediaServiceState);
 });
@@ -42,16 +44,40 @@ ipcMain.on("changeControls", (_event, controls) => {
   updateMetadata(mediaServiceLiked);
 });
 
+let pausedDate;
+
+function onPaused() {
+  pausedDate = new Date();
+}
+
+function onPlayed() {
+  if (!pausedDate || !isNotificationsEnabled()) return;
+  const now = new Date();
+  const seconds = Math.round((now.getTime() - pausedDate.getTime()) / 1000);
+  pausedDate = undefined;
+  if (seconds > 20) {
+    showTrackNotification();
+  }
+}
+
 mediaService.on("play", () => {
   playerCmd("play");
+  onPlayed();
 });
 
 mediaService.on("pause", () => {
   playerCmd("pause");
+  onPaused();
 });
 
 mediaService.on("playPause", () => {
-  playerCmd("togglePause");
+  if (getTrackMetaData().state === MediaService.STATES.PLAYING) {
+    playerCmd("pause");
+    onPaused();
+  } else {
+    playerCmd("play");
+    onPlayed();
+  }
 });
 
 mediaService.on("next", () => {
@@ -70,37 +96,17 @@ function playerCmd(cmd) {
   global.mainWindow.webContents.send("playerCmd", cmd);
 }
 
-function trackToMetaData(track) {
-  let coverUrl = undefined;
-  if (track.album && track.album.cover) {
-    coverUrl = "https://" + track.album.cover.replace("%%", "200x200");
-  }
-  let album = "";
-  if (track.album) {
-    album = track.album.title;
-  }
-
-  return {
-    title: track.title || "",
-    artist: track.artists.map((a) => a.title).join(", "),
-    album: album,
-    albumArt: coverUrl,
-    state: "playing",
-    id: hashCode(track.link),
-    currentTime: 0,
-    duration: track.duration,
-    liked: track.liked,
-  };
-}
-
-function hashCode(s) {
-  for (var i = 0, h = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-  return h;
-}
-
 function updateMetadata(newMetadata) {
-  Object.assign(metaData, newMetadata);
-  if (typeof metaData.id != "number") return;
+  const successAssigned = assignMetadata(newMetadata);
+  if (successAssigned) {
+    const trackMetaData = getTrackMetaData();
+    if (global.store.get("disable_cover_in_media_service", false)) {
+      trackMetaData.albumArt = undefined;
+    }
+    mediaService.setMetaData(trackMetaData);
+  }
+}
 
-  mediaService.setMetaData(metaData);
+function isNotificationsEnabled() {
+  return global.store.get("notifications", true);
 }

@@ -8,3 +8,6 @@ require("./navigation");
 require("./ga");
 require("./sessionModifier");
 require("./touchbar");
+require("./preventSleepWhilePlaying");
+require("./notifications");
+require("./discordRichPresence")

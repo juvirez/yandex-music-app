@@ -1,6 +1,6 @@
 {
   "name": "yandex-music-app",
-  "version": "1.6.0-alpha.1",
+  "version": "1.6.3",
   "author": "juvirez",
   "description": "just webview for yandex music with native features",
   "homepage": "https://yandex-music.juvs.dev",
@@ -21,33 +21,40 @@
   },
   "devDependencies": {
     "css-loader": "^3.6.0",
-    "electron": "^8.4.0",
-    "electron-builder": "^22.7.0",
+    "electron": "^15.2.0",
+    "electron-builder": "^23.0.4",
+    "electron-notarize": "^1.1.1",
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.8"
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "electron-google-analytics": "^1.0.0",
-    "electron-media-service": "auryo/electron-media-service#8e5af9c",
-    "electron-settings": "^3.2.0",
-    "github-api": "^3.3.0",
+    "electron-media-service": "juvirez/electron-media-service",
+    "electron-store": "^8.0.1",
+    "electron-updater": "^4.6.1",
     "node-addon-api": "^3.0.0",
-    "semver": "^7.3.2",
+    "node-fetch": "^2.6.7",
     "vue": "^2.6.11"
   },
   "build": {
-    "productName": "Yandex Music (Unofficial)",
-    "appId": "com.github.juvirez.yandexmusicapp",
+    "productName": "Yandex Music Unofficial",
+    "appId": "dev.juvs.yandex-music",
+    "afterSign": "./notarize.js",
     "mac": {
       "category": "public.app-category.music",
-      "target": [
-        "zip",
-        "dmg"
-      ],
-      "icon": "static/icon.icns"
+      "target": {
+        "target": "default",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      },
+      "icon": "static/icon.icns",
+      "publish": "github"
     },
     "extraResources": [
       "static/tray*.png"

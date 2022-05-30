@@ -37,6 +37,7 @@ exports.showHotkeysDialog = () => {
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
