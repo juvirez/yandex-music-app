@@ -1,5 +1,5 @@
 const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
-const { truncate } = require("../utils");
+const { getLabelForTrack } = require("../utils");
 
 let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
@@ -150,11 +150,6 @@ function handleTrackChange(currentTrack) {
   if (!hasCurrentTrack) {
     trackInfo.label = "  –";
   }
-}
-
-function getLabelForTrack(track) {
-  const label = track.title + " – " + track.artists.map((a) => a.title).join(", ");
-  return truncate(label, global.store.get("tray-song-label-length", 35));
 }
 
 function createPlayListMenuItem(tracks, currentTrack) {
