@@ -4,6 +4,7 @@ const { debounce } = require("../utils");
 
 const clientId = '964280130639921202';
 let client = null;
+let clientIsReady = false;
 
 exports.onFeatureSwitch = onFeatureSwitch;
 
@@ -28,7 +29,7 @@ function isDiscordEnabled() {
 }
 
 async function ensureLogged() {
-  if (!!client && !!client.user) return true;
+  if (clientIsReady) return true;
 
   await freeClient();
   return newLogin();
@@ -43,15 +44,19 @@ function newLogin() {
       .login({ clientId })
       .catch((_err) => resolve(false));
 
-    client.on('ready', () => resolve(true));
-  })
+    client.on('ready', () => {
+      clientIsReady = true;
+      return resolve(true);
+    });
+  });
 }
 
 async function freeClient() {
-  if (!client) return;
+  if (!clientIsReady) return;
 
   await client.destroy();
   client = null;
+  clientIsReady = false;
 }
 
 function setActivity({ isPlaying, currentTrack }) {
