@@ -45,18 +45,22 @@ function handleTrackChange(currentTrack) {
   }
 }
 
-ipcMain.on('initControls', (_event, { currentTrack, controls }) => {
+ipcMain.on('initControls', (_event, { controls, currentTrack }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 });
 
-ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
+ipcMain.on("changeControls", (_event, { controls, currentTrack }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 });
 
 ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
   playButton.label = isPlaying ? '􀊆' : '􀊄';
+  handleTrackChange(currentTrack);
+});
+
+ipcMain.on("changeTrack", (_event, { currentTrack }) => {
   handleTrackChange(currentTrack);
 });
 

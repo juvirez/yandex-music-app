@@ -10,7 +10,10 @@ exports.truncate = function (str, n) {
 	return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 };
 
-exports.getLabelForTrack = function (track) {
+exports.getLabelForTrack = function (track, truncate) {
   const label = track.title + " – " + track.artists.map((a) => a.title).join(", ");
+	if (!truncate) {
+		return label;
+	}
   return exports.truncate(label, global.store.get("tray-song-label-length", 35));
 }
