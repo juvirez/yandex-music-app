@@ -135,7 +135,7 @@ function handleControlsChange(controls) {
 function handleTrackChange(currentTrack) {
   const hasCurrentTrack = !!currentTrack;
   if (hasCurrentTrack) {
-    trackInfo.label = "  " + getLabelForTrack(currentTrack, true);
+    trackInfo.label = "  " + getLabelForTrack(currentTrack);
     like.checked = currentTrack.liked;
     like.label = currentTrack.liked ? "Loved" : "Love";
     dislike.checked = currentTrack.disliked;
