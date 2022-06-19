@@ -48,6 +48,9 @@ const menu = Menu.buildFromTemplate([
       {
         role: "close",
       },
+      {
+        role: "togglefullscreen",
+      },
     ],
   },
   {
