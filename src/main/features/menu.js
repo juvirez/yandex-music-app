@@ -3,8 +3,6 @@ const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
-const { traySettingsChanged } = require("./dockMenu");
-const discordRichPresence = require("./discordRichPresence");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -100,7 +98,6 @@ const menu = Menu.buildFromTemplate([
         checked: global.store.get("discord"),
         click(menuItem) {
           global.store.set("discord", menuItem.checked);
-          discordRichPresence.onFeatureSwitch();
         },
       },
       {

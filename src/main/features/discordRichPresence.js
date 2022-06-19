@@ -6,11 +6,9 @@ const clientId = '964280130639921202';
 let client = null;
 let clientIsReady = false;
 
-exports.onFeatureSwitch = onFeatureSwitch;
-
-function onFeatureSwitch() {
+global.store.onDidChange("discord", () => {
   if (!isDiscordEnabled()) freeClient();
-}
+});
 
 ipcMain.on("changeState", (_event, state) => handleTrackChange(state));
 
