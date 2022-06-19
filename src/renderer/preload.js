@@ -110,4 +110,10 @@ function initBackNavigationButton() {
   }
 }
 
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey && e.key === 'f') {
+    document.querySelector(".d-search__button").click();
+  }
+}, false);
+
 window.close = undefined;
