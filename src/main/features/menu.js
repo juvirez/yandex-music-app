@@ -48,6 +48,9 @@ const menu = Menu.buildFromTemplate([
       {
         role: "close",
       },
+      { type: "separator" },
+      { role: "zoomin" },
+      { role: 'zoomout' },
       {
         role: "togglefullscreen",
       },
