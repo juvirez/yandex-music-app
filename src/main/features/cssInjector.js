@@ -10,7 +10,11 @@ webContents.on("dom-ready", () => {
 
   // social login
   webContents.insertCSS(`
-    .passp-social-block, .passp-social-button {
+    .AuthSocialButton,
+    .AuthSocialBlock-provider[data-t="provider:primary:vk"],
+    .AuthSocialBlock-provider[data-t="provider:primary:fb"],
+    .AuthSocialBlock-provider[data-t="provider:primary:gg"],
+    .AuthSocialBlock-provider[data-t="provider:more"] {
       display: none !important;
     }
   `);
