@@ -59,18 +59,31 @@ function refreshMenu() {
         global.mainWindow.show();
       },
     }));
-    menu.append(
-      new MenuItem({
-        type: "checkbox",
-        label: "Show song in Menu Bar",
-        checked: global.store.get("tray-song", false),
-        click(menuItem) {
-          tray.showTitle = menuItem.checked;
-          global.store.set("tray-song", tray.showTitle);
-          refreshMenu();
-        },
-      })
-    );
+    const settings = new MenuItem({
+      label: "Menu Bar Settings",
+      type: "submenu",
+      submenu: [
+        new MenuItem({
+          type: "checkbox",
+          label: "Show song in Menu Bar",
+          checked: global.store.get("tray-song", false),
+          click(menuItem) {
+            tray.showTitle = menuItem.checked;
+            global.store.set("tray-song", tray.showTitle);
+            refreshMenu();
+          },
+        }),
+        new MenuItem({
+          type: "checkbox",
+          label: "Hide dock icon",
+          checked: global.store.get("hide-dock-icon", false),
+          click(menuItem) {            
+            global.store.set("hide-dock-icon", menuItem.checked);
+          },
+        }),
+      ],
+    });
+    menu.append(settings);
     menu.append(new MenuItem({ type: "separator" }));
     menu.append(new MenuItem({ role: "quit", label: "Quit" }));
     tray.setContextMenu(menu);
