@@ -1,5 +1,7 @@
 const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
 const { getLabelForTrack } = require("../utils");
+const { isDockIconVisible, setDockIconVisible } = require("./dockIcon");
+const { createSettingsTemplate } = require("./menu");
 
 let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
@@ -59,31 +61,10 @@ function refreshMenu() {
         global.mainWindow.show();
       },
     }));
-    const settings = new MenuItem({
-      label: "Menu Bar Settings",
-      type: "submenu",
-      submenu: [
-        new MenuItem({
-          type: "checkbox",
-          label: "Show song in Menu Bar",
-          checked: global.store.get("tray-song", false),
-          click(menuItem) {
-            tray.showTitle = menuItem.checked;
-            global.store.set("tray-song", tray.showTitle);
-            refreshMenu();
-          },
-        }),
-        new MenuItem({
-          type: "checkbox",
-          label: "Hide dock icon",
-          checked: global.store.get("hide-dock-icon", false),
-          click(menuItem) {            
-            global.store.set("hide-dock-icon", menuItem.checked);
-          },
-        }),
-      ],
-    });
-    menu.append(settings);
+    if (!isDockIconVisible()) {
+      menu.append(createMainSettings());
+    }
+    menu.append(createMenuBarSettings());
     menu.append(new MenuItem({ type: "separator" }));
     menu.append(new MenuItem({ role: "quit", label: "Quit" }));
     tray.setContextMenu(menu);
@@ -189,6 +170,43 @@ function createPlayListMenuItem(tracks, currentTrack) {
     type: "submenu",
     enabled: tracks.length > 0,
     submenu: menu,
+  });
+}
+
+function createMenuBarSettings() {
+  return new MenuItem({
+    label: "Menu Bar Settings",
+    type: "submenu",
+    submenu: [
+      new MenuItem({
+        type: "checkbox",
+        label: "Show song in Menu Bar",
+        checked: global.store.get("tray-song", false),
+        click(menuItem) {
+          tray.showTitle = menuItem.checked;
+          global.store.set("tray-song", tray.showTitle);
+          refreshMenu();
+        },
+      }),
+      new MenuItem({
+        type: "checkbox",
+        label: "Hide dock icon",
+        checked: !isDockIconVisible(),
+        click(menuItem) {            
+          setDockIconVisible(!menuItem.checked);
+          refreshMenu();
+        },
+      }),
+    ],
+  });
+}
+
+function createMainSettings() {
+  const settingsTemplate = createSettingsTemplate(true);
+  return new MenuItem({
+    label: "Settings",
+    type: "submenu",
+    submenu: Menu.buildFromTemplate(settingsTemplate),
   });
 }
 
