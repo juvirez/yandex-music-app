@@ -53,6 +53,12 @@ function refreshMenu() {
   // Update Tray
   if (tray) {
     menu.append(new MenuItem({ type: "separator" }));
+    menu.append(new MenuItem({
+      label: "Show App",
+      click() {
+        global.mainWindow.show();
+      },
+    }));
     menu.append(
       new MenuItem({
         type: "checkbox",
