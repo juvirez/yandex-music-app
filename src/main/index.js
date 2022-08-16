@@ -49,7 +49,10 @@ app.on("ready", () => {
 
   win.on("close", (e) => {
     if (willQuitApp) {
-      store.set("window.bounds", win.getBounds());
+      const bounds = win.getBounds();
+      if (bounds.width > 400 && bounds.height > 200) {
+        store.set("window.bounds", bounds);
+      }
       win = null;
     } else {
       e.preventDefault();
