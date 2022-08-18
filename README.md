@@ -11,7 +11,7 @@
 
 Скачать последнюю версию:
 
-- [для Mac Intel](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.3/Yandex-Music-Unofficial-1.6.3.dmg)
-- [для Mac M1 (ARM)](https://github.com/juvirez/yandex-music-app/releases/download/v1.6.3/Yandex-Music-Unofficial-1.6.3-arm64.dmg)
+- [для Mac Intel](https://github.com/juvirez/yandex-music-app/releases/download/v1.7.0/Yandex-Music-Unofficial-1.7.0.dmg)
+- [для Mac M1 (ARM)](https://github.com/juvirez/yandex-music-app/releases/download/v1.7.0/Yandex-Music-Unofficial-1.7.0-arm64.dmg)
 
 Или через brew: `brew install --cask yandex-music-unofficial`
