@@ -2,24 +2,28 @@ const { ipcMain, TouchBar, nativeImage } = require('electron')
 const { getLabelForTrack } = require("../utils");
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
 
+function getIcon(sfSymbolName) {
+  return nativeImage.createFromPath(`static/touchbar/${sfSymbolName}@2x.png`);
+}
+
 const titleLabel = new TouchBarLabel({});
 const likeButton = new TouchBarButton({
-  label: '️􀊴',
+  icon: getIcon('heart'),
   enabled: false,
   click: () => playerCmd("toggleLike"),
 });
 const playButton = new TouchBarButton({
-  label: '􀊈',
+  icon: getIcon('playpause.fill'),
   enabled: false,
   click: () => playerCmd("togglePause"),
 });
 const nextButton = new TouchBarButton({
-  label: '􀊌',
+  icon: getIcon('forward.fill'),
   enabled: false,
   click: () => playerCmd("next"),
 });
 const prevButton = new TouchBarButton({
-  label: '􀊊',
+  icon: getIcon('backward.fill'),
   enabled: false,
   click: () => playerCmd("prev"),
 });
@@ -39,7 +43,7 @@ function handleTrackChange(currentTrack) {
   likeButton.enabled = hasCurrentTrack;
   if (hasCurrentTrack) {
     titleLabel.label = getLabelForTrack(currentTrack);
-    likeButton.label = (currentTrack.liked) ? '􀊵' : '􀊴';
+    likeButton.icon = (currentTrack.liked) ? getIcon('heart.fill') : getIcon('heart');
   } else {
     titleLabel.label = '';
   }
@@ -56,7 +60,7 @@ ipcMain.on("changeControls", (_event, { controls, currentTrack }) => {
 });
 
 ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
-  playButton.label = isPlaying ? '􀊆' : '􀊄';
+  playButton.icon = isPlaying ? getIcon('pause.fill') : getIcon('play.fill');
   handleTrackChange(currentTrack);
 });
 
