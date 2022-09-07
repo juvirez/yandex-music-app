@@ -1,9 +1,13 @@
-const { ipcMain, TouchBar, nativeImage } = require('electron')
+const { app, ipcMain, TouchBar, nativeImage } = require('electron')
 const { getLabelForTrack } = require("../utils");
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
 
 function getIcon(sfSymbolName) {
-  return nativeImage.createFromPath(`${process.resourcesPath}/static/touchbar/${sfSymbolName}@2x.png`);
+  let iconPath = `static/touchbar/${sfSymbolName}@2x.png`;
+  if (app.isPackaged) {
+    iconPath = process.resourcesPath + '/' + iconPath;
+  }
+  return nativeImage.createFromPath(iconPath);
 }
 
 const titleLabel = new TouchBarLabel({});
