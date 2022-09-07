@@ -12,5 +12,5 @@ exports.truncate = function (str, n) {
 
 exports.getLabelForTrack = function (track) {
   const label = track.title + " – " + track.artists.map((a) => a.title).join(", ");
-  return exports.truncate(label, global.store.get("tray-song-label-length", 50));
+  return exports.truncate(label, global.store.get("tray-song-label-length", 45));
 }
