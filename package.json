@@ -57,7 +57,8 @@
       "publish": "github"
     },
     "extraResources": [
-      "static/tray*.png"
+      "static/tray*.png",
+      "static/touchbar/*.png"
     ]
   }
 }

@@ -3,7 +3,7 @@ const { getLabelForTrack } = require("../utils");
 const { TouchBarLabel, TouchBarButton, TouchBarSpacer } = TouchBar
 
 function getIcon(sfSymbolName) {
-  return nativeImage.createFromPath(`static/touchbar/${sfSymbolName}@2x.png`);
+  return nativeImage.createFromPath(`${process.resourcesPath}/static/touchbar/${sfSymbolName}@2x.png`);
 }
 
 const titleLabel = new TouchBarLabel({});
