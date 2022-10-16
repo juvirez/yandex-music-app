@@ -117,3 +117,5 @@ document.addEventListener('keydown', (e) => {
 }, false);
 
 window.close = undefined;
+
+require("./darkmode");

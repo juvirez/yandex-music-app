@@ -109,6 +109,14 @@ function createSettings(isMenuBar) {
         global.store.set("notifications", menuItem.checked);
       },
     },
+    {
+      label: "Sync with OS theme",
+      type: "checkbox",
+      checked: global.store.get("sync-theme", true),
+      click(menuItem) {
+        global.store.set("sync-theme", menuItem.checked);
+      },
+    },
     (isMenuBar) ? undefined : showMenuBarIconOption,
     {
       label: "Enable Discord rich presence",
