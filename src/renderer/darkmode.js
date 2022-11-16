@@ -1,12 +1,27 @@
 const { ipcRenderer } = require("electron");
 
+let yandexMusicDarkTheme;
+const bodyAttributesObserver = new MutationObserver(() => {
+  yandexMusicDarkTheme = isCurrentThemeIsDark();
+  refreshTheme();
+});
+
 document.addEventListener("DOMContentLoaded", () => {
+  yandexMusicDarkTheme = isCurrentThemeIsDark();
+
   refreshTheme();
   
-  let bodyAttributesObserver = new MutationObserver(refreshTheme);
   bodyAttributesObserver.observe(document.body, { attributes: true });
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refreshTheme);
+});
+
+ipcRenderer.on("sync-theme-changed", (_event, syncTheme) => {
+  if (syncTheme) {
+    refreshTheme();
+  } else {
+    changeThemeForced(yandexMusicDarkTheme);
+  }
 });
 
 async function refreshTheme() {
@@ -15,12 +30,19 @@ async function refreshTheme() {
     return;
   }
 
+  const osThemeIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  changeThemeForced(osThemeIsDark);
+}
+
+function changeThemeForced(darkTheme) {
+  bodyAttributesObserver.disconnect();
+  Mu.settings.theme = (darkTheme) ? 'black' : 'white';
+
   const darkClassNames = ['theme', 'black', 'theme-black', 'icon-theme-black'];
   const lightClassNames = ['theme-white', 'icon-theme-white'];
   const logoDarkClassNames = ['d-logo__white', 'd-logo__white__' + getLogoLang()];
 
-  const osThemeIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (osThemeIsDark) {
+  if (darkTheme) {
     document.body.classList.remove(...lightClassNames);
     document.body.classList.add(...darkClassNames);
     document.querySelector('.d-logo').classList.add(...logoDarkClassNames);
@@ -35,6 +57,7 @@ async function refreshTheme() {
     document.querySelector('.centerblock-wrapper').classList.remove('theme');
     document.querySelector('.centerblock').classList.remove('theme');
   }
+  bodyAttributesObserver.observe(document.body, { attributes: true });
 }
 
 function getLogoLang() {
@@ -44,4 +67,8 @@ function getLogoLang() {
     return 'en';
   }
   return langClassName.slice(-2);
+}
+
+function isCurrentThemeIsDark() {
+  return document.body.classList.contains('black');
 }
