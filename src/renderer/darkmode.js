@@ -2,7 +2,11 @@ const { ipcRenderer } = require("electron");
 
 let yandexMusicDarkTheme;
 const bodyAttributesObserver = new MutationObserver(() => {
-  yandexMusicDarkTheme = isCurrentThemeIsDark();
+  ipcRenderer.invoke('getStoreValue', 'sync-theme', true).then(syncTheme => {
+    if (!syncTheme) {
+      yandexMusicDarkTheme = isCurrentThemeIsDark();
+    }
+  });
   refreshTheme();
 });
 
@@ -22,33 +26,45 @@ ipcRenderer.on("sync-theme-changed", (_event, syncTheme) => {
   } else {
     changeThemeForced(yandexMusicDarkTheme);
   }
+  if (isOtherSettingsPage()) {
+    manageDarkToggleHandler(syncTheme);
+  }
 });
 
 ipcRenderer.on("navigated", () => {
-  if (window.location.pathname === '/settings/other') {
+  if (isOtherSettingsPage()) {
     ipcRenderer.invoke('getStoreValue', 'sync-theme', true).then(syncTheme => {
       if (syncTheme) {
-        createDarkToggleHandler();
+        manageDarkToggleHandler(syncTheme);
       }
     });
   }
 });
 
-function createDarkToggleHandler(n) {
+function isOtherSettingsPage() {
+  return window.location.pathname === '/settings/other';
+}
+
+function manageDarkToggleHandler(syncTheme, n = 0) {
+  if (n > 5) {
+    return;
+  }
   setTimeout(() => {
     const toggler = document.querySelector('.page-settings__dark-theme-toggler .deco-toggler');
     if (toggler === null) {
-      createDarkToggleHandler(n + 1);
+      manageDarkToggleHandler(syncTheme, n + 1);
     } else {
-      toggler.classList.add('deco-toggler_disabled');
-      toggler.querySelector('.deco-toggler-view').childNodes.forEach((el) => 
-        el.addEventListener('click', (e) => {
-          window.alert('The Yandex Music theme is synchronized with the theme of the OS.\nChange it on Settings — Sync with OS theme');
-          e.stopPropagation();
-        }
-      ));
+      toggler.classList[(syncTheme) ? 'add' : 'remove']('deco-toggler_disabled');
+      toggler.querySelector('.deco-toggler-view').childNodes.forEach((el) => {
+        el[(syncTheme) ? 'addEventListener' : 'removeEventListener']('click', darkModeTogglerEventHandler);
+      });
     }
   }, n * 200);
+}
+
+function darkModeTogglerEventHandler(e) {
+  window.alert('The Yandex Music theme is synchronized with the theme of the OS.\nChange it on Settings — Sync with OS theme');
+  e.stopPropagation();
 }
 
 async function refreshTheme() {
@@ -97,5 +113,5 @@ function getLogoLang() {
 }
 
 function isCurrentThemeIsDark() {
-  return document.body.classList.contains('black');
+  return document.body.classList.contains('theme-black');
 }
