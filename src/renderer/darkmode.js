@@ -24,6 +24,33 @@ ipcRenderer.on("sync-theme-changed", (_event, syncTheme) => {
   }
 });
 
+ipcRenderer.on("navigated", () => {
+  if (window.location.pathname === '/settings/other') {
+    ipcRenderer.invoke('getStoreValue', 'sync-theme', true).then(syncTheme => {
+      if (syncTheme) {
+        createDarkToggleHandler();
+      }
+    });
+  }
+});
+
+function createDarkToggleHandler(n) {
+  setTimeout(() => {
+    const toggler = document.querySelector('.page-settings__dark-theme-toggler .deco-toggler');
+    if (toggler === null) {
+      createDarkToggleHandler(n + 1);
+    } else {
+      toggler.classList.add('deco-toggler_disabled');
+      toggler.querySelector('.deco-toggler-view').childNodes.forEach((el) => 
+        el.addEventListener('click', (e) => {
+          window.alert('The Yandex Music theme is synchronized with the theme of the OS.\nChange it on Settings — Sync with OS theme');
+          e.stopPropagation();
+        }
+      ));
+    }
+  }, n * 200);
+}
+
 async function refreshTheme() {
   const syncTheme = await ipcRenderer.invoke('getStoreValue', 'sync-theme', true);
   if (!syncTheme) {
