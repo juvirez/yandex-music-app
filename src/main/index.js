@@ -2,6 +2,8 @@ const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
 const path = require("path");
 const Store = require("electron-store");
 
+let i18n = new (require("./locales/i18n"))();
+
 const defaultWindowWidth = 1301;
 const defaultWindowHeight = 768;
 
@@ -9,7 +11,7 @@ let win;
 let willQuitApp = false;
 
 app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
-process.on('uncaughtException', console.error);
+process.on("uncaughtException", console.error);
 
 app.on("before-quit", () => (willQuitApp = true));
 app.on("activate", () => {
@@ -20,7 +22,7 @@ app.on("activate", () => {
 
 app.on("ready", () => {
   win = new BrowserWindow({
-    title: "Яндекс.Музыка",
+    title: i18n.__("App Name"),
     minHeight: 200,
     minWidth: 400,
     webPreferences: {
@@ -28,12 +30,16 @@ app.on("ready", () => {
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
+  app.setAboutPanelOptions({
+    applicationName: i18n.__("App Name"),
+    //version: app.getVersion, // TODO: show git revision
+  });
 
   const store = new Store();
-  ipcMain.handle('getStoreValue', (_event, key, defaultValue) => {
+  ipcMain.handle("getStoreValue", (_event, key, defaultValue) => {
     return store.get(key, defaultValue);
   });
-  ipcMain.handle('setStoreValue', (_event, key, value) => {
+  ipcMain.handle("setStoreValue", (_event, key, value) => {
     return store.set(key, value);
   });
   const windowBounds = store.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
@@ -41,7 +47,7 @@ app.on("ready", () => {
 
   exports.showLoader();
   win.loadURL("https://music.yandex.ru");
-  
+
   global.mainWindow = win;
   global.store = store;
 
@@ -65,7 +71,7 @@ app.setAsDefaultProtocolClient("yandex-music-app");
 
 app.on("open-url", (event, url) => {
   event.preventDefault();
-  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace('yandex-music-app:/', ''));
+  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace("yandex-music-app:/", ""));
 });
 
 exports.showLoader = () => {
