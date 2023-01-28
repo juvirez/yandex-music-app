@@ -37,7 +37,7 @@ ipcMain.on("navigate", (_event, url) => {
 
 function createWindow() {
   let win = new BrowserWindow({
-    width: 420,
+    width: 404,
     height: 116,
     modal: true,
     parent: global.mainWindow,
