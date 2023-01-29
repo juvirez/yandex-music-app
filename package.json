@@ -16,7 +16,7 @@
     "prebuild": "webpack",
     "build": "electron-builder",
     "publish": "electron-builder -p always",
-    "postinstall": "$(yarn bin)/electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "watch": "webpack --watch --mode=development"
   },
   "devDependencies": {
@@ -24,6 +24,7 @@
     "electron": "^19.0.3",
     "electron-builder": "^23.0.4",
     "electron-notarize": "^1.1.1",
+    "node-gyp": "^9.3.1",
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.6.14",
