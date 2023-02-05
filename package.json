@@ -16,10 +16,11 @@
     "prebuild": "webpack",
     "build": "electron-builder",
     "publish": "electron-builder -p always",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-rebuild",
     "watch": "webpack --watch --mode=development"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.2.10",
     "css-loader": "^3.6.0",
     "electron": "^19.0.3",
     "electron-builder": "^23.0.4",
