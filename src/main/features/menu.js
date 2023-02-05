@@ -1,5 +1,4 @@
-const { app, Menu, shell } = require("electron");
-const settings = require("electron-settings");
+const { app, Menu, shell, MenuItem } = require("electron");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
@@ -49,6 +48,12 @@ const menu = Menu.buildFromTemplate([
       {
         role: "close",
       },
+      { type: "separator" },
+      { role: "zoomin" },
+      { role: 'zoomout' },
+      {
+        role: "togglefullscreen",
+      },
     ],
   },
   {
@@ -76,31 +81,48 @@ const menu = Menu.buildFromTemplate([
   },
   {
     label: "Settings",
-    submenu: [
-      {
-        label: "Enable notifications",
-        type: "checkbox",
-        checked: settings.get("notifications", true),
-        click(menuItem) {
-          settings.set("notifications", menuItem.checked);
-        },
-      },
-      {
-        label: "Show Menu Bar Icon",
-        type: "checkbox",
-        checked: settings.get("tray"),
-        click(menuItem) {
-          settings.set("tray", menuItem.checked);
-        },
-      },
-      {
-        label: "Global Hotkeys",
-        click: showHotkeysDialog,
-      },
-    ],
+    submenu: createSettings(false),
   },
   {
     role: "windowMenu",
   },
 ]);
 Menu.setApplicationMenu(menu);
+
+
+function createSettings(isMenuBar) {
+  const showMenuBarIconOption = {
+    label: "Show Menu Bar Icon",
+    type: "checkbox",
+    checked: global.store.get("tray"),
+    click(menuItem) {
+      global.store.set("tray", menuItem.checked);
+    },
+  };
+
+  return [
+    {
+      label: "Enable notifications",
+      type: "checkbox",
+      checked: global.store.get("notifications", true),
+      click(menuItem) {
+        global.store.set("notifications", menuItem.checked);
+      },
+    },
+    (isMenuBar) ? undefined : showMenuBarIconOption,
+    {
+      label: "Enable Discord rich presence",
+      type: "checkbox",
+      checked: global.store.get("discord"),
+      click(menuItem) {
+        global.store.set("discord", menuItem.checked);
+      },
+    },
+    {
+      label: "Global Hotkeys",
+      click: showHotkeysDialog,
+    },
+  ].filter((item) => item !== undefined);
+}
+
+exports.createSettingsTemplate = createSettings;

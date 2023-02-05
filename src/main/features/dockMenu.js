@@ -1,5 +1,7 @@
 const { app, Menu, Tray, MenuItem, ipcMain } = require("electron");
-const settings = require("electron-settings");
+const { getLabelForTrack } = require("../utils");
+const { isDockIconVisible, setDockIconVisible } = require("./dockIcon");
+const { createSettingsTemplate } = require("./menu");
 
 let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
@@ -53,18 +55,16 @@ function refreshMenu() {
   // Update Tray
   if (tray) {
     menu.append(new MenuItem({ type: "separator" }));
-    menu.append(
-      new MenuItem({
-        type: "checkbox",
-        label: "Show song in Menu Bar",
-        checked: settings.get("tray-song"),
-        click(menuItem) {
-          tray.showTitle = menuItem.checked;
-          settings.set("tray-song", tray.showTitle);
-          refreshMenu();
-        },
-      })
-    );
+    menu.append(new MenuItem({
+      label: "Show App",
+      click() {
+        global.mainWindow.show();
+      },
+    }));
+    if (!isDockIconVisible()) {
+      menu.append(createMainSettings());
+    }
+    menu.append(createMenuBarSettings());
     menu.append(new MenuItem({ type: "separator" }));
     menu.append(new MenuItem({ role: "quit", label: "Quit" }));
     tray.setContextMenu(menu);
@@ -77,8 +77,8 @@ ipcMain.on("initControls", (_event, { currentTrack, controls }) => {
   handleControlsChange(controls);
   handleTrackChange(currentTrack);
 
-  settings.watch("tray", initTray);
-  initTray(settings.get("tray"), true);
+  global.store.onDidChange("tray", initTray);
+  initTray(global.store.get("tray"), true);
 
   refreshMenu();
 });
@@ -152,10 +152,6 @@ function handleTrackChange(currentTrack) {
   }
 }
 
-function getLabelForTrack(track) {
-  return track.title + " – " + track.artists.map((a) => a.title).join(", ");
-}
-
 function createPlayListMenuItem(tracks, currentTrack) {
   const menu = new Menu();
   tracks.forEach((track) => {
@@ -177,6 +173,43 @@ function createPlayListMenuItem(tracks, currentTrack) {
   });
 }
 
+function createMenuBarSettings() {
+  return new MenuItem({
+    label: "Menu Bar Settings",
+    type: "submenu",
+    submenu: [
+      new MenuItem({
+        type: "checkbox",
+        label: "Show song in Menu Bar",
+        checked: global.store.get("tray-song", false),
+        click(menuItem) {
+          tray.showTitle = menuItem.checked;
+          global.store.set("tray-song", tray.showTitle);
+          refreshMenu();
+        },
+      }),
+      new MenuItem({
+        type: "checkbox",
+        label: "Hide dock icon",
+        checked: !isDockIconVisible(),
+        click(menuItem) {            
+          setDockIconVisible(!menuItem.checked);
+          refreshMenu();
+        },
+      }),
+    ],
+  });
+}
+
+function createMainSettings() {
+  const settingsTemplate = createSettingsTemplate(true);
+  return new MenuItem({
+    label: "Settings",
+    type: "submenu",
+    submenu: Menu.buildFromTemplate(settingsTemplate),
+  });
+}
+
 function initTray(trayEnabled, skipRefresh) {
   if (trayEnabled) {
     if (!tray) {
@@ -185,7 +218,7 @@ function initTray(trayEnabled, skipRefresh) {
       tray = new Tray(logo);
     }
 
-    tray.showTitle = settings.get("tray-song");
+    tray.showTitle = global.store.get("tray-song", false);
 
     if (!skipRefresh) refreshMenu();
   } else if (tray) {

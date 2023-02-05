@@ -37,14 +37,15 @@ ipcMain.on("navigate", (_event, url) => {
 
 function createWindow() {
   let win = new BrowserWindow({
-    width: 440,
-    height: 117,
+    width: 404,
+    height: 116,
     modal: true,
     parent: global.mainWindow,
     resizable: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false,
     }
   });
   win.loadFile("src/renderer/openURL.html");

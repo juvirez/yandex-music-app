@@ -30,13 +30,14 @@ exports.showHotkeysDialog = () => {
 
   win = new BrowserWindow({
     width: 960,
-    height: 421,
+    height: 472,
     modal: true,
     parent: global.mainWindow,
     resizable: false,
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 

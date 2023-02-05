@@ -1,5 +1,6 @@
-const { app, BrowserWindow, BrowserView } = require("electron");
+const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
 const path = require("path");
+const Store = require("electron-store");
 
 const defaultWindowWidth = 1301;
 const defaultWindowHeight = 768;
@@ -8,6 +9,7 @@ let win;
 let willQuitApp = false;
 
 app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
+process.on('uncaughtException', console.error);
 
 app.on("before-quit", () => (willQuitApp = true));
 app.on("activate", () => {
@@ -18,27 +20,52 @@ app.on("activate", () => {
 
 app.on("ready", () => {
   win = new BrowserWindow({
-    width: defaultWindowWidth,
-    height: defaultWindowHeight,
     title: "Яндекс.Музыка",
+    minHeight: 200,
+    minWidth: 400,
     webPreferences: {
+      contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
+
+  const store = new Store();
+  ipcMain.handle('getStoreValue', (_event, key, defaultValue) => {
+    return store.get(key, defaultValue);
+  });
+  ipcMain.handle('setStoreValue', (_event, key, value) => {
+    return store.set(key, value);
+  });
+  const windowBounds = store.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
+  win.setBounds(windowBounds);
+
   exports.showLoader();
   win.loadURL("https://music.yandex.ru");
+  
   global.mainWindow = win;
+  global.store = store;
 
   require("./features");
 
   win.on("close", (e) => {
     if (willQuitApp) {
+      const bounds = win.getBounds();
+      if (bounds.width > 400 && bounds.height > 200) {
+        store.set("window.bounds", bounds);
+      }
       win = null;
     } else {
       e.preventDefault();
       win.hide();
     }
   });
+});
+
+app.setAsDefaultProtocolClient("yandex-music-app");
+
+app.on("open-url", (event, url) => {
+  event.preventDefault();
+  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace('yandex-music-app:/', ''));
 });
 
 exports.showLoader = () => {
@@ -51,6 +78,5 @@ exports.showLoader = () => {
 
   win.webContents.once("dom-ready", () => {
     win.removeBrowserView(view);
-    view.destroy();
   });
 };

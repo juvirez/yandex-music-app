@@ -4,31 +4,18 @@
     <link rel="stylesheet" href="https://music.yandex.ru/index.css" />
   </head>
   <body>
-    <div style="padding: 30px;" class="typo-main theme-white">
-      <div
-        id="input-url-wrapper"
-        class="d-input deco-input-wrapper d-input_size-M d-input_suggest deco-input-wrapper_suggest deco-input__suggest"
-      >
-        <input
-          id="input-url"
-          type="text"
-          class="d-input__field deco-input"
-          placeholder="Yandex Music URL"
-          autofocus
-          tabindex="0"
-        />
-        <button
-          id="navigate-button"
-          class="d-button deco-button deco-button-flat d-button_type_flat d-button_w-icon d-button_w-icon-centered suggest-button"
-          tabindex="1"
-        >
-          <span class="d-button-inner deco-button-stylable">
-            <span class="d-button__inner">
-              <span class="d-icon deco-icon d-icon_arrow-right "></span>
-            </span>
-          </span>
-        </button>
+    <div style="padding: 24px;" class="typo-main theme-white">
+      <div id="input-url-wrapper" class="d-input deco-input-wrapper d-input_size-L">
+        <input id="input-url" type="text" class="d-input__field deco-input" placeholder="Yandex Music URL">
+        <div class="d-input__tip deco-input__tip"></div>
       </div>
+      <button id="navigate-button" class="d-button deco-button deco-button-action" type="button">
+        <span class="d-button-inner deco-button-stylable" style="height: 40px;">
+          <span class="d-button__inner">
+            <span class="d-icon deco-icon d-icon_arrow-right "></span>
+          </span>
+        </span>
+      </button>
     </div>
   </body>
 </html>

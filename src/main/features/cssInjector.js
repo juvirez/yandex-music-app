@@ -10,8 +10,23 @@ webContents.on("dom-ready", () => {
 
   // social login
   webContents.insertCSS(`
-    .passp-social-block, .passp-social-button {
+    .AuthSocialButton,
+    .AuthSocialBlock-provider[data-t="provider:primary:vk"],
+    .AuthSocialBlock-provider[data-t="provider:primary:fb"],
+    .AuthSocialBlock-provider[data-t="provider:primary:gg"],
+    .AuthSocialBlock-provider[data-t="provider:more"] {
       display: none !important;
     }
   `);
+
+
+  const animationsDisabled = global.store.get('animations_disabled', true);
+  // music visualizer animation
+  if (animationsDisabled) {
+    webContents.insertCSS(`
+      .rup__animation .audio-animation__fallback {
+        display: none !important;
+      }
+    `);
+  }
 });
