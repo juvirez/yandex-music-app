@@ -4,7 +4,6 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: white;
 }
 .loading__spinner {
   width: 32px;
@@ -89,7 +88,6 @@ body {
 #placeholder {
   display: none;
 }
-
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body {
@@ -97,9 +95,22 @@ body {
   }
 
   .logo__black {
-
+    display: none;
   }
   .logo__white {
     display: inline-block;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #f6f5f3;
+  }
+
+  .logo__black {
+    display: inline-block;
+  }
+  .logo__white {
+    display: none;
   }
 }
