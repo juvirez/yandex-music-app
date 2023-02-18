@@ -29,4 +29,18 @@ webContents.on("dom-ready", () => {
       }
     `);
   }
+
+  // scrollbar for dark mode
+  webContents.insertCSS(`
+    @media (prefers-color-scheme: dark) {
+      html {
+        color-scheme: dark;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      html {
+        color-scheme: light;
+      }
+    }
+  `);
 });
