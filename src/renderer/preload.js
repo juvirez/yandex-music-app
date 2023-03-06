@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBackNavigationButton();
 
+  externalAPI.on(externalAPI.EVENT_READY, () => {
+    ipc.send("playerIsReady");
+  });
+
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
     ipc.send("changeTrack", {

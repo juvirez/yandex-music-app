@@ -77,7 +77,7 @@ exports.showLoader = () => {
   view.setAutoResize({ width: true, height: true, horizontal: true, vertical: true });
   view.webContents.loadFile("src/renderer/loader.html");
 
-  win.webContents.once("dom-ready", () => {
+  ipcMain.once("playerIsReady", () => {
     win.removeBrowserView(view);
   });
 };
