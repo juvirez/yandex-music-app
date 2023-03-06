@@ -5,8 +5,8 @@
   </head>
   <body>
     <div style="padding: 24px;" class="typo-main theme-white">
-      <div id="input-url-wrapper" class="d-input deco-input-wrapper d-input_size-L">
-        <input id="input-url" type="text" class="d-input__field deco-input" placeholder="Yandex Music URL">
+      <div id="input-url-wrapper" class="d-input deco-input-wrapper deco-input-wrapper_suggest d-input_size-L">
+        <input id="input-url" type="text" class="d-input__field deco-input deco-input_suggest" placeholder="Yandex Music URL">
         <div class="d-input__tip deco-input__tip"></div>
       </div>
       <button id="navigate-button" class="d-button deco-button deco-button-action" type="button">
@@ -29,6 +29,12 @@
   let inputURLWrapper = document.getElementById("input-url-wrapper");
 
   document.getElementById("navigate-button").addEventListener("click", navigateToURLFromInput);
+
+  const darkModeWatchMedia = window.matchMedia("(prefers-color-scheme: dark)");
+  darkModeWatchMedia.addEventListener("change", (e) => {
+    switchViewMode(e.matches);
+  });
+  switchViewMode(darkModeWatchMedia.matches);
 
   ipc.on("url", (_event, url) => {
     inputURL.value = url;
@@ -62,5 +68,13 @@
 
   function isYandexMusicUrl(url) {
     return url.startsWith(yandexMusicUrl);
+  }
+
+  function switchViewMode(isDarkMode) {
+    if (isDarkMode) {
+      document.body.className = "theme theme_dark deco-pane-body black theme-black action-icon-theme-white layout_narrow";
+    } else {
+      document.body.className = "deco-pane-body black layout_narrow theme-white action-icon-theme-white";
+    }
   }
 </script>
