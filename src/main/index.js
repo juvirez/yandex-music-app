@@ -1,4 +1,4 @@
-const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
+const { app, BrowserWindow, BrowserView, ipcMain, nativeTheme } = require("electron");
 const path = require("path");
 const Store = require("electron-store");
 
@@ -23,6 +23,7 @@ app.on("ready", () => {
     title: "Яндекс.Музыка",
     minHeight: 200,
     minWidth: 400,
+    backgroundColor: getWindowBackgroudColor(),
     webPreferences: {
       contextIsolation: false,
       preload: path.join(__dirname, "../renderer/preload.js"),
@@ -80,3 +81,11 @@ exports.showLoader = () => {
     win.removeBrowserView(view);
   });
 };
+
+function getWindowBackgroudColor() {
+  if (nativeTheme.shouldUseDarkColors) {
+    return "#181818";
+  } else {
+    return "#ffffff";
+  }
+}

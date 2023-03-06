@@ -91,7 +91,7 @@ body {
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #121212;
+    background-color: #181818;
   }
 
   .logo__black {
@@ -104,7 +104,7 @@ body {
 
 @media (prefers-color-scheme: light) {
   body {
-    background-color: #f6f5f3;
+    background-color: #ffffff;
   }
 
   .logo__black {
