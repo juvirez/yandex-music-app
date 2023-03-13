@@ -30,7 +30,7 @@ exports.showHotkeysDialog = () => {
 
   win = new BrowserWindow({
     width: 960,
-    height: 472,
+    height: 478,
     modal: true,
     parent: global.mainWindow,
     resizable: false,
