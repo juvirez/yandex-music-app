@@ -61,7 +61,6 @@ function setActivity({ isPlaying, currentTrack }) {
   if (!!currentTrack && isPlaying) {
     client.setActivity({
       details: currentTrack.title,
-      type: ActivityType.Listening,
       state: currentTrack.artists.map(a => a.title).join(", "),
       largeImageKey: 'https://' + currentTrack.cover.replace("%%", "200x200"),
       largeImageText: currentTrack.album.title,
