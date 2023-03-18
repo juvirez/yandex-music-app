@@ -1,8 +1,9 @@
-const { app, Menu, shell, MenuItem } = require("electron");
+const { app, Menu, shell, MenuItem, clipboard } = require("electron");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
+const { getTrackMetaData } = require("./playerMetaData");
 
 const menu = Menu.buildFromTemplate([
   {
@@ -68,6 +69,25 @@ const menu = Menu.buildFromTemplate([
         label: "Forward",
         accelerator: "CommandOrControl+]",
         click: navigation.goForward,
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Copy page URL",
+        accelerator: "CommandOrControl+Alt+S",
+        click() {
+          const url = global.mainWindow.webContents.getURL();
+          clipboard.writeText(url);
+        },
+      },
+      {
+        label: "Copy playing track URL",
+        accelerator: "CommandOrControl+Shift+S",
+        click() {
+          const { url } = getTrackMetaData();
+          clipboard.writeText(url);
+        },
       },
       {
         type: "separator",
