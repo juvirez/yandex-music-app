@@ -57,7 +57,12 @@ app.on("ready", () => {
       win = null;
     } else {
       e.preventDefault();
-      win.hide();
+      if (win.isFullScreen()) {
+        win.once('leave-full-screen', () => win.hide())
+        win.setFullScreen(false)
+      } else {
+        win.hide()
+      }      
     }
   });
 });
