@@ -7,6 +7,7 @@ const defaultWindowHeight = 768;
 
 let win;
 let willQuitApp = false;
+let initialUrl = "https://music.yandex.ru";
 
 app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
 process.on('uncaughtException', console.error);
@@ -41,7 +42,7 @@ app.on("ready", () => {
   win.setBounds(windowBounds);
 
   exports.showLoader();
-  win.loadURL("https://music.yandex.ru");
+  win.loadURL(initialUrl);
   
   global.mainWindow = win;
   global.store = store;
@@ -71,7 +72,11 @@ app.setAsDefaultProtocolClient("yandex-music-app");
 
 app.on("open-url", (event, url) => {
   event.preventDefault();
-  global.mainWindow.loadURL("https://music.yandex.ru/" + url.replace('yandex-music-app:/', ''));
+  initialUrl = url;
+  const path = url
+    .replace('yandex-music-app:/', '')
+    .replace('https://music.yandex.ru/', '');
+  global.mainWindow.loadURL("https://music.yandex.ru/" + path);
 });
 
 exports.showLoader = () => {
