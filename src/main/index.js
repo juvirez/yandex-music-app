@@ -82,8 +82,13 @@ exports.showLoader = () => {
   view.setAutoResize({ width: true, height: true, horizontal: true, vertical: true });
   view.webContents.loadFile("src/renderer/loader.html");
 
+  const timoutId = setTimeout(() => {
+    win.removeBrowserView(view);
+  }, 10000);
+
   ipcMain.once("playerIsReady", () => {
     win.removeBrowserView(view);
+    clearTimeout(timoutId);
   });
 };
 
