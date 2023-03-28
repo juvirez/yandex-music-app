@@ -1,5 +1,5 @@
 <template>
-  <div class="theme-white icon-theme-white page-settings">
+  <div class="page-settings">
     <div class="page-settings__block">
       <h2 class="page-settings__subtitle typo-h2_bold">Global Hotkeys</h2>
       <div class="hotkeys">
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style>
-.theme-white.page-settings {
+.page-settings {
   padding: 20px;
 }
 .page-settings .page-settings__block {
@@ -133,6 +133,14 @@ export default {
 .save {
   background-color: #ffdb4d !important;
   border-color: #ffdb4d !important;
+}
+@media (prefers-color-scheme: dark) {
+  .save .d-button__label {
+    color: black;
+  }
+  .d-button.disabled .save .d-button__label {
+    color: rgba(0,0,0,0.2);
+  }
 }
 .action-buttons {
   display: flex;

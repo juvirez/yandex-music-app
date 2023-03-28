@@ -12,3 +12,4 @@ require("./preventSleepWhilePlaying");
 require("./notifications");
 require("./discordRichPresence");
 require("./dockIcon");
+require("./darkmode");

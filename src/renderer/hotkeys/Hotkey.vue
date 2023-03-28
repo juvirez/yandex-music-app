@@ -1,7 +1,7 @@
 <template>
   <div class="page-settings__line page-settings--social-control deco-border typo">
     <div class="page-settings__line-label-container">
-      <div class="d-bubble deco-bubble">
+      <div class="d-bubble">
         <span class="d-icon deco-icon" v-bind:class="[iconClass]"></span>
       </div>
       <div class="page-settings__line-label">{{ title }}</div>
@@ -17,7 +17,7 @@
                 :value="hotkeyString"
                 type="text"
                 readonly
-                class="d-input__field deco-input"
+                class="d-input__field deco-input d-input__field_size-M deco-input_transparent"
               />
               <button
                 @click="clear"
@@ -94,5 +94,6 @@ function arrayContainsAll(array, contains) {
 <style>
 .d-suggest .d-input_suggest .d-input__field {
   width: 200px;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 </style>

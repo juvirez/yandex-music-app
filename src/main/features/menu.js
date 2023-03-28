@@ -1,8 +1,9 @@
-const { app, Menu, shell, MenuItem } = require("electron");
+const { app, Menu, shell, MenuItem, clipboard } = require("electron");
 const { showOpenURLDialog } = require("../dialogs/openURL");
 const { showHotkeysDialog } = require("../dialogs/hotkeys");
 const navigation = require("./navigation");
 const { showLoader } = require("../index");
+const { getTrackMetaData } = require("./playerMetaData");
 
 let i18n = new (require("../locales/i18n"))();
 const isMac = process.platform === "darwin";
@@ -100,6 +101,25 @@ const menu = Menu.buildFromTemplate([
         type: "separator",
       },
       {
+        label: i18n.__("Copy page URL"),
+        accelerator: "CommandOrControl+Alt+S",
+        click() {
+          const url = global.mainWindow.webContents.getURL();
+          clipboard.writeText(url);
+        },
+      },
+      {
+        label: i18n.__("Copy playing track URL"),
+        accelerator: "CommandOrControl+Shift+S",
+        click() {
+          const { url } = getTrackMetaData();
+          clipboard.writeText(url);
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
         label: i18n.__("Open URL"),
         accelerator: "CommandOrControl+O",
         click: showOpenURLDialog,
@@ -150,6 +170,15 @@ function createSettings(isMenuBar) {
       },
     },
     {
+      label: i18n.__("Sync with OS theme"),
+      type: "checkbox",
+      checked: global.store.get("sync-theme", true),
+      click(menuItem) {
+        global.store.set("sync-theme", menuItem.checked);
+      },
+    },
+    (isMenuBar) ? undefined : showMenuBarIconOption,
+    {
       label: i18n.__("Enable Discord rich presence"),
       type: "checkbox",
       checked: global.store.get("discord"),
@@ -157,7 +186,6 @@ function createSettings(isMenuBar) {
         global.store.set("discord", menuItem.checked);
       },
     },
-    isMenuBar ? undefined : showMenuBarIconOption,
     {
       label: i18n.__("Global Hotkeys"),
       click: showHotkeysDialog,
