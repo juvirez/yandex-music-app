@@ -32,10 +32,6 @@ app.on("ready", () => {
       preload: path.join(__dirname, "../renderer/preload.js"),
     },
   });
-  app.setAboutPanelOptions({
-    applicationName: i18n.__("App Name"),
-    //version: app.getVersion, // TODO: show git revision
-  });
 
   const store = new Store();
   ipcMain.handle("getStoreValue", (_event, key, defaultValue) => {

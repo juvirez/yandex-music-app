@@ -6,12 +6,10 @@ const { showLoader } = require("../index");
 const { getTrackMetaData } = require("./playerMetaData");
 
 let i18n = new (require("../locales/i18n"))();
-const isMac = process.platform === "darwin";
 
 const menu = Menu.buildFromTemplate([
   {
     label: app.name,
-    //label: i18n.__("App Name"),
     submenu: [
       { role: "about", label: i18n.__("About Yandex Music") },
       {
@@ -46,25 +44,17 @@ const menu = Menu.buildFromTemplate([
       { role: "cut", label: i18n.__("Cut") },
       { role: "copy", label: i18n.__("Copy") },
       { role: "paste", label: i18n.__("Paste") },
-      ...(isMac
-        ? [
-            { role: "pasteAndMatchStyle", label: i18n.__("Paste and Match Style") },
-            { role: "delete", label: i18n.__("Delete") },
-            { role: "selectAll", label: i18n.__("Select All") },
-            { type: "separator" },
-            {
-              label: i18n.__("Speech"),
-              submenu: [
-                { role: "startSpeaking", label: i18n.__("Start Speaking") },
-                { role: "stopSpeaking", label: i18n.__("Stop Speaking") },
-              ],
-            },
-          ]
-        : [
-            { role: "delete", label: i18n.__("Delete") },
-            { type: "separator" },
-            { role: "selectAll", label: i18n.__("Select All") },
-          ]),
+      { role: "pasteAndMatchStyle", label: i18n.__("Paste and Match Style") },
+      { role: "delete", label: i18n.__("Delete") },
+      { role: "selectAll", label: i18n.__("Select All") },
+      { type: "separator" },
+      {
+        label: i18n.__("Speech"),
+        submenu: [
+          { role: "startSpeaking", label: i18n.__("Start Speaking") },
+          { role: "stopSpeaking", label: i18n.__("Stop Speaking") },
+        ],
+      },
     ],
   },
   {
@@ -136,15 +126,7 @@ const menu = Menu.buildFromTemplate([
     submenu: [
       { role: "minimize", label: i18n.__("Minimize") },
       { role: "zoom", label: i18n.__("Zoom") },
-      ...(isMac
-        ? [
-            { role: "close", label: i18n.__("Close Window") },
-            //{ type: "separator" },
-            //{ role: "front", label: i18n.__("Bring All to Front") },
-            //{ type: "separator" },
-            //{ role: "window" },
-          ]
-        : [{ role: "close", label: i18n.__("Close") }]),
+      { role: "close", label: i18n.__("Close Window") },
     ],
   },
 ]);
