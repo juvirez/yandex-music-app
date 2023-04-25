@@ -65,17 +65,6 @@ function refreshMenu() {
         },
       })
     );
-    menu.append(
-      new MenuItem({
-        type: "checkbox",
-        label: i18n.__("Hide dock icon"),
-        checked: !isDockIconVisible(),
-        click(menuItem) {
-          setDockIconVisible(!menuItem.checked);
-          refreshMenu();
-        },
-      })
-    );
     if (!isDockIconVisible()) {
       menu.append(createMainSettings());
     }
@@ -200,6 +189,15 @@ function createMenuBarSettings() {
         click(menuItem) {
           tray.showTitle = menuItem.checked;
           global.store.set("tray-song", tray.showTitle);
+          refreshMenu();
+        },
+      }),
+      new MenuItem({
+        type: "checkbox",
+        label: i18n.__("Hide dock icon"),
+        checked: !isDockIconVisible(),
+        click(menuItem) {
+          setDockIconVisible(!menuItem.checked);
           refreshMenu();
         },
       }),
