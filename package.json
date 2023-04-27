@@ -60,7 +60,8 @@
     },
     "extraResources": [
       "static/tray*.png",
-      "static/touchbar/*.png"
+      "static/touchbar/*.png",
+      "static/default_cover_*.png"
     ]
   }
 }

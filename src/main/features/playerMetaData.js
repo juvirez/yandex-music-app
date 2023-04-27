@@ -1,19 +1,29 @@
-const { app } = require("electron");
+const { app, nativeTheme } = require("electron");
 const MediaService = require("electron-media-service");
 var https = require("https");
 var fs = require("fs");
 
 const coverFilePath = app.getPath("temp") + "cover.jpg";
+let coverExists = false;
+
 let metaData = {
   state: MediaService.STATES.STOPPED,
 };
+
+function getDefaultCoverFilePath() {
+  if (nativeTheme.shouldUseDarkColors) {
+    return "static/default_cover_dark.png"
+  } else {
+    return "static/default_cover_light.png"
+  }
+}
 
 exports.getTrackMetaData = () => {
   return metaData;
 };
 
 exports.getCoverFilePath = () => {
-  return coverFilePath;
+  return coverExists ? coverFilePath : getDefaultCoverFilePath();
 };
 
 exports.assignMetadata = (newMetadata) => {
@@ -51,7 +61,13 @@ exports.trackToMetaData = (track, callback) => {
     https.get(coverUrl, (response) => {
       response.pipe(file);
     });
-    file.on('finish', () => callback(metaData));
+    file.on('finish', () => {
+      coverExists = true;
+      callback(metaData);
+    });
+  } else {
+    coverExists = false;
+    callback(metaData);
   }
 };
 
