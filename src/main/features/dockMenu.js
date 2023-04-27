@@ -3,32 +3,34 @@ const { getLabelForTrack } = require("../utils");
 const { isDockIconVisible, setDockIconVisible } = require("./dockIcon");
 const { createSettingsTemplate } = require("./menu");
 
+let i18n = new (require("../locales/i18n"))();
+
 let tray = null;
 const trackInfo = new MenuItem({ label: "  –", enabled: false });
 const like = new MenuItem({
-  label: "Love",
+  label: i18n.__("Love"),
   type: "checkbox",
   enabled: false,
   click: () => playerCmd("toggleLike"),
 });
 const dislike = new MenuItem({
-  label: "Dislike",
+  label: i18n.__("Dislike"),
   type: "checkbox",
   enabled: false,
   click: () => playerCmd("toggleDislike"),
 });
 const play = new MenuItem({
-  label: "Play",
+  label: i18n.__("Play"),
   enabled: false,
   click: () => playerCmd("togglePause"),
 });
 const next = new MenuItem({
-  label: "Next",
+  label: i18n.__("Next"),
   enabled: false,
   click: () => playerCmd("next"),
 });
 const previous = new MenuItem({
-  label: "Previous",
+  label: i18n.__("Previous"),
   enabled: false,
   click: () => playerCmd("prev"),
 });
@@ -38,7 +40,7 @@ refreshMenu();
 
 function refreshMenu() {
   const menu = new Menu();
-  menu.append(new MenuItem({ label: "Now Playing", enabled: false }));
+  menu.append(new MenuItem({ label: i18n.__("Now Playing"), enabled: false }));
   menu.append(trackInfo);
   menu.append(like);
   menu.append(dislike);
@@ -55,18 +57,20 @@ function refreshMenu() {
   // Update Tray
   if (tray) {
     menu.append(new MenuItem({ type: "separator" }));
-    menu.append(new MenuItem({
-      label: "Show App",
-      click() {
-        global.mainWindow.show();
-      },
-    }));
+    menu.append(
+      new MenuItem({
+        label: i18n.__("Show App"),
+        click() {
+          global.mainWindow.show();
+        },
+      })
+    );
     if (!isDockIconVisible()) {
       menu.append(createMainSettings());
     }
     menu.append(createMenuBarSettings());
     menu.append(new MenuItem({ type: "separator" }));
-    menu.append(new MenuItem({ role: "quit", label: "Quit" }));
+    menu.append(new MenuItem({ role: "quit", label: i18n.__("Quit") }));
     tray.setContextMenu(menu);
 
     tray.setTitle((tray.showTitle && play.playing && trackInfo.label) || "");
@@ -91,7 +95,7 @@ ipcMain.on("changeControls", (_event, { currentTrack, controls }) => {
 });
 
 ipcMain.on("changeState", (_event, { isPlaying, currentTrack }) => {
-  play.label = isPlaying ? "Pause" : "Play";
+  play.label = isPlaying ? i18n.__("Pause") : i18n.__("Play");
   play.playing = isPlaying;
   handleTrackChange(currentTrack);
 
@@ -137,9 +141,9 @@ function handleTrackChange(currentTrack) {
   if (hasCurrentTrack) {
     trackInfo.label = "  " + getLabelForTrack(currentTrack);
     like.checked = currentTrack.liked;
-    like.label = currentTrack.liked ? "Loved" : "Love";
+    like.label = currentTrack.liked ? i18n.__("Loved") : i18n.__("Love");
     dislike.checked = currentTrack.disliked;
-    dislike.label = currentTrack.disliked ? "Disliked" : "Dislike";
+    dislike.label = currentTrack.disliked ? i18n.__("Disliked") : i18n.__("Dislike");
   }
 
   like.enabled = hasCurrentTrack;
@@ -166,7 +170,7 @@ function createPlayListMenuItem(tracks, currentTrack) {
     );
   });
   return new MenuItem({
-    label: "Playlist",
+    label: i18n.__("Playlist"),
     type: "submenu",
     enabled: tracks.length > 0,
     submenu: menu,
@@ -175,12 +179,12 @@ function createPlayListMenuItem(tracks, currentTrack) {
 
 function createMenuBarSettings() {
   return new MenuItem({
-    label: "Menu Bar Settings",
+    label: i18n.__("Menu Bar Settings"),
     type: "submenu",
     submenu: [
       new MenuItem({
         type: "checkbox",
-        label: "Show song in Menu Bar",
+        label: i18n.__("Show song in Menu Bar"),
         checked: global.store.get("tray-song", false),
         click(menuItem) {
           tray.showTitle = menuItem.checked;
@@ -190,9 +194,9 @@ function createMenuBarSettings() {
       }),
       new MenuItem({
         type: "checkbox",
-        label: "Hide dock icon",
+        label: i18n.__("Hide dock icon"),
         checked: !isDockIconVisible(),
-        click(menuItem) {            
+        click(menuItem) {
           setDockIconVisible(!menuItem.checked);
           refreshMenu();
         },
@@ -204,7 +208,7 @@ function createMenuBarSettings() {
 function createMainSettings() {
   const settingsTemplate = createSettingsTemplate(true);
   return new MenuItem({
-    label: "Settings",
+    label: i18n.__("Settings"),
     type: "submenu",
     submenu: Menu.buildFromTemplate(settingsTemplate),
   });

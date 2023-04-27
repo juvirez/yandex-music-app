@@ -2,6 +2,8 @@ const { app, BrowserWindow, BrowserView, ipcMain, nativeTheme } = require("elect
 const path = require("path");
 const Store = require("electron-store");
 
+let i18n = new (require("./locales/i18n"))();
+
 const defaultWindowWidth = 1301;
 const defaultWindowHeight = 768;
 
@@ -10,7 +12,7 @@ let willQuitApp = false;
 let initialUrl = "https://music.yandex.ru";
 
 app.commandLine.appendSwitch("disable-features", "HardwareMediaKeyHandling,MediaSessionService");
-process.on('uncaughtException', console.error);
+process.on("uncaughtException", console.error);
 
 app.on("before-quit", () => (willQuitApp = true));
 app.on("activate", () => {
@@ -21,7 +23,7 @@ app.on("activate", () => {
 
 app.on("ready", () => {
   win = new BrowserWindow({
-    title: "Яндекс.Музыка",
+    title: i18n.__("App Name"),
     minHeight: 200,
     minWidth: 400,
     backgroundColor: getWindowBackgroudColor(),
@@ -32,10 +34,10 @@ app.on("ready", () => {
   });
 
   const store = new Store();
-  ipcMain.handle('getStoreValue', (_event, key, defaultValue) => {
+  ipcMain.handle("getStoreValue", (_event, key, defaultValue) => {
     return store.get(key, defaultValue);
   });
-  ipcMain.handle('setStoreValue', (_event, key, value) => {
+  ipcMain.handle("setStoreValue", (_event, key, value) => {
     return store.set(key, value);
   });
   const windowBounds = store.get("window.bounds", { width: defaultWindowWidth, height: defaultWindowHeight });
