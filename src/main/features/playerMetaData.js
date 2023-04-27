@@ -44,6 +44,7 @@ exports.trackToMetaData = (track, callback) => {
     currentTime: 0,
     duration: track.duration,
     liked: track.liked,
+    url: "https://music.yandex.ru" + track.link,
   };
 
   Object.assign(metaData, trackData);

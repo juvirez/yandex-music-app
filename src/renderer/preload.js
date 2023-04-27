@@ -13,9 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initBackNavigationButton();
 
+  externalAPI.on(externalAPI.EVENT_READY, () => {
+    ipc.send("playerIsReady");
+  });
+
   externalAPI.on(externalAPI.EVENT_TRACK, () => {
     const track = externalAPI.getCurrentTrack();
-    ipc.send("changeTrack", track);
+    ipc.send("changeTrack", {
+      isPlaying: externalAPI.isPlaying(),
+      currentTrack: track,
+    });
     ipc.send("changePlaylist", {
       currentTrack: track,
       playlist: externalAPI.getTracksList().filter((t) => !!t),
@@ -107,4 +114,12 @@ function initBackNavigationButton() {
   }
 }
 
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey && e.key === 'f') {
+    document.querySelector(".d-search__button").click();
+  }
+}, false);
+
 window.close = undefined;
+
+require("./darkmode");

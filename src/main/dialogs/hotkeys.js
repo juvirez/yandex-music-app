@@ -1,6 +1,7 @@
 const { BrowserWindow, systemPreferences, dialog } = require("electron");
 const { reloadShortcuts } = require("../features/hotkeys");
 
+let i18n = new (require("../locales/i18n"))();
 let win;
 
 exports.showHotkeysDialog = () => {
@@ -8,11 +9,11 @@ exports.showHotkeysDialog = () => {
     dialog
       .showMessageBox(global.mainWindow, {
         type: "warning",
-        message: "Accessibility Access",
-        detail: "To use global hotkeys, provide accessibility.",
+        message: i18n.__("Accessibility Access"),
+        detail: i18n.__("To use global hotkeys, provide accessibility."),
         defaultId: 0,
         cancelId: 1,
-        buttons: ["Grant Accessibility", "Not Now"],
+        buttons: [i18n.__("Grant Accessibility"), i18n.__("Not Now")],
       })
       .then((returnValue) => {
         if (returnValue.response === 0) {
@@ -30,7 +31,7 @@ exports.showHotkeysDialog = () => {
 
   win = new BrowserWindow({
     width: 960,
-    height: 472,
+    height: 478,
     modal: true,
     parent: global.mainWindow,
     resizable: false,
