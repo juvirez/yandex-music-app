@@ -61,7 +61,7 @@
     "extraResources": [
       "static/tray*.png",
       "static/touchbar/*.png",
-      "static/default_cover*.png"
+      "static/default_cover_*.png"
     ]
   }
 }
