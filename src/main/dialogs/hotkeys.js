@@ -57,5 +57,5 @@ exports.showHotkeysDialog = () => {
     reloadShortcuts();
   });
 
-  win.loadFile("src/renderer/hotkeys/index.html");
+  win.loadFile("src/renderer/hotkeys/dist/index.html");
 };

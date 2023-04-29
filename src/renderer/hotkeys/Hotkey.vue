@@ -39,9 +39,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue";
 import { acceleratorToHumanReadable, keyCodeToAccelerator } from "./utils";
 
-export default {
+export default defineComponent({
   props: {
     id: String,
     title: String,
@@ -67,14 +68,12 @@ export default {
         this.pressingKeys.push(key);
       }
       if (arrayContainsAll(this.pressingKeys, this.hotkey)) {
-        this.hotkey = this.pressingKeys.slice();
-        this.$emit("hotkeyChanged");
+        this.$emit("hotkeyChanged", this.pressingKeys.slice());
       }
     },
     clear() {
       this.pressingKeys = [];
-      this.hotkey = [];
-      this.$emit("hotkeyChanged");
+      this.$emit("hotkeyChanged", []);
     }
   },
   computed: {
@@ -82,7 +81,7 @@ export default {
       return this.hotkey.map(acceleratorToHumanReadable).join(" + ");
     }
   }
-};
+});
 
 function arrayContainsAll(array, contains) {
   return contains.every(element => {
@@ -95,5 +94,28 @@ function arrayContainsAll(array, contains) {
 .d-suggest .d-input_suggest .d-input__field {
   width: 200px;
   border-color: rgba(255, 255, 255, 0.2);
+}
+body .d-icon_go-forward-5sec {
+  mask-image: url('static/goforward.5.svg');
+  -webkit-mask-image: url('static/goforward.5.svg');
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+body .d-icon_go-backward-5sec {
+  mask-image: url('static/gobackward.5.svg');
+  -webkit-mask-image: url('static/gobackward.5.svg');
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+@media (prefers-color-scheme: light) {
+  .d-icon_go-forward-5sec, .d-icon_go-backward-5sec {
+    background-color: #222;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .d-icon_go-forward-5sec, .d-icon_go-backward-5sec {
+    background-color: #fff;
+  }
 }
 </style>

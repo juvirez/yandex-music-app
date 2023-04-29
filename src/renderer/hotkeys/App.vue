@@ -11,7 +11,7 @@
           :title="hotkey.title"
           :iconClass="hotkey.icon"
           :hotkey="savedHotkeys[hotkey.id] || []"
-          @hotkeyChanged="hasChangedHotkey = true"
+          @hotkeyChanged="(newHotkey) => onHotkeyChanged(hotkey.id, newHotkey)"
         />
       </div>
     </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { defineComponent, toRaw } from "vue";
 import Hotkey from "./Hotkey.vue";
 import { ipcRenderer } from "electron";
 
@@ -54,7 +55,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-export default {
+export default defineComponent({
   components: { Hotkey },
   data() {
     return {
@@ -92,16 +93,21 @@ export default {
       if (!this.hasChangedHotkey) {
         return;
       }
-      this.$refs.hotkeys.forEach(async (hotkey) => {
-        await ipcRenderer.invoke('setStoreValue', `hotkeys.${hotkey.id}`, hotkey.hotkey);
+      this.hotkeys.forEach(async (hotkey) => {
+        console.log(hotkey.id, toRaw(this.savedHotkeys[hotkey.id]));
+        await ipcRenderer.invoke('setStoreValue', `hotkeys.${hotkey.id}`, toRaw(this.savedHotkeys[hotkey.id]) ?? []);
       });
       window.close();
     },
     cancel() {
       window.close();
     },
+    onHotkeyChanged(id, newHotkey) {
+      this.hasChangedHotkey = true;
+      this.savedHotkeys[id] = newHotkey;
+    },
   },
-};
+});
 </script>
 
 <style>

@@ -53,7 +53,7 @@ const specialCodeToAccelerators = {
   MetaRight: "Command"
 };
 
-exports.keyCodeToAccelerator = code => {
+export function keyCodeToAccelerator(code) {
   const keyMatch = code.match(/^Key(\w)$/);
   if (keyMatch && keyMatch[1]) {
     return keyMatch[1];
@@ -77,7 +77,7 @@ exports.keyCodeToAccelerator = code => {
   return specialCodeToAccelerators[code];
 };
 
-exports.acceleratorToHumanReadable = accelerator => {
+export function acceleratorToHumanReadable(accelerator) {
   const numMatch = accelerator.match(/^num(\d)$/);
   if (numMatch && numMatch[1]) {
     return numMatch[1];

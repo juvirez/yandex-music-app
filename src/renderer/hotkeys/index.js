@@ -1,7 +1,7 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 
-new Vue(App).$mount("#app");
+createApp(App).mount("#app");
 
 const darkModeWatchMedia = window.matchMedia("(prefers-color-scheme: dark)");
 darkModeWatchMedia.addEventListener("change", (e) => {
