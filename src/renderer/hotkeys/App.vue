@@ -64,12 +64,14 @@ export default defineComponent({
         { id: "dislike", title: "Dislike", icon: "d-icon_circle-crossed" },
         { id: "play", title: "Play", icon: "d-icon_play" },
         { id: "pause", title: "Pause", icon: "d-icon_pause" },
-        { id: "next_track", title: "Next Track", icon: "d-icon_track-next" },
         {
           id: "previous_track",
           title: "Previous Track",
           icon: "d-icon_track-prev",
         },
+        { id: "next_track", title: "Next Track", icon: "d-icon_track-next" },
+        { id: "go_backward", title: "Seek backward", icon: "d-icon_go-backward-5sec "},
+        { id: "go_forward", title: "Seek forward", icon: "d-icon_go-forward-5sec" },
         {
           id: "mute_unmute",
           title: "Mute / Unmute",
