@@ -21,8 +21,11 @@ function registerCustomShortcuts() {
   registerGlobalHotkeys(hotkeys["pause"], "pause");
   registerGlobalHotkeys(hotkeys["play_pause"], "togglePause");
 
-  registerGlobalHotkeys(hotkeys["next_track"], "next");
   registerGlobalHotkeys(hotkeys["previous_track"], "prev");
+  registerGlobalHotkeys(hotkeys["next_track"], "next");
+  
+  registerGlobalHotkeys(hotkeys["go_backward"], "goBackward");
+  registerGlobalHotkeys(hotkeys["go_forward"], "goForward");
 
   registerGlobalHotkeys(hotkeys["love"], "love", () => {
     showLoveNotification(true);

@@ -77,6 +77,12 @@ ipc.on("playerCmd", (_event, cmd) => {
     case "volumeUp":
       externalAPI.setVolume(externalAPI.getVolume() + 0.1);
       break;
+    case "goBackward":
+      externalAPI.setPosition(externalAPI.getProgress().position - 5);
+      break;
+    case "goForward":
+      externalAPI.setPosition(externalAPI.getProgress().position + 5);
+      break;
     default:
       externalAPI[cmd]();
   }
