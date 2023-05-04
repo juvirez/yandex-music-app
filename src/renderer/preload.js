@@ -83,6 +83,13 @@ ipc.on("playerCmd", (_event, cmd) => {
     case "goForward":
       externalAPI.setPosition(externalAPI.getProgress().position + 5);
       break;
+    case "prev":
+      if (externalAPI.getProgress().position >= 3) {
+        externalAPI.setPosition(0);
+      } else {
+        externalAPI.prev();
+      }
+      break;
     default:
       externalAPI[cmd]();
   }
