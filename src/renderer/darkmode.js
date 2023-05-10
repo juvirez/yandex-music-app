@@ -42,7 +42,7 @@ ipcRenderer.on("navigated", () => {
 });
 
 function isOtherSettingsPage() {
-  return window.location.pathname === '/settings/other';
+  return window.location.pathname === '/settings';
 }
 
 function manageDarkToggleHandler(syncTheme, n = 0) {
