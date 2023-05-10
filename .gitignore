@@ -3,5 +3,4 @@ dist
 build
 src/renderer/compiled
 /Makefile
-/package-lock.json
 .yarn
